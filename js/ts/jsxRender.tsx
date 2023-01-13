@@ -1,7 +1,7 @@
 // Tiny JSX renderer in TypeScript inspired by plain-jxs: https://github.com/callumlocke/plain-jsx
 
 //  Babel allows you to specify the factory function as inline comment:
-/** @jsx JSXrender */
+//** @jsx JSXrender */
 
 class JsxRender {
 

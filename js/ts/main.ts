@@ -83,7 +83,7 @@ declare var MDwikiEnableDebug: any;
             appendDefaultFilenameToHash();
 
             $(window).bind('hashchange', function () {
-                window.location.reload(false);
+                window.location.reload();
             });
 
             $.md.wiki.run();
