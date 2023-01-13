@@ -145,6 +145,12 @@ module.exports = function (grunt) {
             src: ['lib/**/*.js', 'test/**/*.js']
         },
         copy: {
+            ts_map: {
+                expand: true,
+                flatten: true,
+                src: 'ts_compiled/mdwiki_ts.js.map',
+                dest: 'dist/'
+            },
             release: {
                 expand: false,
                 flatten: true,
@@ -241,7 +247,7 @@ module.exports = function (grunt) {
 
     /*** NAMED TASKS ***/
     grunt.registerTask('release', ['ts', 'less:min', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index_release']);
-    grunt.registerTask('debug', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'index_debug']);
+    grunt.registerTask('debug', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index_debug']);
     grunt.registerTask('devel', ['debug', 'server', 'unittests', 'reload', 'watch']);
     grunt.registerTask('unittests', ['copy:unittests']);
 
