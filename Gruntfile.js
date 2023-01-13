@@ -6,14 +6,14 @@ var createIndex = function (grunt, taskname) {
     grunt.config.set('templatesString', '');
 
     // register the task name in global scope so we can access it in the .tmpl file
-    grunt.config.set('currentTask', {name: taskname});
+    grunt.config.set('currentTask', { name: taskname });
 
     grunt.file.write(conf.dest, grunt.template.process(tmpl));
     grunt.log.writeln('Generated \'' + conf.dest + '\' from \'' + conf.template + '\'');
 };
 
 /*global module:false*/
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
     // Project configuration.
 
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-    // Metadata.
+        // Metadata.
         pkg: {
             name: 'MDwiki',
             version: '0.7.0'
@@ -148,19 +148,19 @@ module.exports = function(grunt) {
             release: {
                 expand: false,
                 flatten: true,
-                src: [ 'dist/mdwiki.html' ],
+                src: ['dist/mdwiki.html'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki.html'
             },
             release_debug: {
                 expand: false,
                 flatten: true,
-                src: [ 'dist/mdwiki-debug.html' ],
+                src: ['dist/mdwiki-debug.html'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-debug.html'
             },
             release_templates: {
                 expand: true,
                 flatten: true,
-                src: [ 'release_templates/*' ],
+                src: ['release_templates/*'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
             },
             unittests: {
@@ -209,7 +209,7 @@ module.exports = function(grunt) {
                 'templates/**/*.html',
                 'index.tmpl'
             ],
-            tasks: ['debug','reload' ]
+            tasks: ['debug', 'reload']
         },
         reload: {
             port: 35729,
@@ -217,11 +217,11 @@ module.exports = function(grunt) {
         },
         'http-server': {
             'dev': {
-                root:'./',
+                root: './',
                 port: 3000,
                 host: "0.0.0.0",
                 cache: 1,
-                showDir : true,
+                showDir: true,
                 autoIndex: true,
                 defaultExt: "html",
                 runInBackground: false
@@ -230,40 +230,28 @@ module.exports = function(grunt) {
     });
 
     /*** CUSTOM CODED TASKS ***/
-    grunt.registerTask('index', 'Generate mdwiki.html, inline all scripts', function() {
+    grunt.registerTask('index_release', 'Generate mdwiki.html, inline all scripts', function () {
         createIndex(grunt, 'release');
     });
 
     /* Debug is basically the releaes version but without any minifing */
-    grunt.registerTask('index_debug', 'Generate mdwiki-debug.html, inline all scripts unminified', function() {
+    grunt.registerTask('index_debug', 'Generate mdwiki-debug.html, inline all scripts unminified', function () {
         createIndex(grunt, 'debug');
     });
 
-    /*grunt.registerTask('assembleTemplates', 'Adds a script tag with id to each template', function() {
-        var templateString = '';
-        grunt.file.recurse('templates/', function(abspath, rootdir, subdir, filename){
-            var intro = '<script type="text/html" id="/' + rootdir.replace('/','') + '/' + subdir.replace('/','') + '/' + filename.replace('.html','') + '">\n';
-            var content = grunt.file.read(abspath);
-            var outro = '</script>\n';
-            templateString += intro + content + outro;
-        });
-        grunt.file.write('tmp/templates.html', templateString);
-    });*/
-
-
     /*** NAMED TASKS ***/
-    grunt.registerTask('release', [ 'ts', 'less:min', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index' ]);
-    grunt.registerTask('debug', [ 'ts', 'less:dev', 'shell:compile_templates', 'concat:dev',  'index_debug' ]);
-    grunt.registerTask('devel', [ 'debug', 'server', 'unittests', 'reload', 'watch' ]);
-    grunt.registerTask('unittests', [ 'copy:unittests' ]);
+    grunt.registerTask('release', ['ts', 'less:min', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index_release']);
+    grunt.registerTask('debug', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'index_debug']);
+    grunt.registerTask('devel', ['debug', 'server', 'unittests', 'reload', 'watch']);
+    grunt.registerTask('unittests', ['copy:unittests']);
 
-    grunt.registerTask('server', [ 'http-server:dev' ]);
+    grunt.registerTask('server', ['http-server:dev']);
 
-    grunt.registerTask('distrelease',[
+    grunt.registerTask('distrelease', [
         'release', 'debug',
         'copy:release', 'copy:release_debug', 'copy:release_templates',
         'shell:zip_release'
     ]);
     // Default task
-    grunt.registerTask('default', [ 'release', 'debug', 'unittests' ] );
+    grunt.registerTask('default', ['release', 'debug', 'unittests']);
 };
