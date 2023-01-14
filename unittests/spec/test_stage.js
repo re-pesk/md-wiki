@@ -77,6 +77,7 @@ describe('Stages', function() {
             stage.subscribe(function(done) {
                 done();
             });
+            expect(false).toBeFalsy();
         });
     });
 });
