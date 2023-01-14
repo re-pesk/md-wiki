@@ -113,7 +113,7 @@ module.exports = function (grunt) {
                     compress: true,
                 },
                 files: {
-                    'src_compiled/css/main.min.css': 'styles/main.less',
+                    'src_compiled/css/main.min.css': 'src/styles/main.less',
                 },
             },
             dev: {
@@ -121,7 +121,7 @@ module.exports = function (grunt) {
                     compress: false,
                 },
                 files: {
-                    'src_compiled/css/main.css': 'styles/main.less',
+                    'src_compiled/css/main.css': 'src/styles/main.less',
                 },
             },
         },
