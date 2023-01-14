@@ -170,18 +170,14 @@ module.exports = function (grunt) {
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
             },
             unittests: {
-                files: [{
-                    expand: true,
-                    flatten: true,
-                    src: 'tmp/MDwiki.js',
-                    dest: 'unittests/lib/'
-                },
-                {
-                    expand: true,
-                    flatten: true,
-                    src: 'bower_components/jquery/jquery.min.js',
-                    dest: 'unittests/lib/'
-                }]
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['tmp/MDwiki.js', 'bower_components/jquery/jquery.min.js'],
+                        dest: 'unittests/js/'
+                    },
+                ]
             }
         },
         shell: {
@@ -204,35 +200,48 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: [
-                'Gruntfile.js',
-                'js/*.js',
-                'js/**/*.js',
-                'js/ts/**/*.ts',
-                'js/**/*.tsx',
-                'unittests/**/*.js',
-                'unittests/**/*.html',
-                'templates/**/*.html',
-                'index.tmpl'
-            ],
-            tasks: ['debug', 'reload']
+            options: {
+                livereload: true,
+            },
+            debug: {
+                files: [
+                    'js/*.js',
+                    'js/**/*.js',
+                    'js/ts/**/*.ts',
+                    'js/**/*.tsx',
+                    'templates/**/*.html',
+                    'index.tmpl'
+                ],
+                tasks: ['debug'],
+            },
+            test: {
+                files: [
+                    'unittests/js/*.js',
+                    'unittests/spec/*.js',
+                    'unittests/**/*.html',
+                ],
+            },
         },
-        reload: {
-            port: 35729,
-            liveReload: {}
+        connect: {
+            dev: {
+                options: {
+                    port: 3000,
+                    hostname: '*',
+                    base: './dist',
+                    open: 'http://localhost:3000/mdwiki-debug.html',
+                    debug: true,
+                }
+            },
+            test: {
+                options: {
+                    port: 3000,
+                    hostname: '*',
+                    base: ['./node_modules', './tmp', './unittests'],
+                    open: 'http://localhost:3000/SpecRunner.html',
+                    debug: true,
+                }
+            },
         },
-        'http-server': {
-            'dev': {
-                root: './',
-                port: 3000,
-                host: "0.0.0.0",
-                cache: 1,
-                showDir: true,
-                autoIndex: true,
-                defaultExt: "html",
-                runInBackground: false
-            }
-        }
     });
 
     /*** CUSTOM CODED TASKS ***/
@@ -248,10 +257,11 @@ module.exports = function (grunt) {
     /*** NAMED TASKS ***/
     grunt.registerTask('release', ['ts', 'less:min', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index_release']);
     grunt.registerTask('debug', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index_debug']);
-    grunt.registerTask('devel', ['debug', 'server', 'unittests', 'reload', 'watch']);
+    grunt.registerTask('dev', ['debug', 'unittests', 'serve']);
     grunt.registerTask('unittests', ['copy:unittests']);
 
-    grunt.registerTask('server', ['http-server:dev']);
+    grunt.registerTask('serve', ['connect:dev', 'watch']);
+    grunt.registerTask('test', ['connect:test', 'watch']);
 
     grunt.registerTask('distrelease', [
         'release', 'debug',

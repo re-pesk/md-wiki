@@ -757,7 +757,7 @@ ts_compiled/
 tmp/
 app/components
 md/
-unittests/lib/
+unittests/js/
 .tscache
 
 dist-ssr
