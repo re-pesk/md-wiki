@@ -185,7 +185,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         flatten: true,
-                        src: ['release_templates/*'],
+                        src: ['src/release_assets/*'],
                         dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
                     },
                     {
