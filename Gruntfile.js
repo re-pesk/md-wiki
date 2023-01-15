@@ -34,34 +34,34 @@ module.exports = function (grunt) {
 
         fileList: {
             ownJsFiles: [
-                'js/marked.js',
-                'js/init.js',
+                'src/js/marked.js',
+                'src/js/init.js',
                 'src_compiled/js/<%= pkg.name %>_ts.js',
                 'tmp/<%= pkg.name %>.templates.js',
-                'js/main.js',
-                'js/util.js',
-                'js/basic_skeleton.js',
-                'js/bootstrap.js',
+                'src/js/main.js',
+                'src/js/util.js',
+                'src/js/basic_skeleton.js',
+                'src/js/bootstrap.js',
 
                 // gimmicks
-                'js/gimmicks/templating.js',
-                'js/gimmicks/prism.js',
+                'src/js/gimmicks/templating.js',
+                'src/js/gimmicks/prism.js',
                 /*
-                 'js/gimmicks/googlemaps.js',
-                 'js/gimmicks/alerts.js',
-                'js/gimmicks/colorbox.js',
-                // 'js/gimmicks/carousel.js',
-                'js/gimmicks/disqus.js',
-                'js/gimmicks/editme.js',
-                'js/gimmicks/facebooklike.js',
-                'js/gimmicks/forkmeongithub.js',
-                'js/gimmicks/gist.js',
-                'js/gimmicks/iframe.js',
-                'js/gimmicks/math.js',
-                // // 'js/gimmicks/leaflet.js',
-                'js/gimmicks/twitter.js',
-                'js/gimmicks/youtube_embed.js',
-                'js/gimmicks/yuml.js'
+                'src/js/gimmicks/googlemaps.js',
+                'src/js/gimmicks/alerts.js',
+                'src/js/gimmicks/colorbox.js',
+                // 'src/js/gimmicks/carousel.js',
+                'src/js/gimmicks/disqus.js',
+                'src/js/gimmicks/editme.js',
+                'src/js/gimmicks/facebooklike.js',
+                'src/js/gimmicks/forkmeongithub.js',
+                'src/js/gimmicks/gist.js',
+                'src/js/gimmicks/iframe.js',
+                'src/js/gimmicks/math.js',
+                // 'src/js/gimmicks/leaflet.js',
+                'src/js/gimmicks/twitter.js',
+                'src/js/gimmicks/youtube_embed.js',
+                'src/js/gimmicks/yuml.js'
                 */
             ],
 
@@ -250,10 +250,10 @@ module.exports = function (grunt) {
             },
             dev: {
                 files: [
-                    'js/*.js',
-                    'js/**/*.js',
-                    'js/ts/**/*.ts',
-                    'js/**/*.tsx',
+                    'src/js/*.js',
+                    'src/js/**/*.js',
+                    'src/js/ts/**/*.ts',
+                    'src/js/**/*.tsx',
                     'templates/**/*.html',
                     'index.tmpl'
                 ],
