@@ -21,6 +21,7 @@
     "grunt-shell": "^4.0.0",
     "handlebars": "^4.0.4",
     "jquery": "^3.6.3",
+    "jquery-colorbox": "^1.6.4",
     "load-grunt-tasks": "*",
     "typescript": "^4.9.4"
   },
