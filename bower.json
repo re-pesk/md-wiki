@@ -14,9 +14,7 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "jquery": "1.8.3"
-  },
+  "dependencies": {},
   "resolutions": {
     "jquery": "1.8.3"
   }

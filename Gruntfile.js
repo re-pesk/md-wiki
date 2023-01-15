@@ -74,7 +74,7 @@ module.exports = function (grunt) {
                 ],
 
                 jsFiles: [
-                    'bower_components/jquery/jquery.min.js',
+                    'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/handlebars/dist/handlebars.runtime.min.js',
                     'extlib/js/jquery.colorbox.min.js',
                     'extlib/js/prism.js',
@@ -90,7 +90,7 @@ module.exports = function (grunt) {
                 ],
 
                 jsFiles: [
-                    'bower_components/jquery/jquery.js',
+                    'node_modules/jquery/dist/jquery.js',
                     'node_modules/bootstrap/js/affix.js',
                     'node_modules/bootstrap/js/dropdown.js',
                     'node_modules/handlebars/dist/handlebars.runtime.js',
@@ -195,7 +195,7 @@ module.exports = function (grunt) {
                 src: [
                     'src_compiled/js/<%= pkg.name %>_ts.js.map',
                     'src_compiled/js/<%= pkg.name %>.js',
-                    'bower_components/jquery/jquery.min.js'
+                    'node_modules/jquery/dist/jquery.min.js'
                 ],
                 dest: 'tests/js/'
             },
