@@ -78,8 +78,8 @@ module.exports = function (grunt) {
                     'node_modules/handlebars/dist/handlebars.runtime.min.js',
                     'extlib/js/jquery.colorbox.min.js',
                     'extlib/js/prism.js',
-                    'bower_components/bootstrap/js/affix.js',
-                    'bower_components/bootstrap/js/dropdown.js',
+                    'node_modules/bootstrap/js/affix.js',
+                    'node_modules/bootstrap/js/dropdown.js',
                 ],
             },
 
@@ -91,8 +91,8 @@ module.exports = function (grunt) {
 
                 jsFiles: [
                     'bower_components/jquery/jquery.js',
-                    'bower_components/bootstrap/js/affix.js',
-                    'bower_components/bootstrap/js/dropdown.js',
+                    'node_modules/bootstrap/js/affix.js',
+                    'node_modules/bootstrap/js/dropdown.js',
                     'node_modules/handlebars/dist/handlebars.runtime.js',
                     'extlib/js/prism.js',
                     'extlib/js/jquery.colorbox.js',
