@@ -37,7 +37,7 @@ module.exports = function (grunt) {
                 'src/js/marked.js',
                 'src/js/init.js',
                 'src_compiled/js/<%= pkg.name %>_ts.js',
-                'tmp/<%= pkg.name %>.templates.js',
+                'src_compiled/js/<%= pkg.name %>.templates.js',
                 'src/js/main.js',
                 'src/js/util.js',
                 'src/js/basic_skeleton.js',
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
                 // * ORDER OF FILES IS IMPORTANT
                 // * ALWAYS ADD EACH FILE TO BOTH minified/unminified SECTIONS!
                 cssFiles: [
-                    'tmp/main.min.css',
+                    'src_compiled/css/main.min.css',
                 ],
 
                 jsFiles: [
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
             dev: {
                 // for debug builds use unminified versions:
                 cssFiles: [
-                    'tmp/main.css'
+                    'src_compiled/css/main.css'
                 ],
 
                 jsFiles: [
@@ -113,7 +113,7 @@ module.exports = function (grunt) {
                     compress: true,
                 },
                 files: {
-                    'tmp/main.min.css': 'styles/main.less',
+                    'src_compiled/css/main.min.css': 'styles/main.less',
                 },
             },
             dev: {
@@ -121,7 +121,7 @@ module.exports = function (grunt) {
                     compress: false,
                 },
                 files: {
-                    'tmp/main.css': 'styles/main.less',
+                    'src_compiled/css/main.css': 'styles/main.less',
                 },
             },
         },
@@ -132,7 +132,7 @@ module.exports = function (grunt) {
             },
             dev: {
                 src: '<%= fileList.ownJsFiles %>',
-                dest: 'tmp/<%= pkg.name %>.js'
+                dest: 'src_compiled/js/<%= pkg.name %>.js'
             }
         },
         uglify: {
@@ -141,7 +141,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: '<%= concat.dev.dest %>',
-                dest: 'tmp/<%= pkg.name %>.min.js'
+                dest: 'src_compiled/js/<%= pkg.name %>.min.js'
             }
         },
         index: {
@@ -200,8 +200,8 @@ module.exports = function (grunt) {
                 expand: true,
                 flatten: true,
                 src: [
-                    'ts_compiled/<%= pkg.name %>_ts.js.map',
-                    'tmp/<%= pkg.name %>.js',
+                    'src_compiled/js/<%= pkg.name %>_ts.js.map',
+                    'src_compiled/js/<%= pkg.name %>.js',
                     'bower_components/jquery/jquery.min.js'
                 ],
                 dest: 'tests/js/'
@@ -212,7 +212,7 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true
                 },
-                command: 'rm -frv tmp src_compiled'
+                command: 'rm -frv src_compiled'
             },
             rm_dist: {
                 options: {
@@ -241,7 +241,7 @@ module.exports = function (grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f tmp/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
+                command: './node_modules/.bin/handlebars -f src_compiled/js/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
             }
         },
         watch: {
@@ -281,7 +281,7 @@ module.exports = function (grunt) {
                 options: {
                     port: 3000,
                     hostname: '*',
-                    base: ['./node_modules', './tmp', './tests'],
+                    base: ['./node_modules', './src_compiled/js', './tests'],
                     open: 'http://localhost:3000/SpecRunner.html',
                     debug: true,
                 }
