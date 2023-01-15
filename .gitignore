@@ -758,7 +758,7 @@ tmp/
 app/components
 md/
 tests/js/
-tests/*.map
+tests/**/*.map
 .tscache
 
 dist-ssr

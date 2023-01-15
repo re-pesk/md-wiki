@@ -4,9 +4,10 @@ describe('GimmickLoader/GimmickParser integration', function () {
     var loader;
     beforeEach(function() {
         gmck = new MDwiki.Gimmick.Gimmick('somegimmick');
-        loadFixtures('gimmick.html');
+        loadFixtures('rendered-markdown/gimmick.html');
     });
 
+    it('<!!!Test is not provided>', () => expect(false).toBeFalsy());
 
     /*
     function setupGimmick(callbackFn, kind) {
