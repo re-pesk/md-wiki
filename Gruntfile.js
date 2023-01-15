@@ -204,7 +204,7 @@ module.exports = function (grunt) {
                     'tmp/<%= pkg.name %>.js',
                     'bower_components/jquery/jquery.min.js'
                 ],
-                dest: 'unittests/js/'
+                dest: 'tests/js/'
             },
         },
         shell: {
@@ -261,9 +261,9 @@ module.exports = function (grunt) {
             },
             test: {
                 files: [
-                    'unittests/js/*.js',
-                    'unittests/spec/*.js',
-                    'unittests/**/*.html',
+                    'tests/js/*.js',
+                    'tests/spec/*.js',
+                    'tests/**/*.html',
                 ],
             },
         },
@@ -281,7 +281,7 @@ module.exports = function (grunt) {
                 options: {
                     port: 3000,
                     hostname: '*',
-                    base: ['./node_modules', './tmp', './unittests'],
+                    base: ['./node_modules', './tmp', './tests'],
                     open: 'http://localhost:3000/SpecRunner.html',
                     debug: true,
                 }
