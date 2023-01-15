@@ -207,25 +207,13 @@ module.exports = function (grunt) {
                 dest: 'tests/js/'
             },
         },
+        clean: {
+            compiled: ['src_compiled/'],
+            dist: ['dist/'],
+            release: ['release/'],
+            test: ['tests/js/'],
+        },
         shell: {
-            rm_compiled: {
-                options: {
-                    stdout: true
-                },
-                command: 'rm -frv src_compiled'
-            },
-            rm_dist: {
-                options: {
-                    stdout: true
-                },
-                command: 'rm -frv dist'
-            },
-            rm_release: {
-                options: {
-                    stdout: true
-                },
-                command: 'rm -frv release'
-            },
             zip_release: {
                 options: {
                     stdout: true
@@ -302,12 +290,14 @@ module.exports = function (grunt) {
     grunt.registerTask('build:dev', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
     grunt.registerTask('build:prod', ['ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
     grunt.registerTask('build', ['build:prod', 'build:dev']);
+    grunt.registerTask('build:test', ['build:dev', 'renew:test']);
 
     grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch']);
-    grunt.registerTask('test', ['build:dev', 'copy:test', 'connect:test', 'watch']);
+    grunt.registerTask('test', ['build:test', 'connect:test', 'watch']);
 
-    grunt.registerTask('clear', ['shell:rm_compiled', 'shell:rm_dist', 'shell:rm_release'])
-    grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets'])
+    grunt.registerTask('clear', ['clean:compiled', 'clean:dist', 'clean:release']);
+    grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets']);
+    grunt.registerTask('renew:test', ['clean:test', 'copy:test']);
 
     grunt.registerTask('release', [
         'clear', 'build',
@@ -315,5 +305,5 @@ module.exports = function (grunt) {
         'shell:zip_release'
     ]);
     // Default task
-    grunt.registerTask('default', ['clear', 'build', 'copy:test']);
+    grunt.registerTask('default', ['clear', 'build', 'renew:test']);
 };
