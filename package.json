@@ -8,7 +8,6 @@
   "devDependencies": {
     "@types/jquery": "^2.0.60",
     "bootstrap": "^3.4.1",
-    "bower": "^1.7.9",
     "echo-cli": "^2.0.0",
     "grunt": "^1.5.3",
     "grunt-cli": "^1.4.3",
