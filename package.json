@@ -18,7 +18,6 @@
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-shell": "^4.0.0",
-    "grunt-ts": "^6.0.0-beta.22",
     "handlebars": "^4.0.4",
     "load-grunt-tasks": "*",
     "typescript": "^4.9.4"

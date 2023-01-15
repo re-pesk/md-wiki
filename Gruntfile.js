@@ -100,13 +100,6 @@ module.exports = function (grunt) {
             }
         },
 
-        ts: {
-            // TODO: use tsconfig.json as soon as tsconfig.json supports globs/wildcards
-            base: {
-                tsconfig: "src/ts/tsconfig.json"
-            }
-        },
-
         less: {
             prod: {
                 options: {
@@ -230,13 +223,19 @@ module.exports = function (grunt) {
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
                 command: './node_modules/.bin/handlebars -f src_compiled/js/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
+            },
+            ts: {
+                otions: {
+                    stdout: true
+                },
+                command: './node_modules/.bin/tsc --project src/ts/tsconfig.json && echo "Typescript compilation is completed!"'
             }
         },
         watch: {
-            options: {
-                livereload: true,
-            },
             dev: {
+                options: {
+                    livereload: true,
+                },
                 files: [
                     'src/js/*.js',
                     'src/js/**/*.js',
@@ -248,6 +247,9 @@ module.exports = function (grunt) {
                 tasks: ['build:dev'],
             },
             test: {
+                options: {
+                    livereload: true,
+                },
                 files: [
                     'tests/js/*.js',
                     'tests/spec/*.js',
@@ -287,8 +289,8 @@ module.exports = function (grunt) {
     );
 
     /*** NAMED TASKS ***/
-    grunt.registerTask('build:dev', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
-    grunt.registerTask('build:prod', ['ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
+    grunt.registerTask('build:dev', ['shell:ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
+    grunt.registerTask('build:prod', ['shell:ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
     grunt.registerTask('build', ['build:prod', 'build:dev']);
     grunt.registerTask('build:test', ['build:dev', 'renew:test']);
 

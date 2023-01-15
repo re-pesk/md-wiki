@@ -5,6 +5,8 @@
     "declaration": true,
     "sourceMap": true,
     "jsx": "react",
+    "moduleResolution": "node",
+    "removeComments": false,
     "reactNamespace": "JsxRender"
   }
 }
