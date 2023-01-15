@@ -241,7 +241,7 @@ module.exports = function (grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f tmp/<%= pkg.name %>.templates.js -r templates -m templates/**/*.html'
+                command: './node_modules/.bin/handlebars -f tmp/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
             }
         },
         watch: {
@@ -254,7 +254,7 @@ module.exports = function (grunt) {
                     'src/js/**/*.js',
                     'src/js/ts/**/*.ts',
                     'src/js/**/*.tsx',
-                    'templates/**/*.html',
+                    'src/templates/**/*.html',
                     'index.tmpl'
                 ],
                 tasks: ['build:dev'],
