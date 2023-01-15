@@ -36,7 +36,7 @@ module.exports = function (grunt) {
             ownJsFiles: [
                 'js/marked.js',
                 'js/init.js',
-                'ts_compiled/<%= pkg.name %>_ts.js',
+                'src_compiled/js/<%= pkg.name %>_ts.js',
                 'tmp/<%= pkg.name %>.templates.js',
                 'js/main.js',
                 'js/util.js',
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
         ts: {
             // TODO: use tsconfig.json as soon as tsconfig.json supports globs/wildcards
             base: {
-                tsconfig: "js/ts/tsconfig.json"
+                tsconfig: "src/ts/tsconfig.json"
             }
         },
 
@@ -159,7 +159,7 @@ module.exports = function (grunt) {
             ts_map: {
                 expand: true,
                 flatten: true,
-                src: 'ts_compiled/<%= pkg.name %>_ts.js.map',
+                src: 'src_compiled/js/<%= pkg.name %>_ts.js.map',
                 dest: 'dist/'
             },
             assets: {
@@ -212,7 +212,7 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true
                 },
-                command: 'rm -frv tmp ts_compiled'
+                command: 'rm -frv tmp src_compiled'
             },
             rm_dist: {
                 options: {
