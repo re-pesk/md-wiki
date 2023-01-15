@@ -77,7 +77,7 @@ module.exports = function (grunt) {
                     'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/handlebars/dist/handlebars.runtime.min.js',
                     'node_modules/jquery-colorbox/jquery.colorbox-min.js',
-                    'extlib/js/prism.js',
+                    'node_modules/prismjs/prism.js',
                     'node_modules/bootstrap/js/affix.js',
                     'node_modules/bootstrap/js/dropdown.js',
                 ],
@@ -94,7 +94,7 @@ module.exports = function (grunt) {
                     'node_modules/bootstrap/js/affix.js',
                     'node_modules/bootstrap/js/dropdown.js',
                     'node_modules/handlebars/dist/handlebars.runtime.js',
-                    'extlib/js/prism.js',
+                    'node_modules/prismjs/prism.js',
                     'node_modules/jquery-colorbox/jquery.colorbox.js',
                 ],
             }
