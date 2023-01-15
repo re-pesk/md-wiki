@@ -146,12 +146,12 @@ module.exports = function (grunt) {
         },
         index: {
             prod: {
-                template: 'index.tmpl',
+                template: 'src/index.ejs',
                 dest: 'dist/<%= pkg.name %>.html'
             },
 
             dev: {
-                template: 'index.tmpl',
+                template: 'src/index.ejs',
                 dest: 'dist/<%= pkg.name %>-debug.html'
             }
         },
@@ -255,7 +255,7 @@ module.exports = function (grunt) {
                     'src/js/ts/**/*.ts',
                     'src/js/**/*.tsx',
                     'src/templates/**/*.html',
-                    'index.tmpl'
+                    'src/index.ejs'
                 ],
                 tasks: ['build:dev'],
             },
