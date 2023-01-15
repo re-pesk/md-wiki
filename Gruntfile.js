@@ -1,12 +1,16 @@
-var createIndex = function (grunt, taskname) {
+var createIndex = function (grunt, taskType) {
     'use strict';
-    var conf = grunt.config('index')[taskname],
+    var conf = grunt.config('index')[taskType],
         tmpl = grunt.file.read(conf.template);
 
     grunt.config.set('templatesString', '');
 
     // register the task name in global scope so we can access it in the .tmpl file
-    grunt.config.set('currentTask', { name: taskname });
+    grunt.config.set('currentTask', { name: { prod: 'release', dev: 'debug' }[taskType] });
+    grunt.config.set('cssFiles', grunt.config('fileList').prod.cssFiles);
+    grunt.config.set('jsFiles', grunt.config('fileList').prod.jsFiles);
+    grunt.config.set('unminifiedCssFiles', grunt.config('fileList').dev.cssFiles);
+    grunt.config.set('unminifiedJsFiles', grunt.config('fileList').dev.jsFiles);
 
     grunt.file.write(conf.dest, grunt.template.process(tmpl));
     grunt.log.writeln('Generated \'' + conf.dest + '\' from \'' + conf.template + '\'');
@@ -28,74 +32,83 @@ module.exports = function (grunt) {
             version: '0.7.0'
         },
 
-        ownJsFiles: [
-            'js/marked.js',
-            'js/init.js',
-            'ts_compiled/<%= pkg.name %>_ts.js',
-            'tmp/<%= pkg.name %>.templates.js',
-            'js/main.js',
-            'js/util.js',
-            'js/basic_skeleton.js',
-            'js/bootstrap.js',
+        fileList: {
+            ownJsFiles: [
+                'js/marked.js',
+                'js/init.js',
+                'ts_compiled/<%= pkg.name %>_ts.js',
+                'tmp/<%= pkg.name %>.templates.js',
+                'js/main.js',
+                'js/util.js',
+                'js/basic_skeleton.js',
+                'js/bootstrap.js',
 
-            // gimmicks
-            'js/gimmicks/templating.js',
-            'js/gimmicks/prism.js',
-            /*
-             'js/gimmicks/googlemaps.js',
-             'js/gimmicks/alerts.js',
-            'js/gimmicks/colorbox.js',
-            // 'js/gimmicks/carousel.js',
-            'js/gimmicks/disqus.js',
-            'js/gimmicks/editme.js',
-            'js/gimmicks/facebooklike.js',
-            'js/gimmicks/forkmeongithub.js',
-            'js/gimmicks/gist.js',
-            'js/gimmicks/iframe.js',
-            'js/gimmicks/math.js',
-            // // 'js/gimmicks/leaflet.js',
-            'js/gimmicks/twitter.js',
-            'js/gimmicks/youtube_embed.js',
-            'js/gimmicks/yuml.js'
-            */
-        ],
+                // gimmicks
+                'js/gimmicks/templating.js',
+                'js/gimmicks/prism.js',
+                /*
+                 'js/gimmicks/googlemaps.js',
+                 'js/gimmicks/alerts.js',
+                'js/gimmicks/colorbox.js',
+                // 'js/gimmicks/carousel.js',
+                'js/gimmicks/disqus.js',
+                'js/gimmicks/editme.js',
+                'js/gimmicks/facebooklike.js',
+                'js/gimmicks/forkmeongithub.js',
+                'js/gimmicks/gist.js',
+                'js/gimmicks/iframe.js',
+                'js/gimmicks/math.js',
+                // // 'js/gimmicks/leaflet.js',
+                'js/gimmicks/twitter.js',
+                'js/gimmicks/youtube_embed.js',
+                'js/gimmicks/yuml.js'
+                */
+            ],
 
-        // REMEMBER:
-        // * ORDER OF FILES IS IMPORTANT
-        // * ALWAYS ADD EACH FILE TO BOTH minified/unminified SECTIONS!
-        cssFiles: [
-            'tmp/main.min.css',
-        ],
-        jsFiles: [
-            'bower_components/jquery/jquery.min.js',
-            'node_modules/handlebars/dist/handlebars.runtime.min.js',
-            'extlib/js/jquery.colorbox.min.js',
-            'extlib/js/prism.js',
-            'bower_components/bootstrap/js/affix.js',
-            'bower_components/bootstrap/js/dropdown.js',
-        ],
-        // for debug builds use unminified versions:
-        unminifiedCssFiles: [
-            'tmp/main.css'
-        ],
-        unminifiedJsFiles: [
-            'bower_components/jquery/jquery.js',
-            'bower_components/bootstrap/js/affix.js',
-            'bower_components/bootstrap/js/dropdown.js',
-            'node_modules/handlebars/dist/handlebars.runtime.js',
-            'extlib/js/prism.js',
-            'extlib/js/jquery.colorbox.js',
-        ],
+            prod: {
+                // REMEMBER:
+                // * ORDER OF FILES IS IMPORTANT
+                // * ALWAYS ADD EACH FILE TO BOTH minified/unminified SECTIONS!
+                cssFiles: [
+                    'tmp/main.min.css',
+                ],
+
+                jsFiles: [
+                    'bower_components/jquery/jquery.min.js',
+                    'node_modules/handlebars/dist/handlebars.runtime.min.js',
+                    'extlib/js/jquery.colorbox.min.js',
+                    'extlib/js/prism.js',
+                    'bower_components/bootstrap/js/affix.js',
+                    'bower_components/bootstrap/js/dropdown.js',
+                ],
+            },
+
+            dev: {
+                // for debug builds use unminified versions:
+                cssFiles: [
+                    'tmp/main.css'
+                ],
+
+                jsFiles: [
+                    'bower_components/jquery/jquery.js',
+                    'bower_components/bootstrap/js/affix.js',
+                    'bower_components/bootstrap/js/dropdown.js',
+                    'node_modules/handlebars/dist/handlebars.runtime.js',
+                    'extlib/js/prism.js',
+                    'extlib/js/jquery.colorbox.js',
+                ],
+            }
+        },
 
         ts: {
-            // TOD: use tsconfig.json as soon as tsconfig.json supports globs/wildcards
+            // TODO: use tsconfig.json as soon as tsconfig.json supports globs/wildcards
             base: {
                 tsconfig: "js/ts/tsconfig.json"
             }
         },
 
         less: {
-            min: {
+            prod: {
                 options: {
                     compress: true,
                 },
@@ -115,17 +128,16 @@ module.exports = function (grunt) {
 
         concat: {
             options: {
-                //banner: '<%= banner %>',
-                stripBanners: true
+                stripBanners: false
             },
             dev: {
-                src: '<%= ownJsFiles %>',
+                src: '<%= fileList.ownJsFiles %>',
                 dest: 'tmp/<%= pkg.name %>.js'
             }
         },
         uglify: {
             options: {
-                // banner: '<%= banner %>'
+                stripBanners: true
             },
             dist: {
                 src: '<%= concat.dev.dest %>',
@@ -133,17 +145,15 @@ module.exports = function (grunt) {
             }
         },
         index: {
-            release: {
+            prod: {
                 template: 'index.tmpl',
                 dest: 'dist/<%= pkg.name %>.html'
             },
-            debug: {
+
+            dev: {
                 template: 'index.tmpl',
                 dest: 'dist/<%= pkg.name %>-debug.html'
             }
-        },
-        lib_test: {
-            src: ['lib/**/*.js', 'test/**/*.js']
         },
         copy: {
             ts_map: {
@@ -152,36 +162,70 @@ module.exports = function (grunt) {
                 src: 'ts_compiled/<%= pkg.name %>_ts.js.map',
                 dest: 'dist/'
             },
-            release: {
+            assets: {
+                expand: true,
+                cwd: 'src/assets',
+                src: '**',
+                dest: 'dist/'
+            },
+            release_prod: {
                 expand: true,
                 flatten: true,
                 src: ['dist/<%= pkg.name %>.html'],
                 dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
             },
-            release_debug: {
+            release_dev: {
                 expand: true,
                 flatten: true,
                 src: ['dist/<%= pkg.name %>-debug.html', 'dist/<%= pkg.name %>_ts.js.map'],
                 dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
             },
-            release_templates: {
-                expand: true,
-                flatten: true,
-                src: ['release_templates/*'],
-                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
-            },
-            unittests: {
+            release_assets: {
                 files: [
                     {
                         expand: true,
                         flatten: true,
-                        src: ['tmp/<%= pkg.name %>.js', 'bower_components/jquery/jquery.min.js'],
-                        dest: 'unittests/js/'
+                        src: ['release_templates/*'],
+                        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
                     },
-                ]
-            }
+                    {
+                        expand: true,
+                        cwd: 'src/assets',
+                        src: '**',
+                        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+                    }
+                ],
+            },
+            test: {
+                expand: true,
+                flatten: true,
+                src: [
+                    'ts_compiled/<%= pkg.name %>_ts.js.map',
+                    'tmp/<%= pkg.name %>.js',
+                    'bower_components/jquery/jquery.min.js'
+                ],
+                dest: 'unittests/js/'
+            },
         },
         shell: {
+            rm_compiled: {
+                options: {
+                    stdout: true
+                },
+                command: 'rm -frv tmp ts_compiled'
+            },
+            rm_dist: {
+                options: {
+                    stdout: true
+                },
+                command: 'rm -frv dist'
+            },
+            rm_release: {
+                options: {
+                    stdout: true
+                },
+                command: 'rm -frv release'
+            },
             zip_release: {
                 options: {
                     stdout: true
@@ -204,7 +248,7 @@ module.exports = function (grunt) {
             options: {
                 livereload: true,
             },
-            debug: {
+            dev: {
                 files: [
                     'js/*.js',
                     'js/**/*.js',
@@ -213,7 +257,7 @@ module.exports = function (grunt) {
                     'templates/**/*.html',
                     'index.tmpl'
                 ],
-                tasks: ['debug'],
+                tasks: ['build:dev'],
             },
             test: {
                 files: [
@@ -246,29 +290,30 @@ module.exports = function (grunt) {
     });
 
     /*** CUSTOM CODED TASKS ***/
-    grunt.registerTask('index_release', 'Generate <%= pkg.name %>.html, inline all scripts', function () {
-        createIndex(grunt, 'release');
-    });
-
-    /* Debug is basically the releaes version but without any minifing */
-    grunt.registerTask('index_debug', 'Generate <%= pkg.name %>-debug.html, inline all scripts unminified', function () {
-        createIndex(grunt, 'debug');
-    });
+    grunt.registerTask(
+        'index',
+        function (taskType) {
+            grunt.log.writeln(`Generate ${grunt.config('pkg').name}${taskType === 'dev' ? '-debug' : ''}.html, inline all scripts`);
+            createIndex(grunt, taskType);
+        }
+    );
 
     /*** NAMED TASKS ***/
-    grunt.registerTask('release', ['ts', 'less:min', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index_release']);
-    grunt.registerTask('debug', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index_debug']);
-    grunt.registerTask('dev', ['debug', 'unittests', 'serve']);
-    grunt.registerTask('unittests', ['copy:unittests']);
+    grunt.registerTask('build:dev', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
+    grunt.registerTask('build:prod', ['ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
+    grunt.registerTask('build', ['build:prod', 'build:dev']);
 
-    grunt.registerTask('serve', ['connect:dev', 'watch']);
-    grunt.registerTask('test', ['connect:test', 'watch']);
+    grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch']);
+    grunt.registerTask('test', ['build:dev', 'copy:test', 'connect:test', 'watch']);
 
-    grunt.registerTask('distrelease', [
-        'release', 'debug',
-        'copy:release', 'copy:release_debug', 'copy:release_templates',
+    grunt.registerTask('clear', ['shell:rm_compiled', 'shell:rm_dist', 'shell:rm_release'])
+    grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets'])
+
+    grunt.registerTask('release', [
+        'clear', 'build',
+        'copy:release',
         'shell:zip_release'
     ]);
     // Default task
-    grunt.registerTask('default', ['release', 'debug', 'unittests']);
+    grunt.registerTask('default', ['clear', 'build', 'copy:test']);
 };

@@ -758,6 +758,7 @@ tmp/
 app/components
 md/
 unittests/js/
+unittests/*.map
 .tscache
 
 dist-ssr
