@@ -225,10 +225,10 @@ module.exports = function (grunt) {
                 command: './node_modules/.bin/handlebars -f src_compiled/js/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
             },
             ts: {
-                otions: {
+                options: {
                     stdout: true
                 },
-                command: './node_modules/.bin/tsc --project src/ts/tsconfig.json && echo "Typescript compilation is completed!"'
+                command: './node_modules/.bin/tsc --project src/ts/tsconfig.json && echo-cli "Typescript compilation is completed!"'
             }
         },
         watch: {
