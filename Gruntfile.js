@@ -23,15 +23,16 @@ module.exports = function (grunt) {
     grunt.initConfig({
         // Metadata.
         pkg: {
-            name: 'MDwiki',
+            title: 'MDwiki',
+            name: 'mdwiki',
             version: '0.7.0'
         },
 
         ownJsFiles: [
             'js/marked.js',
             'js/init.js',
-            'ts_compiled/mdwiki_ts.js',
-            'tmp/MDwiki.templates.js',
+            'ts_compiled/<%= pkg.name %>_ts.js',
+            'tmp/<%= pkg.name %>.templates.js',
             'js/main.js',
             'js/util.js',
             'js/basic_skeleton.js',
@@ -134,11 +135,11 @@ module.exports = function (grunt) {
         index: {
             release: {
                 template: 'index.tmpl',
-                dest: 'dist/mdwiki.html'
+                dest: 'dist/<%= pkg.name %>.html'
             },
             debug: {
                 template: 'index.tmpl',
-                dest: 'dist/mdwiki-debug.html'
+                dest: 'dist/<%= pkg.name %>-debug.html'
             }
         },
         lib_test: {
@@ -148,33 +149,33 @@ module.exports = function (grunt) {
             ts_map: {
                 expand: true,
                 flatten: true,
-                src: 'ts_compiled/mdwiki_ts.js.map',
+                src: 'ts_compiled/<%= pkg.name %>_ts.js.map',
                 dest: 'dist/'
             },
             release: {
-                expand: false,
+                expand: true,
                 flatten: true,
-                src: ['dist/mdwiki.html'],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki.html'
+                src: ['dist/<%= pkg.name %>.html'],
+                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
             },
             release_debug: {
-                expand: false,
+                expand: true,
                 flatten: true,
-                src: ['dist/mdwiki-debug.html'],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-debug.html'
+                src: ['dist/<%= pkg.name %>-debug.html', 'dist/<%= pkg.name %>_ts.js.map'],
+                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
             },
             release_templates: {
                 expand: true,
                 flatten: true,
                 src: ['release_templates/*'],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
+                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
             },
             unittests: {
                 files: [
                     {
                         expand: true,
                         flatten: true,
-                        src: ['tmp/MDwiki.js', 'bower_components/jquery/jquery.min.js'],
+                        src: ['tmp/<%= pkg.name %>.js', 'bower_components/jquery/jquery.min.js'],
                         dest: 'unittests/js/'
                     },
                 ]
@@ -185,7 +186,7 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true
                 },
-                command: 'cd release && zip -r mdwiki-<%= grunt.config("pkg").version %>.zip mdwiki-<%= grunt.config("pkg").version %>'
+                command: 'cd release && zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip mdwiki-<%= grunt.config("pkg").version %>'
             },
             /* precompilation of our handlebars templates */
             compile_templates: {
@@ -196,7 +197,7 @@ module.exports = function (grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f tmp/MDwiki.templates.js -r templates -m templates/**/*.html'
+                command: './node_modules/.bin/handlebars -f tmp/<%= pkg.name %>.templates.js -r templates -m templates/**/*.html'
             }
         },
         watch: {
@@ -228,7 +229,7 @@ module.exports = function (grunt) {
                     port: 3000,
                     hostname: '*',
                     base: './dist',
-                    open: 'http://localhost:3000/mdwiki-debug.html',
+                    open: 'http://localhost:3000/<%= pkg.name %>-debug.html',
                     debug: true,
                 }
             },
@@ -245,12 +246,12 @@ module.exports = function (grunt) {
     });
 
     /*** CUSTOM CODED TASKS ***/
-    grunt.registerTask('index_release', 'Generate mdwiki.html, inline all scripts', function () {
+    grunt.registerTask('index_release', 'Generate <%= pkg.name %>.html, inline all scripts', function () {
         createIndex(grunt, 'release');
     });
 
     /* Debug is basically the releaes version but without any minifing */
-    grunt.registerTask('index_debug', 'Generate mdwiki-debug.html, inline all scripts unminified', function () {
+    grunt.registerTask('index_debug', 'Generate <%= pkg.name %>-debug.html, inline all scripts unminified', function () {
         createIndex(grunt, 'debug');
     });
 
