@@ -2,10 +2,9 @@
 
 100% static single file CMS/Wiki done purely with client-side Javascript and HTML5.
 
-## See http://www.mdwiki.info for more info and documentation.
+## See <http://www.mdwiki.info> for more info and documentation.
 
-
-## !! This project is currently unmaintained!!
+## !! This project is currently unmaintained !!
 
 ## Download
 
@@ -33,7 +32,7 @@ See <https://github.com/Dynalon/mdwiki/releases> for readily precompiled release
     For development, use
 
     ```bash
-    ./node_modules/.bin/grunt serve 
+    ./node_modules/.bin/grunt serve
     ```
 
 6. Unittests
@@ -41,5 +40,15 @@ See <https://github.com/Dynalon/mdwiki/releases> for readily precompiled release
     For loading tests, use
 
     ```bash
-    ./node_modules/.bin/grunt test 
+    ./node_modules/.bin/grunt test
     ```
+
+7. Release
+
+    For creating release files, use
+
+    ```bash
+    ./node_modules/.bin/grunt release
+    ```
+
+    Files will be created in `release` folder
