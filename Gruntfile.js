@@ -202,7 +202,7 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true
                 },
-                command: 'cd release && zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip mdwiki-<%= grunt.config("pkg").version %>'
+                command: 'cd release && zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>'
             },
             /* precompilation of our handlebars templates */
             compile_templates: {
