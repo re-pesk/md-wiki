@@ -1,16 +1,18 @@
 var createIndex = function (grunt, taskType) {
     'use strict';
     var conf = grunt.config('index')[taskType],
-        tmpl = grunt.file.read(conf.template);
+        tmpl = grunt.file.read(conf.template),
+        fileList = grunt.config('fileList'),
+        currentTask = { name: { prod: 'release', dev: 'debug' }[taskType] };
 
     grunt.config.set('templatesString', '');
 
-    // register the task name in global scope so we can access it in the .tmpl file
-    grunt.config.set('currentTask', { name: { prod: 'release', dev: 'debug' }[taskType] });
-    grunt.config.set('cssFiles', grunt.config('fileList').prod.cssFiles);
-    grunt.config.set('jsFiles', grunt.config('fileList').prod.jsFiles);
-    grunt.config.set('unminifiedCssFiles', grunt.config('fileList').dev.cssFiles);
-    grunt.config.set('unminifiedJsFiles', grunt.config('fileList').dev.jsFiles);
+    // register the task name in global scope so we can access it in the .ejs file
+    grunt.config.set('currentTask', currentTask);
+    grunt.config.set('cssFiles', fileList.prod.cssFiles);
+    grunt.config.set('jsFiles', fileList.prod.jsFiles);
+    grunt.config.set('unminifiedCssFiles', fileList.dev.cssFiles);
+    grunt.config.set('unminifiedJsFiles', fileList.dev.jsFiles);
 
     grunt.file.write(conf.dest, grunt.template.process(tmpl));
     grunt.log.writeln('Generated \'' + conf.dest + '\' from \'' + conf.template + '\'');
@@ -271,7 +273,8 @@ module.exports = function (grunt) {
     grunt.registerTask(
         'index',
         function (taskType) {
-            grunt.log.writeln(`Generate ${grunt.config('pkg').name}${taskType === 'dev' ? '-debug' : ''}.html, inline all scripts`);
+            const strChek = { dev: null, prod: '' }[taskType];
+            grunt.log.writeln(`Generate ${grunt.config('pkg').name}${strChek ?? '-debug'}.html, inline all scripts${strChek ?? ' unminified'}.`);
             createIndex(grunt, taskType);
         }
     );
