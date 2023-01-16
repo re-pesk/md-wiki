@@ -1,23 +1,27 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Jasmine Spec Runner v2.0.2</title>
+  <meta charset="utf-8">
+  <title>Jasmine Spec Runner v4.5.0</title>
 
-  <link rel="shortcut icon" type="image/png" href="lib/jasmine-2.0.2/jasmine_favicon.png">
-  <link rel="stylesheet" type="text/css" href="lib/jasmine-2.0.2/jasmine.css">
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-4.5.0/jasmine_favicon.png">
+  <link rel="stylesheet" href="lib/jasmine-4.5.0/jasmine.css">
 
-  <script type="text/javascript" src="lib/jasmine-2.0.2/jasmine.js"></script>
-  <script type="text/javascript" src="lib/jasmine-2.0.2/jasmine-html.js"></script>
-  <script type="text/javascript" src="lib/jasmine-2.0.2/boot.js"></script>
+  <script type="text/javascript" src="lib/jasmine-4.5.0/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-4.5.0/jasmine-html.js"></script>
+  <script type="text/javascript" src="lib/jasmine-4.5.0/boot0.js"></script>
+  
+  <!-- optional: include a file here that configures the Jasmine env -->
+  <script type="text/javascript" src="lib/jasmine-4.5.0/boot1.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="handlebars/dist/handlebars.runtime.js"></script>
-
   <script type="text/javascript" src="lib/jasmine-jquery.js"></script>
   <script type="text/javascript">
-  jasmine.getFixtures().fixturesPath = '/';
+    jasmine.getFixtures().fixturesPath = `/`;
   </script>
 
+  <!-- include source files here... -->
   <script type="text/javascript" src="js/mdwiki.js"></script>
 
   <!-- include spec files here... -->
@@ -43,4 +47,5 @@
 <body>
   <script src="//localhost:35729/livereload.js"></script>
 </body>
+
 </html>

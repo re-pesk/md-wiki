@@ -74,12 +74,12 @@ module.exports = function (grunt) {
                 ],
 
                 jsFiles: [
-                    'bower_components/jquery/jquery.min.js',
+                    'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/handlebars/dist/handlebars.runtime.min.js',
                     'extlib/js/jquery.colorbox.min.js',
                     'extlib/js/prism.js',
-                    'bower_components/bootstrap/js/affix.js',
-                    'bower_components/bootstrap/js/dropdown.js',
+                    'node_modules/bootstrap/js/affix.js',
+                    'node_modules/bootstrap/js/dropdown.js',
                 ],
             },
 
@@ -90,20 +90,13 @@ module.exports = function (grunt) {
                 ],
 
                 jsFiles: [
-                    'bower_components/jquery/jquery.js',
-                    'bower_components/bootstrap/js/affix.js',
-                    'bower_components/bootstrap/js/dropdown.js',
+                    'node_modules/jquery/dist/jquery.js',
+                    'node_modules/bootstrap/js/affix.js',
+                    'node_modules/bootstrap/js/dropdown.js',
                     'node_modules/handlebars/dist/handlebars.runtime.js',
                     'extlib/js/prism.js',
                     'extlib/js/jquery.colorbox.js',
                 ],
-            }
-        },
-
-        ts: {
-            // TODO: use tsconfig.json as soon as tsconfig.json supports globs/wildcards
-            base: {
-                tsconfig: "src/ts/tsconfig.json"
             }
         },
 
@@ -202,30 +195,18 @@ module.exports = function (grunt) {
                 src: [
                     'src_compiled/js/<%= pkg.name %>_ts.js.map',
                     'src_compiled/js/<%= pkg.name %>.js',
-                    'bower_components/jquery/jquery.min.js'
+                    'node_modules/jquery/dist/jquery.min.js'
                 ],
                 dest: 'tests/js/'
             },
         },
+        clean: {
+            compiled: ['src_compiled/'],
+            dist: ['dist/'],
+            release: ['release/'],
+            test: ['tests/js/'],
+        },
         shell: {
-            rm_compiled: {
-                options: {
-                    stdout: true
-                },
-                command: 'rm -frv src_compiled'
-            },
-            rm_dist: {
-                options: {
-                    stdout: true
-                },
-                command: 'rm -frv dist'
-            },
-            rm_release: {
-                options: {
-                    stdout: true
-                },
-                command: 'rm -frv release'
-            },
             zip_release: {
                 options: {
                     stdout: true
@@ -242,13 +223,19 @@ module.exports = function (grunt) {
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
                 command: './node_modules/.bin/handlebars -f src_compiled/js/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
+            },
+            ts: {
+                options: {
+                    stdout: true
+                },
+                command: './node_modules/.bin/tsc --project src/ts/tsconfig.json && echo-cli "Typescript compilation is completed!"'
             }
         },
         watch: {
-            options: {
-                livereload: true,
-            },
             dev: {
+                options: {
+                    livereload: true,
+                },
                 files: [
                     'src/js/*.js',
                     'src/js/**/*.js',
@@ -260,6 +247,9 @@ module.exports = function (grunt) {
                 tasks: ['build:dev'],
             },
             test: {
+                options: {
+                    livereload: true,
+                },
                 files: [
                     'tests/js/*.js',
                     'tests/spec/*.js',
@@ -299,15 +289,17 @@ module.exports = function (grunt) {
     );
 
     /*** NAMED TASKS ***/
-    grunt.registerTask('build:dev', ['ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
-    grunt.registerTask('build:prod', ['ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
+    grunt.registerTask('build:dev', ['shell:ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
+    grunt.registerTask('build:prod', ['shell:ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
     grunt.registerTask('build', ['build:prod', 'build:dev']);
+    grunt.registerTask('build:test', ['build:dev', 'renew:test']);
 
     grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch']);
-    grunt.registerTask('test', ['build:dev', 'copy:test', 'connect:test', 'watch']);
+    grunt.registerTask('test', ['build:test', 'connect:test', 'watch']);
 
-    grunt.registerTask('clear', ['shell:rm_compiled', 'shell:rm_dist', 'shell:rm_release'])
-    grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets'])
+    grunt.registerTask('clear', ['clean:compiled', 'clean:dist', 'clean:release']);
+    grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets']);
+    grunt.registerTask('renew:test', ['clean:test', 'copy:test']);
 
     grunt.registerTask('release', [
         'clear', 'build',
@@ -315,5 +307,5 @@ module.exports = function (grunt) {
         'shell:zip_release'
     ]);
     // Default task
-    grunt.registerTask('default', ['clear', 'build', 'copy:test']);
+    grunt.registerTask('default', ['clear', 'build', 'renew:test']);
 };

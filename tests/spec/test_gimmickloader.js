@@ -55,8 +55,10 @@ describe('GimmickLoader', function() {
         var gmck;
         beforeEach(function() {
             gmck = new MDwiki.Gimmick.Gimmick('somegimmick');
-            loadFixtures('gimmick.html');
+            loadFixtures('rendered-markdown/gimmick.html');
         });
+
+        it('<!!!Test is not provided>', () => expect(false).toBeFalsy());
 
         /*
         it('should execute a single line gimmick', function() {
