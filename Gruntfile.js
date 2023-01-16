@@ -36,8 +36,8 @@ module.exports = function (grunt) {
             ownJsFiles: [
                 'src/js/marked.js',
                 'src/js/init.js',
-                'src_compiled/js/<%= pkg.name %>_ts.js',
-                'src_compiled/js/<%= pkg.name %>.templates.js',
+                'src/_compiled/js/<%= pkg.name %>_ts.js',
+                'src/_compiled/js/<%= pkg.name %>.templates.js',
                 'src/js/main.js',
                 'src/js/util.js',
                 'src/js/basic_skeleton.js',
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
                 // * ORDER OF FILES IS IMPORTANT
                 // * ALWAYS ADD EACH FILE TO BOTH minified/unminified SECTIONS!
                 cssFiles: [
-                    'src_compiled/css/main.min.css',
+                    'src/_compiled/css/main.min.css',
                 ],
 
                 jsFiles: [
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
             dev: {
                 // for debug builds use unminified versions:
                 cssFiles: [
-                    'src_compiled/css/main.css'
+                    'src/_compiled/css/main.css'
                 ],
 
                 jsFiles: [
@@ -106,7 +106,7 @@ module.exports = function (grunt) {
                     compress: true,
                 },
                 files: {
-                    'src_compiled/css/main.min.css': 'src/styles/main.less',
+                    'src/_compiled/css/main.min.css': 'src/styles/main.less',
                 },
             },
             dev: {
@@ -114,7 +114,7 @@ module.exports = function (grunt) {
                     compress: false,
                 },
                 files: {
-                    'src_compiled/css/main.css': 'src/styles/main.less',
+                    'src/_compiled/css/main.css': 'src/styles/main.less',
                 },
             },
         },
@@ -125,7 +125,7 @@ module.exports = function (grunt) {
             },
             dev: {
                 src: '<%= fileList.ownJsFiles %>',
-                dest: 'src_compiled/js/<%= pkg.name %>.js'
+                dest: 'src/_compiled/js/<%= pkg.name %>.js'
             }
         },
         uglify: {
@@ -134,7 +134,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: '<%= concat.dev.dest %>',
-                dest: 'src_compiled/js/<%= pkg.name %>.min.js'
+                dest: 'src/_compiled/js/<%= pkg.name %>.min.js'
             }
         },
         index: {
@@ -152,7 +152,7 @@ module.exports = function (grunt) {
             ts_map: {
                 expand: true,
                 flatten: true,
-                src: 'src_compiled/js/<%= pkg.name %>_ts.js.map',
+                src: 'src/_compiled/js/<%= pkg.name %>_ts.js.map',
                 dest: 'dist/'
             },
             assets: {
@@ -193,15 +193,15 @@ module.exports = function (grunt) {
                 expand: true,
                 flatten: true,
                 src: [
-                    'src_compiled/js/<%= pkg.name %>_ts.js.map',
-                    'src_compiled/js/<%= pkg.name %>.js',
+                    'src/_compiled/js/<%= pkg.name %>_ts.js.map',
+                    'src/_compiled/js/<%= pkg.name %>.js',
                     'node_modules/jquery/dist/jquery.min.js'
                 ],
                 dest: 'tests/js/'
             },
         },
         clean: {
-            compiled: ['src_compiled/'],
+            compiled: ['src/_compiled/'],
             dist: ['dist/'],
             release: ['release/'],
             test: ['tests/js/'],
@@ -222,13 +222,13 @@ module.exports = function (grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f src_compiled/js/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
+                command: './node_modules/.bin/handlebars -f src/_compiled/js/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
             },
             ts: {
                 options: {
                     stdout: true
                 },
-                command: './node_modules/.bin/tsc --project src/ts/tsconfig.json && echo-cli "Typescript compilation is completed!"'
+                command: './node_modules/.bin/tsc && echo-cli "Typescript compilation is completed!"'
             }
         },
         watch: {
@@ -271,7 +271,7 @@ module.exports = function (grunt) {
                 options: {
                     port: 3000,
                     hostname: '*',
-                    base: ['./node_modules', './src_compiled/js', './tests'],
+                    base: ['./node_modules', './src/_compiled/js', './tests'],
                     open: 'http://localhost:3000/SpecRunner.html',
                     debug: true,
                 }

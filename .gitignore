@@ -753,7 +753,7 @@ FodyWeavers.xsd
 
 release/
 src/ts/*d.ts
-src_compiled/
+src/_compiled/
 tmp/
 app/components
 md/
