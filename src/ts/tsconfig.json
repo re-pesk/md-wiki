@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "outFile": "../../src_compiled/js/mdwiki_ts.js",
+    "declaration": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "reactNamespace": "JsxRender"
+  }
+}

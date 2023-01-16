@@ -34,34 +34,34 @@ module.exports = function (grunt) {
 
         fileList: {
             ownJsFiles: [
-                'js/marked.js',
-                'js/init.js',
-                'ts_compiled/<%= pkg.name %>_ts.js',
-                'tmp/<%= pkg.name %>.templates.js',
-                'js/main.js',
-                'js/util.js',
-                'js/basic_skeleton.js',
-                'js/bootstrap.js',
+                'src/js/marked.js',
+                'src/js/init.js',
+                'src_compiled/js/<%= pkg.name %>_ts.js',
+                'src_compiled/js/<%= pkg.name %>.templates.js',
+                'src/js/main.js',
+                'src/js/util.js',
+                'src/js/basic_skeleton.js',
+                'src/js/bootstrap.js',
 
                 // gimmicks
-                'js/gimmicks/templating.js',
-                'js/gimmicks/prism.js',
+                'src/js/gimmicks/templating.js',
+                'src/js/gimmicks/prism.js',
                 /*
-                 'js/gimmicks/googlemaps.js',
-                 'js/gimmicks/alerts.js',
-                'js/gimmicks/colorbox.js',
-                // 'js/gimmicks/carousel.js',
-                'js/gimmicks/disqus.js',
-                'js/gimmicks/editme.js',
-                'js/gimmicks/facebooklike.js',
-                'js/gimmicks/forkmeongithub.js',
-                'js/gimmicks/gist.js',
-                'js/gimmicks/iframe.js',
-                'js/gimmicks/math.js',
-                // // 'js/gimmicks/leaflet.js',
-                'js/gimmicks/twitter.js',
-                'js/gimmicks/youtube_embed.js',
-                'js/gimmicks/yuml.js'
+                'src/js/gimmicks/googlemaps.js',
+                'src/js/gimmicks/alerts.js',
+                'src/js/gimmicks/colorbox.js',
+                // 'src/js/gimmicks/carousel.js',
+                'src/js/gimmicks/disqus.js',
+                'src/js/gimmicks/editme.js',
+                'src/js/gimmicks/facebooklike.js',
+                'src/js/gimmicks/forkmeongithub.js',
+                'src/js/gimmicks/gist.js',
+                'src/js/gimmicks/iframe.js',
+                'src/js/gimmicks/math.js',
+                // 'src/js/gimmicks/leaflet.js',
+                'src/js/gimmicks/twitter.js',
+                'src/js/gimmicks/youtube_embed.js',
+                'src/js/gimmicks/yuml.js'
                 */
             ],
 
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
                 // * ORDER OF FILES IS IMPORTANT
                 // * ALWAYS ADD EACH FILE TO BOTH minified/unminified SECTIONS!
                 cssFiles: [
-                    'tmp/main.min.css',
+                    'src_compiled/css/main.min.css',
                 ],
 
                 jsFiles: [
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
             dev: {
                 // for debug builds use unminified versions:
                 cssFiles: [
-                    'tmp/main.css'
+                    'src_compiled/css/main.css'
                 ],
 
                 jsFiles: [
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
         ts: {
             // TODO: use tsconfig.json as soon as tsconfig.json supports globs/wildcards
             base: {
-                tsconfig: "js/ts/tsconfig.json"
+                tsconfig: "src/ts/tsconfig.json"
             }
         },
 
@@ -113,7 +113,7 @@ module.exports = function (grunt) {
                     compress: true,
                 },
                 files: {
-                    'tmp/main.min.css': 'styles/main.less',
+                    'src_compiled/css/main.min.css': 'src/styles/main.less',
                 },
             },
             dev: {
@@ -121,7 +121,7 @@ module.exports = function (grunt) {
                     compress: false,
                 },
                 files: {
-                    'tmp/main.css': 'styles/main.less',
+                    'src_compiled/css/main.css': 'src/styles/main.less',
                 },
             },
         },
@@ -132,7 +132,7 @@ module.exports = function (grunt) {
             },
             dev: {
                 src: '<%= fileList.ownJsFiles %>',
-                dest: 'tmp/<%= pkg.name %>.js'
+                dest: 'src_compiled/js/<%= pkg.name %>.js'
             }
         },
         uglify: {
@@ -141,17 +141,17 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: '<%= concat.dev.dest %>',
-                dest: 'tmp/<%= pkg.name %>.min.js'
+                dest: 'src_compiled/js/<%= pkg.name %>.min.js'
             }
         },
         index: {
             prod: {
-                template: 'index.tmpl',
+                template: 'src/index.ejs',
                 dest: 'dist/<%= pkg.name %>.html'
             },
 
             dev: {
-                template: 'index.tmpl',
+                template: 'src/index.ejs',
                 dest: 'dist/<%= pkg.name %>-debug.html'
             }
         },
@@ -159,7 +159,7 @@ module.exports = function (grunt) {
             ts_map: {
                 expand: true,
                 flatten: true,
-                src: 'ts_compiled/<%= pkg.name %>_ts.js.map',
+                src: 'src_compiled/js/<%= pkg.name %>_ts.js.map',
                 dest: 'dist/'
             },
             assets: {
@@ -185,7 +185,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         flatten: true,
-                        src: ['release_templates/*'],
+                        src: ['src/release_assets/*'],
                         dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
                     },
                     {
@@ -200,11 +200,11 @@ module.exports = function (grunt) {
                 expand: true,
                 flatten: true,
                 src: [
-                    'ts_compiled/<%= pkg.name %>_ts.js.map',
-                    'tmp/<%= pkg.name %>.js',
+                    'src_compiled/js/<%= pkg.name %>_ts.js.map',
+                    'src_compiled/js/<%= pkg.name %>.js',
                     'bower_components/jquery/jquery.min.js'
                 ],
-                dest: 'unittests/js/'
+                dest: 'tests/js/'
             },
         },
         shell: {
@@ -212,7 +212,7 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true
                 },
-                command: 'rm -frv tmp ts_compiled'
+                command: 'rm -frv src_compiled'
             },
             rm_dist: {
                 options: {
@@ -241,7 +241,7 @@ module.exports = function (grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f tmp/<%= pkg.name %>.templates.js -r templates -m templates/**/*.html'
+                command: './node_modules/.bin/handlebars -f src_compiled/js/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
             }
         },
         watch: {
@@ -250,20 +250,20 @@ module.exports = function (grunt) {
             },
             dev: {
                 files: [
-                    'js/*.js',
-                    'js/**/*.js',
-                    'js/ts/**/*.ts',
-                    'js/**/*.tsx',
-                    'templates/**/*.html',
-                    'index.tmpl'
+                    'src/js/*.js',
+                    'src/js/**/*.js',
+                    'src/js/ts/**/*.ts',
+                    'src/js/**/*.tsx',
+                    'src/templates/**/*.html',
+                    'src/index.ejs'
                 ],
                 tasks: ['build:dev'],
             },
             test: {
                 files: [
-                    'unittests/js/*.js',
-                    'unittests/spec/*.js',
-                    'unittests/**/*.html',
+                    'tests/js/*.js',
+                    'tests/spec/*.js',
+                    'tests/**/*.html',
                 ],
             },
         },
@@ -281,7 +281,7 @@ module.exports = function (grunt) {
                 options: {
                     port: 3000,
                     hostname: '*',
-                    base: ['./node_modules', './tmp', './unittests'],
+                    base: ['./node_modules', './src_compiled/js', './tests'],
                     open: 'http://localhost:3000/SpecRunner.html',
                     debug: true,
                 }

@@ -752,13 +752,13 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/node,bower,grunt,linux,macos,typings,windows,intellij,visualstudio,visualstudiocode
 
 release/
-js/ts/d.ts
-ts_compiled/
+src/ts/*d.ts
+src_compiled/
 tmp/
 app/components
 md/
-unittests/js/
-unittests/*.map
+tests/js/
+tests/*.map
 .tscache
 
 dist-ssr
