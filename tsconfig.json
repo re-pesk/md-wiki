@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "outFile": "src/_compiled/js/compiled_ts.js",
+    "declaration": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "removeComments": false,
+    "reactNamespace": "JsxRender"
+  },
+  "include": [
+    "src/ts/**/*.ts"
+  ]
+}

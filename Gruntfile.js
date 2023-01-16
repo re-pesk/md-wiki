@@ -1,19 +1,25 @@
-var createIndex = function (grunt, taskname) {
+var createIndex = function (grunt, taskType) {
     'use strict';
-    var conf = grunt.config('index')[taskname],
-        tmpl = grunt.file.read(conf.template);
+    var conf = grunt.config('index')[taskType],
+        tmpl = grunt.file.read(conf.template),
+        fileList = grunt.config('fileList'),
+        currentTask = { name: { prod: 'release', dev: 'debug' }[taskType] };
 
     grunt.config.set('templatesString', '');
 
-    // register the task name in global scope so we can access it in the .tmpl file
-    grunt.config.set('currentTask', {name: taskname});
+    // register the task name in global scope so we can access it in the .ejs file
+    grunt.config.set('currentTask', currentTask);
+    grunt.config.set('cssFiles', fileList.prod.cssFiles);
+    grunt.config.set('jsFiles', fileList.prod.jsFiles);
+    grunt.config.set('unminifiedCssFiles', fileList.dev.cssFiles);
+    grunt.config.set('unminifiedJsFiles', fileList.dev.jsFiles);
 
     grunt.file.write(conf.dest, grunt.template.process(tmpl));
     grunt.log.writeln('Generated \'' + conf.dest + '\' from \'' + conf.template + '\'');
 };
 
 /*global module:false*/
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
     // Project configuration.
 
@@ -21,85 +27,88 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-    // Metadata.
+        // Metadata.
         pkg: {
-            name: 'MDwiki',
+            title: 'MDwiki',
+            name: 'mdwiki',
             version: '0.7.0'
         },
 
-        ownJsFiles: [
-            'js/marked.js',
-            'js/init.js',
-            'ts_compiled/mdwiki_ts.js',
-            'tmp/MDwiki.templates.js',
-            'js/main.js',
-            'js/util.js',
-            'js/basic_skeleton.js',
-            'js/bootstrap.js',
+        fileList: {
+            ownJsFiles: [
+                'src/js/marked.js',
+                'src/js/init.js',
+                'src/_compiled/js/compiled_ts.js',
+                'src/_compiled/js/compiled.templates.js',
+                'src/js/main.js',
+                'src/js/util.js',
+                'src/js/basic_skeleton.js',
+                'src/js/bootstrap.js',
 
-            // gimmicks
-            'js/gimmicks/templating.js',
-            'js/gimmicks/prism.js',
-            /*
-             'js/gimmicks/googlemaps.js',
-             'js/gimmicks/alerts.js',
-            'js/gimmicks/colorbox.js',
-            // 'js/gimmicks/carousel.js',
-            'js/gimmicks/disqus.js',
-            'js/gimmicks/editme.js',
-            'js/gimmicks/facebooklike.js',
-            'js/gimmicks/forkmeongithub.js',
-            'js/gimmicks/gist.js',
-            'js/gimmicks/iframe.js',
-            'js/gimmicks/math.js',
-            // // 'js/gimmicks/leaflet.js',
-            'js/gimmicks/twitter.js',
-            'js/gimmicks/youtube_embed.js',
-            'js/gimmicks/yuml.js'
-            */
-        ],
+                // gimmicks
+                'src/js/gimmicks/templating.js',
+                'src/js/gimmicks/prism.js',
+                /*
+                'src/js/gimmicks/googlemaps.js',
+                'src/js/gimmicks/alerts.js',
+                'src/js/gimmicks/colorbox.js',
+                // 'src/js/gimmicks/carousel.js',
+                'src/js/gimmicks/disqus.js',
+                'src/js/gimmicks/editme.js',
+                'src/js/gimmicks/facebooklike.js',
+                'src/js/gimmicks/forkmeongithub.js',
+                'src/js/gimmicks/gist.js',
+                'src/js/gimmicks/iframe.js',
+                'src/js/gimmicks/math.js',
+                // 'src/js/gimmicks/leaflet.js',
+                'src/js/gimmicks/twitter.js',
+                'src/js/gimmicks/youtube_embed.js',
+                'src/js/gimmicks/yuml.js'
+                */
+            ],
 
-        // REMEMBER:
-        // * ORDER OF FILES IS IMPORTANT
-        // * ALWAYS ADD EACH FILE TO BOTH minified/unminified SECTIONS!
-        cssFiles: [
-            'tmp/main.min.css',
-        ],
-        jsFiles: [
-            'bower_components/jquery/jquery.min.js',
-            'node_modules/handlebars/dist/handlebars.runtime.min.js',
-            'extlib/js/jquery.colorbox.min.js',
-            'extlib/js/prism.js',
-            'bower_components/bootstrap/js/affix.js',
-            'bower_components/bootstrap/js/dropdown.js',
-        ],
-        // for debug builds use unminified versions:
-        unminifiedCssFiles: [
-            'tmp/main.css'
-        ],
-        unminifiedJsFiles: [
-            'bower_components/jquery/jquery.js',
-            'bower_components/bootstrap/js/affix.js',
-            'bower_components/bootstrap/js/dropdown.js',
-            'node_modules/handlebars/dist/handlebars.runtime.js',
-            'extlib/js/prism.js',
-            'extlib/js/jquery.colorbox.js',
-        ],
+            prod: {
+                // REMEMBER:
+                // * ORDER OF FILES IS IMPORTANT
+                // * ALWAYS ADD EACH FILE TO BOTH minified/unminified SECTIONS!
+                cssFiles: [
+                    'src/_compiled/css/main.min.css',
+                ],
 
-        ts: {
-            // TOD: use tsconfig.json as soon as tsconfig.json supports globs/wildcards
-            base: {
-                tsconfig: "js/ts/tsconfig.json"
+                jsFiles: [
+                    'node_modules/jquery/dist/jquery.min.js',
+                    'node_modules/handlebars/dist/handlebars.runtime.min.js',
+                    'node_modules/jquery-colorbox/jquery.colorbox-min.js',
+                    'node_modules/prismjs/prism.js',
+                    'node_modules/bootstrap/js/affix.js',
+                    'node_modules/bootstrap/js/dropdown.js',
+                ],
+            },
+
+            dev: {
+                // for debug builds use unminified versions:
+                cssFiles: [
+                    'src/_compiled/css/main.css'
+                ],
+
+                jsFiles: [
+                    'node_modules/jquery/dist/jquery.js',
+                    'node_modules/bootstrap/js/affix.js',
+                    'node_modules/bootstrap/js/dropdown.js',
+                    'node_modules/handlebars/dist/handlebars.runtime.js',
+                    'node_modules/prismjs/prism.js',
+                    'node_modules/jquery-colorbox/jquery.colorbox.js',
+                ],
             }
         },
 
         less: {
-            min: {
+            prod: {
                 options: {
                     compress: true,
                 },
                 files: {
-                    'tmp/main.min.css': 'styles/main.less',
+                    'src/_compiled/css/main.min.css': 'src/styles/main.less',
                 },
             },
             dev: {
@@ -107,83 +116,93 @@ module.exports = function(grunt) {
                     compress: false,
                 },
                 files: {
-                    'tmp/main.css': 'styles/main.less',
+                    'src/_compiled/css/main.css': 'src/styles/main.less',
                 },
             },
         },
 
         concat: {
             options: {
-                //banner: '<%= banner %>',
-                stripBanners: true
+                stripBanners: false
             },
             dev: {
-                src: '<%= ownJsFiles %>',
-                dest: 'tmp/<%= pkg.name %>.js'
+                src: '<%= fileList.ownJsFiles %>',
+                dest: 'src/_compiled/js/main.js'
             }
         },
         uglify: {
             options: {
-                // banner: '<%= banner %>'
+                stripBanners: true
             },
             dist: {
                 src: '<%= concat.dev.dest %>',
-                dest: 'tmp/<%= pkg.name %>.min.js'
+                dest: 'src/_compiled/js/main.min.js'
             }
         },
         index: {
-            release: {
-                template: 'index.tmpl',
-                dest: 'dist/mdwiki.html'
+            prod: {
+                template: 'src/index.ejs',
+                dest: 'dist/<%= pkg.name %>.html'
             },
-            debug: {
-                template: 'index.tmpl',
-                dest: 'dist/mdwiki-debug.html'
+
+            dev: {
+                template: 'src/index.ejs',
+                dest: 'dist/<%= pkg.name %>-debug.html'
             }
-        },
-        lib_test: {
-            src: ['lib/**/*.js', 'test/**/*.js']
         },
         copy: {
-            release: {
-                expand: false,
-                flatten: true,
-                src: [ 'dist/mdwiki.html' ],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki.html'
-            },
-            release_debug: {
-                expand: false,
-                flatten: true,
-                src: [ 'dist/mdwiki-debug.html' ],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-debug.html'
-            },
-            release_templates: {
+            ts_map: {
                 expand: true,
                 flatten: true,
-                src: [ 'release_templates/*' ],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
+                src: 'src/_compiled/js/compiled_ts.js.map',
+                dest: 'dist/'
             },
-            unittests: {
-                files: [{
-                    expand: true,
-                    flatten: true,
-                    src: 'tmp/MDwiki.js',
-                    dest: 'unittests/lib/'
-                },
-                {
-                    expand: true,
-                    flatten: true,
-                    src: 'bower_components/jquery/jquery.min.js',
-                    dest: 'unittests/lib/'
-                }]
-            }
+            assets: {
+                expand: true,
+                cwd: 'src/assets',
+                src: '**',
+                dest: 'dist/'
+            },
+            release_prod: {
+                expand: true,
+                flatten: true,
+                src: ['dist/<%= pkg.name %>.html'],
+                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+            },
+            release_dev: {
+                expand: true,
+                flatten: true,
+                src: ['dist/<%= pkg.name %>-debug.html', 'dist/compiled_ts.js.map'],
+                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+            },
+            release_assets: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['src/release_assets/*'],
+                        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/assets',
+                        src: '**',
+                        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+                    }
+                ],
+            },
+        },
+        clean: {
+            compiled: ['src/_compiled/'],
+            dist: ['dist/'],
+            release: ['release/'],
         },
         shell: {
             zip_release: {
                 options: {
                     stdout: true
                 },
-                command: 'cd release && zip -r mdwiki-<%= grunt.config("pkg").version %>.zip mdwiki-<%= grunt.config("pkg").version %>'
+                command: 'cd release && zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip mdwiki-<%= grunt.config("pkg").version %>'
             },
             /* precompilation of our handlebars templates */
             compile_templates: {
@@ -194,76 +213,88 @@ module.exports = function(grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f tmp/MDwiki.templates.js -r templates -m templates/**/*.html'
+                command: './node_modules/.bin/handlebars -f src/_compiled/js/compiled.templates.js -r src/templates -m src/templates/**/*.html'
+            },
+            ts: {
+                options: {
+                    stdout: true
+                },
+                command: './node_modules/.bin/tsc && echo-cli "Typescript compilation is completed!"'
             }
         },
         watch: {
-            files: [
-                'Gruntfile.js',
-                'js/*.js',
-                'js/**/*.js',
-                'js/ts/**/*.ts',
-                'js/**/*.tsx',
-                'unittests/**/*.js',
-                'unittests/**/*.html',
-                'templates/**/*.html',
-                'index.tmpl'
-            ],
-            tasks: ['debug','reload' ]
+            dev: {
+                options: {
+                    livereload: true,
+                },
+                files: [
+                    'src/js/*.js',
+                    'src/js/**/*.js',
+                    'src/js/ts/**/*.ts',
+                    'src/js/**/*.tsx',
+                    'src/templates/**/*.html',
+                    'src/index.ejs'
+                ],
+                tasks: ['build:dev'],
+            },
+            test: {
+                options: {
+                    livereload: true,
+                },
+                files: [
+                    'tests/spec/*.js',
+                    'tests/**/*.html',
+                ],
+            },
         },
-        reload: {
-            port: 35729,
-            liveReload: {}
+        connect: {
+            dev: {
+                options: {
+                    port: 3000,
+                    hostname: '*',
+                    base: './dist',
+                    open: 'http://localhost:3000/<%= pkg.name %>-debug.html',
+                    debug: true,
+                }
+            },
+            test: {
+                options: {
+                    port: 3000,
+                    hostname: '*',
+                    base: ['./node_modules', './src/_compiled/js', './tests'],
+                    open: 'http://localhost:3000/SpecRunner.html',
+                    debug: true,
+                }
+            },
         },
-        'http-server': {
-            'dev': {
-                root:'./',
-                port: 8080,
-                host: "0.0.0.0",
-                cache: 1,
-                showDir : true,
-                autoIndex: true,
-                defaultExt: "html",
-                runInBackground: false
-            }
-        }
     });
 
     /*** CUSTOM CODED TASKS ***/
-    grunt.registerTask('index', 'Generate mdwiki.html, inline all scripts', function() {
-        createIndex(grunt, 'release');
-    });
-
-    /* Debug is basically the releaes version but without any minifing */
-    grunt.registerTask('index_debug', 'Generate mdwiki-debug.html, inline all scripts unminified', function() {
-        createIndex(grunt, 'debug');
-    });
-
-    /*grunt.registerTask('assembleTemplates', 'Adds a script tag with id to each template', function() {
-        var templateString = '';
-        grunt.file.recurse('templates/', function(abspath, rootdir, subdir, filename){
-            var intro = '<script type="text/html" id="/' + rootdir.replace('/','') + '/' + subdir.replace('/','') + '/' + filename.replace('.html','') + '">\n';
-            var content = grunt.file.read(abspath);
-            var outro = '</script>\n';
-            templateString += intro + content + outro;
-        });
-        grunt.file.write('tmp/templates.html', templateString);
-    });*/
-
+    grunt.registerTask(
+        'index',
+        function (taskType) {
+            const strChek = { dev: null, prod: '' }[taskType];
+            grunt.log.writeln(`Generate ${grunt.config('pkg').name}${strChek ?? '-debug'}.html, inline all scripts${strChek ?? ' unminified'}.`);
+            createIndex(grunt, taskType);
+        }
+    );
 
     /*** NAMED TASKS ***/
-    grunt.registerTask('release', [ 'ts', 'less:min', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index' ]);
-    grunt.registerTask('debug', [ 'ts', 'less:dev', 'shell:compile_templates', 'concat:dev',  'index_debug' ]);
-    grunt.registerTask('devel', [ 'debug', 'server', 'unittests', 'reload', 'watch' ]);
-    grunt.registerTask('unittests', [ 'copy:unittests' ]);
+    grunt.registerTask('build:dev', ['shell:ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
+    grunt.registerTask('build:prod', ['shell:ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
+    grunt.registerTask('build', ['build:prod', 'build:dev']);
 
-    grunt.registerTask('server', [ 'http-server:dev' ]);
+    grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch']);
+    grunt.registerTask('test', ['build:dev', 'connect:test', 'watch']);
 
-    grunt.registerTask('distrelease',[
-        'release', 'debug',
-        'copy:release', 'copy:release_debug', 'copy:release_templates',
+    grunt.registerTask('clear', ['clean:compiled', 'clean:dist', 'clean:release']);
+    grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets']);
+
+    grunt.registerTask('release', [
+        'clear', 'build',
+        'copy:release',
         'shell:zip_release'
     ]);
     // Default task
-    grunt.registerTask('default', [ 'release', 'debug', 'unittests' ] );
+    grunt.registerTask('default', ['clear', 'build']);
 };

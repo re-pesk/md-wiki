@@ -33,7 +33,7 @@ See <https://github.com/Dynalon/mdwiki/releases> for readily precompiled release
     For development, use
 
     ```bash
-    ./node_modules/.bin/grunt serve 
+    grunt serve 
     ```
 
 6. Unittests
@@ -41,5 +41,5 @@ See <https://github.com/Dynalon/mdwiki/releases> for readily precompiled release
     For loading tests, use
 
     ```bash
-    ./node_modules/.bin/grunt test 
+    grunt test 
     ```
