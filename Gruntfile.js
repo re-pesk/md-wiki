@@ -36,8 +36,8 @@ module.exports = function (grunt) {
             ownJsFiles: [
                 'src/js/marked.js',
                 'src/js/init.js',
-                'src/_compiled/js/<%= pkg.name %>_ts.js',
-                'src/_compiled/js/<%= pkg.name %>.templates.js',
+                'src/_compiled/js/compiled_ts.js',
+                'src/_compiled/js/compiled.templates.js',
                 'src/js/main.js',
                 'src/js/util.js',
                 'src/js/basic_skeleton.js',
@@ -125,7 +125,7 @@ module.exports = function (grunt) {
             },
             dev: {
                 src: '<%= fileList.ownJsFiles %>',
-                dest: 'src/_compiled/js/<%= pkg.name %>.js'
+                dest: 'src/_compiled/js/main.js'
             }
         },
         uglify: {
@@ -134,7 +134,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: '<%= concat.dev.dest %>',
-                dest: 'src/_compiled/js/<%= pkg.name %>.min.js'
+                dest: 'src/_compiled/js/main.min.js'
             }
         },
         index: {
@@ -152,7 +152,7 @@ module.exports = function (grunt) {
             ts_map: {
                 expand: true,
                 flatten: true,
-                src: 'src/_compiled/js/<%= pkg.name %>_ts.js.map',
+                src: 'src/_compiled/js/compiled_ts.js.map',
                 dest: 'dist/'
             },
             assets: {
@@ -170,7 +170,7 @@ module.exports = function (grunt) {
             release_dev: {
                 expand: true,
                 flatten: true,
-                src: ['dist/<%= pkg.name %>-debug.html', 'dist/<%= pkg.name %>_ts.js.map'],
+                src: ['dist/<%= pkg.name %>-debug.html', 'dist/compiled_ts.js.map'],
                 dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
             },
             release_assets: {
@@ -189,22 +189,11 @@ module.exports = function (grunt) {
                     }
                 ],
             },
-            test: {
-                expand: true,
-                flatten: true,
-                src: [
-                    'src/_compiled/js/<%= pkg.name %>_ts.js.map',
-                    'src/_compiled/js/<%= pkg.name %>.js',
-                    'node_modules/jquery/dist/jquery.min.js'
-                ],
-                dest: 'tests/js/'
-            },
         },
         clean: {
             compiled: ['src/_compiled/'],
             dist: ['dist/'],
             release: ['release/'],
-            test: ['tests/js/'],
         },
         shell: {
             zip_release: {
@@ -222,7 +211,7 @@ module.exports = function (grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f src/_compiled/js/<%= pkg.name %>.templates.js -r src/templates -m src/templates/**/*.html'
+                command: './node_modules/.bin/handlebars -f src/_compiled/js/compiled.templates.js -r src/templates -m src/templates/**/*.html'
             },
             ts: {
                 options: {
@@ -251,7 +240,6 @@ module.exports = function (grunt) {
                     livereload: true,
                 },
                 files: [
-                    'tests/js/*.js',
                     'tests/spec/*.js',
                     'tests/**/*.html',
                 ],
@@ -292,14 +280,12 @@ module.exports = function (grunt) {
     grunt.registerTask('build:dev', ['shell:ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
     grunt.registerTask('build:prod', ['shell:ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
     grunt.registerTask('build', ['build:prod', 'build:dev']);
-    grunt.registerTask('build:test', ['build:dev', 'renew:test']);
 
     grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch']);
-    grunt.registerTask('test', ['build:test', 'connect:test', 'watch']);
+    grunt.registerTask('test', ['build:dev', 'connect:test', 'watch']);
 
     grunt.registerTask('clear', ['clean:compiled', 'clean:dist', 'clean:release']);
     grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets']);
-    grunt.registerTask('renew:test', ['clean:test', 'copy:test']);
 
     grunt.registerTask('release', [
         'clear', 'build',
@@ -307,5 +293,5 @@ module.exports = function (grunt) {
         'shell:zip_release'
     ]);
     // Default task
-    grunt.registerTask('default', ['clear', 'build', 'renew:test']);
+    grunt.registerTask('default', ['clear', 'build']);
 };

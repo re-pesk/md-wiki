@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES5",
-    "outFile": "src/_compiled/js/mdwiki_ts.js",
+    "outFile": "src/_compiled/js/compiled_ts.js",
     "declaration": true,
     "sourceMap": true,
     "jsx": "react",
