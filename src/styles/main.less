@@ -3,15 +3,15 @@
  */
 
 // Paths
-@extlib: "../../extlib";
+@prismjs: "../../node_modules/prismjs";
 
 // MDwiki base CSS
 @import (less)  "mdwiki.css";
 
 // Vendor components
 @import         "bootstrap.less";
-@import (less)  "@{extlib}/css/prism.default.css";
-@import (less)  "@{extlib}/css/colorbox.css";
+@import (less)  "@{prismjs}/themes/prism.css";
+@import (less)  "colorbox.css";
 
 // Your custom CSS or LESS files
 @import (less)  "custom.css";
