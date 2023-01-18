@@ -14,12 +14,13 @@ See <https://github.com/Dynalon/mdwiki/releases> for readily precompiled release
 
 (applies to master branch, stable may differ)
 
-1. Install node.js >= 0.10 and npm (if not included)
+1. Install node.js >= 18.0.0 and npm (if not included)
 2. Clone the mdwiki repo
 3. Install deps and build MDwiki:
 
     ```bash
     npm install
+    npm update
     ./node_modules/.bin/grunt
     ```
 
