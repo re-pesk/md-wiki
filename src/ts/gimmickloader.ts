@@ -5,8 +5,8 @@ interface JQueryStatic {
 }
 
 interface String {
-    startsWith: (x: any) => any;
-    endsWith: (x: any) => any;
+    startsWith: (searchString: string, position?: number) => boolean;
+    endsWith: (searchString: string, endPosition?: number) => boolean;
 }
 
 module MDwiki.Gimmick {
