@@ -44,12 +44,12 @@
     /* don't use floating for smaller screens */
     .md-float-left .col-sm-8, .md-float-left .col-sm-4, .md-float-left .col-sm-2 {
         width: 100%;
-        max-width: !important;
+        max-width: none !important;
         min-width: 100%;
     }
     .md-float-right .col-sm-8, .md-float-right .col-sm-4, .md-float-right .col-sm-2 {
         width: 100%;
-        max-width: !important;
+        max-width: none !important;
         min-width: 100%;
     }
 }
@@ -67,7 +67,7 @@
     width: auto;
 }
 #md-all .md-copyright-footer {
-    background-color: !important;
+    background-color: none !important;
     font-size: smaller;
     padding: 1em;
 }

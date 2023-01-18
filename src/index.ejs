@@ -1,73 +1,40 @@
 <!DOCTYPE html>
 <html>
-<% 
-  var pkg = grunt.config('pkg');
-  var data = grunt.config('data');
-  var console_log = grunt.log.writeln;
-  var purpose = { dev: 'debugging', prod: 'release' }[data.mode];
-  var isDevMode = (data.mode === 'dev');
-%><!--
-  This is <%= pkg.title %> v<%= pkg.version %> file, created for <%= purpose %> purpose
-  (C) 2013-2014 by <%= pkg.author.name %> and contributors. This software is licensed
-  under the terms of the <%= pkg.license.name %> license.
-  See <%= pkg.license.url %> for more detail.
-  See <%= pkg.repository.url %> for a copy of the source code.
--->
+  <% 
+    var pkg = grunt.config('pkg');
+    var data = grunt.config('data');
+    var console_log = grunt.log.writeln;
+    var purpose = { dev: 'debugging', prod: 'release' }[data.mode];
+    var isDevMode = (data.mode === 'dev');
+  %><!--
+    This is <%= pkg.title %> v<%= pkg.version %> file, created for <%= purpose %> purpose
+    (C) 2013-2014 by <%= pkg.author.name %> and contributors. This software is licensed
+    under the terms of the <%= pkg.license.name %> license.
+    See <%= pkg.license.url %> for more detail.
+    See <%= pkg.repository.url %> for a copy of the source code.
+  -->
   <head>
     <title><%= pkg.title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="fragment" content="!">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <meta charset="UTF-8">
-<% 
-  console_log(`Building '${data.destination}' for '${purpose}'\n`);
+    <% 
+    console_log(`Building '${data.destination}' for '${purpose}'\n`);
 
-  var output = '';
+    const wrapInComments = (name, content) => (isDevMode ? `<!-- START ${name} -->\n${content}<!-- END ${name} -->\n` : content);
+    
+    var output = '';
 
-  function print(content) {
-    output += content;
-  }
+    output += isDevMode ? `<script type="text/javascript">window.MDwikiEnableDebug = true;</script>\n` : '';
+    
+    // INLINE CSS
+    output += wrapInComments(data.cssMain, `<style id='style:${data.cssMain}'>\n${grunt.file.read(data.cssMain)}</style>\n`);
+    
+    // INLINE SCRIPTS
+    output += wrapInComments(data.jsMain, `<script type="text/javascript">\n${grunt.file.read(data.jsMain)}</script>\n`);
 
-  function print_script_ref(ref) {
-    print(`<script type="text/javascript" src="//${ref}"></script>\n`);
-  }
-
-  function print_style_ref(ref) {
-    print(`<link rel="stylesheet" href="//${ref}" type="text/css"></link>\n`);
-  }
-
-  function wrapInComments(name, content) {
-    if (isDevMode) {
-      return `<!-- START ${name} -->\n${content}<!-- END ${name} -->\n`;
-    }
-    return content;
-  }
-
-  function createId(type, name) {
-    if (!isDevMode) {
-      return '';
-    }
-    return `id="${type}:${name}"`;
-  }
-
-  function print_script_inline(name, content) {
-    print(wrapInComments(name, `<script ${createId('script', name)} type="text/javascript">\n${content}</script>\n`));
-  }
-
-  function print_style_inline(name, content) {
-    print(wrapInComments(name, `<style id='style:${name}'>\n${content}</style>\n`));
-  }
-
-  if (isDevMode) {
-    print('<script type="text/javascript">window.MDwikiEnableDebug = true;</script>\n');
-  }
-
-  // INLINE SCRIPTS AND CSS
-  print_style_inline(data.cssMain, grunt.file.read(data.cssMain));
-
-  // OUR OWN CODE
-  print_script_inline(data.jsMain, grunt.file.read(data.jsMain));
-%><%= output %><% console_log(`Generated '${data.destination}' from '${data.template}'\n`); %>
+    %><%= output %><% console_log(`Generated '${data.destination}' from '${data.template}'\n`); %>
   </head>
   <body>
 
@@ -78,5 +45,6 @@
 
     <div id="md-all">
     </div>
-<%= isDevMode ? `<script src="//localhost:35729/livereload.js"></script>` : '' %></body>
+    <%= isDevMode ? `<script src="//localhost:35729/livereload.js"></script>` : '' %>
+  </body>
 </html>
