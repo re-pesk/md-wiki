@@ -1,105 +1,82 @@
 <!DOCTYPE html>
 <html>
-<!--
-   This is <%= grunt.config('pkg').name %> v<%= grunt.config('pkg').version %>
-   (C) 2013-2014 by Timo Dörr and contributors. This software is licensed
-   under the terms of the GNU GPLv3 with additional terms applied.
-   See https://github.com/Dynalon/mdwiki/blob/master/LICENSE.txt for more detail.
-   See http://github.com/Dynalon/mdwiki for a copy of the source code.
+<% 
+  var pkg = grunt.config('pkg');
+  var data = grunt.config('data');
+  var console_log = grunt.log.writeln;
+  var purpose = { dev: 'debugging', prod: 'release' }[data.mode];
+  var isDevMode = (data.mode === 'dev');
+%><!--
+  This is <%= pkg.title %> v<%= pkg.version %> file, created for <%= purpose %> purpose
+  (C) 2013-2014 by <%= pkg.author.name %> and contributors. This software is licensed
+  under the terms of the <%= pkg.license.name %> license.
+  See <%= pkg.license.url %> for more detail.
+  See <%= pkg.repository.url %> for a copy of the source code.
 -->
-<head>
-    <title>MDwiki</title>
+  <head>
+    <title><%= pkg.title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="fragment" content="!">
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <meta charset="UTF-8">
+<% 
+  console_log(`Building '${data.destination}' for '${purpose}'\n`);
 
-<%
-    var task = grunt.config('currentTask').name;
-    grunt.log.writeln('Building single index.html of type: ' + task);
+  var output = '';
 
-    var ownJsFileFull = grunt.config('concat').dev.dest;
-    var ownJsFileMin = grunt.config('uglify').dist.dest;
+  function print(content) {
+    output += content;
+  }
 
-    var minifiedJsFiles = grunt.config('internalJsFiles');
-    var minifiedCssFiles = grunt.config('internalCssFiles');
+  function print_script_ref(ref) {
+    print(`<script type="text/javascript" src="//${ref}"></script>\n`);
+  }
 
-    function print_script_ref(ref) {
-        print('<script type="text/javascript" src="//' + ref + '"></script>\n');
+  function print_style_ref(ref) {
+    print(`<link rel="stylesheet" href="//${ref}" type="text/css"></link>\n`);
+  }
+
+  function wrapInComments(name, content) {
+    if (isDevMode) {
+      return `<!-- START ${name} -->\n${content}<!-- END ${name} -->\n`;
     }
-    function print_style_ref(ref) {
-        print('<link rel="stylesheet" href="//' + ref + '" type="text/css"></link>\n');
-    }
-    function print_script_inline(name, content) {
-        if (task === 'debug')
-            print('<!-- START ' + name + ' -->\n');
-        print('<script type="text/javascript">');
-        print(content);
-        print('</script>\n');
-        if (task === 'debug')
-            print('<!-- END ' + name + ' -->\n');
-    }
-    function print_style_inline(name, content) {
-        if (task === 'debug')
-            print('<!-- START ' + name + ' -->\n');
-        print('<style id="style:' + name + '">');
-        print(content);
-        print('</style>');
-        if (task === 'debug')
-            print('<!-- END ' + name + ' -->\n');
-    }
+    return content;
+  }
 
-    if (task === 'debug') {
-        print('<script type="text/javascript">window.MDwikiEnableDebug = true;</script>');
+  function createId(type, name) {
+    if (!isDevMode) {
+      return '';
     }
+    return `id="${type}:${name}"`;
+  }
 
-    if (task === 'release') {
-        // INLINE SCRIPTS AND CSS
-        for(var i = 0, len = cssFiles.length; i < len; i++) {
-            var fileContent = grunt.file.read(cssFiles[i]);
-            print_style_inline(cssFiles[i], fileContent);
-        }
-        for(var i = 0, len = jsFiles.length; i < len; i++) {
-            var fileContent = grunt.file.read(jsFiles[i]);
-            print_script_inline(jsFiles[i], fileContent);
-        }
-    } else if (task === 'debug') {
-        // INLINE SCRIPTS AND CSS
-        for(var i = 0, len = unminifiedCssFiles.length; i < len; i++) {
-            var fileContent = grunt.file.read(unminifiedCssFiles[i]);
-            print_style_inline(unminifiedCssFiles[i], fileContent);
-        }
-        for(var i = 0, len = unminifiedJsFiles.length; i < len; i++) {
-            var fileContent = grunt.file.read(unminifiedJsFiles[i]);
-            print_script_inline(unminifiedJsFiles[i], fileContent);
-        }
-    }
+  function print_script_inline(name, content) {
+    print(wrapInComments(name, `<script ${createId('script', name)} type="text/javascript">\n${content}</script>\n`));
+  }
 
+  function print_style_inline(name, content) {
+    print(wrapInComments(name, `<style id='style:${name}'>\n${content}</style>\n`));
+  }
 
-    // OUR OWN CODE
-    var fileContent = '';
-    if (task === 'debug') {
-        fileContent = grunt.file.read(ownJsFileFull);
-        print_script_inline(ownJsFileFull, fileContent);
-    } else if (task === 'release') {
-        fileContent = grunt.file.read(ownJsFileMin);
-        print_script_inline(ownJsFileMin, fileContent);
-    }
+  if (isDevMode) {
+    print('<script type="text/javascript">window.MDwikiEnableDebug = true;</script>\n');
+  }
 
+  // INLINE SCRIPTS AND CSS
+  print_style_inline(data.cssMain, grunt.file.read(data.cssMain));
 
-%>
-</head>
-<body>
+  // OUR OWN CODE
+  print_script_inline(data.jsMain, grunt.file.read(data.jsMain));
+%><%= output %><% console_log(`Generated '${data.destination}' from '${data.template}'\n`); %>
+  </head>
+  <body>
 
     <noscript>
-        This website requires Javascript to be enabled. Please turn on Javascript
-        and reload the page.
+      This website requires Javascript to be enabled. Please turn on Javascript
+      and reload the page.
     </noscript>
 
     <div id="md-all">
     </div>
-<% if (task === 'debug') {
-    print('<script src="//localhost:35729/livereload.js"></script>');
-} %>
-</body>
+<%= isDevMode ? `<script src="//localhost:35729/livereload.js"></script>` : '' %></body>
 </html>
