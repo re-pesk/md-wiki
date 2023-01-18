@@ -1,10 +1,19 @@
 {
   "name": "mdwiki",
+  "title": "MDwiki",
   "version": "0.7.0",
-  "authors": "Timo Dörr <timo@latecrew.de>",
-  "homepage": "https://dynalon.github.io/mdwiki/",
-  "license": "AGPL-3.0",
-  "repository": "https://github.com/Dynalon/mdwiki",
+  "description": "Markdown-Wiki project",
+  "homepage": "http://dynalon.github.io/mdwiki",
+  "author": {
+    "name": "Timo Dörr",
+    "email": "timo@latecrew.de",
+    "url": "http://github.com/Dynalon/mdwiki"
+  },
+  "license" : "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynalon/mdwiki.git"
+  },
   "devDependencies": {
     "@types/jquery": "^2.0.60",
     "bootstrap": "^3.4.1",
