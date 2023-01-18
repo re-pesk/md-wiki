@@ -11,8 +11,7 @@ var createIndex = function (grunt, mode) {
         mode,
         destination: conf.dest,
         template: conf.template,
-        cssFiles: fileList.cssFiles,
-        jsFiles: fileList.jsFiles,
+        cssMain: fileList.cssMain,
         jsMain: fileList.jsMain,
     };
 
@@ -83,10 +82,6 @@ module.exports = function (grunt) {
                 // REMEMBER:
                 // * ORDER OF FILES IS IMPORTANT
                 // * ALWAYS ADD EACH FILE TO BOTH minified/unminified SECTIONS!
-                cssFiles: [
-                    'src/_compiled/css/main.min.css',
-                ],
-
                 jsFiles: [
                     'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/handlebars/dist/handlebars.runtime.min.js',
@@ -102,9 +97,6 @@ module.exports = function (grunt) {
 
             dev: {
                 // for debug builds use unminified versions:
-                cssFiles: [
-                    'src/_compiled/css/main.css',
-                ],
                 jsFiles: [
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/bootstrap/js/affix.js',
@@ -142,8 +134,8 @@ module.exports = function (grunt) {
             options: {
                 stripBanners: false,
             },
-            dev: {
-                src: '<%= fileList.ownJsFiles %>',
+            main: {
+                src: ['<%= fileList.dev.jsFiles %>', '<%= fileList.ownJsFiles %>'],
                 dest: '<%= fileList.dev.jsMain %>'
             },
         },
@@ -151,8 +143,8 @@ module.exports = function (grunt) {
             options: {
                 stripBanners: true,
             },
-            dist: {
-                src: '<%= concat.dev.dest %>',
+            main: {
+                src: '<%= fileList.dev.jsMain %>',
                 dest: '<%= fileList.prod.jsMain %>',
             },
         },
@@ -299,8 +291,8 @@ module.exports = function (grunt) {
     );
 
     /*** NAMED TASKS ***/
-    grunt.registerTask('build:dev', ['shell:ts', 'less:dev', 'shell:compile_templates', 'concat:dev', 'copy:ts_map', 'index:dev', 'copy:assets']);
-    grunt.registerTask('build:prod', ['shell:ts', 'less:prod', 'shell:compile_templates', 'concat:dev', 'uglify:dist', 'index:prod', 'copy:assets']);
+    grunt.registerTask('build:dev', ['shell:ts', 'less:dev', 'shell:compile_templates', 'concat', 'copy:ts_map', 'index:dev', 'copy:assets']);
+    grunt.registerTask('build:prod', ['shell:ts', 'less:prod', 'shell:compile_templates', 'concat', 'uglify', 'index:prod', 'copy:assets']);
     grunt.registerTask('build', ['build:dev', 'build:prod']);
 
     grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch']);

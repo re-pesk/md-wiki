@@ -63,13 +63,7 @@
   }
 
   // INLINE SCRIPTS AND CSS
-  data.cssFiles.forEach((cssFileName, index) => {
-    print_style_inline(cssFileName, grunt.file.read(cssFileName));
-  })
-
-  data.jsFiles.forEach((jsFileName, index) => {
-    print_script_inline(jsFileName, grunt.file.read(jsFileName));
-  })
+  print_style_inline(data.cssMain, grunt.file.read(data.cssMain));
 
   // OUR OWN CODE
   print_script_inline(data.jsMain, grunt.file.read(data.jsMain));
