@@ -1,3 +1,5 @@
+const path = require('path');
+
 var createIndex = function (grunt, mode) {
     'use strict';
     var conf = grunt.config('index')[mode],
@@ -12,6 +14,7 @@ var createIndex = function (grunt, mode) {
         destination: conf.dest,
         template: conf.template,
         cssMain: fileList.cssMain,
+        jsLibs: fileList.jsLibs,
         jsMain: fileList.jsMain,
     };
 
@@ -52,9 +55,6 @@ module.exports = function (grunt) {
                 'src/_compiled/js/compiled_ts.js',
                 'src/_compiled/js/compiled.templates.js',
                 'src/js/main.js',
-                'src/js/util.js',
-                'src/js/basic_skeleton.js',
-                'src/js/bootstrap.js',
 
                 // gimmicks
                 'src/js/gimmicks/templating.js',
@@ -92,6 +92,7 @@ module.exports = function (grunt) {
                 ],
 
                 cssMain: 'src/_compiled/css/main.min.css',
+                jsLibs: 'src/_compiled/js/concat_libs.min.js',
                 jsMain: 'src/_compiled/js/main.min.js',
             },
 
@@ -107,6 +108,7 @@ module.exports = function (grunt) {
                 ],
 
                 cssMain: 'src/_compiled/css/main.css',
+                jsLibs: 'src/_compiled/js/concat_libs.js',
                 jsMain: 'src/_compiled/js/main.js',
             },
         },
@@ -134,14 +136,22 @@ module.exports = function (grunt) {
             options: {
                 stripBanners: false,
             },
+            libs: {
+                src: ['<%= fileList.dev.jsFiles %>'],
+                dest: '<%= fileList.dev.jsLibs %>'
+            },
             main: {
-                src: ['<%= fileList.dev.jsFiles %>', '<%= fileList.ownJsFiles %>'],
+                src: ['<%= fileList.ownJsFiles %>'],
                 dest: '<%= fileList.dev.jsMain %>'
             },
         },
         uglify: {
             options: {
                 stripBanners: true,
+            },
+            libs: {
+                src: '<%= fileList.dev.jsLibs %>',
+                dest: '<%= fileList.prod.jsLibs %>',
             },
             main: {
                 src: '<%= fileList.dev.jsMain %>',
@@ -272,7 +282,7 @@ module.exports = function (grunt) {
                 options: {
                     port: 3000,
                     hostname: '*',
-                    base: ['./node_modules', './src/_compiled/js', './tests'],
+                    base: ['./node_modules', './src/_compiled', './tests'],
                     open: 'http://localhost:3000/SpecRunner.html',
                     debug: true,
                 },
@@ -295,8 +305,8 @@ module.exports = function (grunt) {
     grunt.registerTask('build:prod', ['shell:ts', 'less:prod', 'shell:compile_templates', 'concat', 'uglify', 'index:prod', 'copy:assets']);
     grunt.registerTask('build', ['build:dev', 'build:prod']);
 
-    grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch']);
-    grunt.registerTask('test', ['build:dev', 'connect:test', 'watch']);
+    grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch:dev']);
+    grunt.registerTask('test', ['build:dev', 'connect:test', 'watch:test']);
 
     grunt.registerTask('clear', ['clean:compiled', 'clean:dist', 'clean:release']);
     grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets']);

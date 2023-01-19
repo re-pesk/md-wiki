@@ -32,6 +32,7 @@
     output += wrapInComments(data.cssMain, `<style id='style:${data.cssMain}'>\n${grunt.file.read(data.cssMain)}</style>\n`);
     
     // INLINE SCRIPTS
+    output += wrapInComments(data.jsLibs, `<script type="text/javascript">\n${grunt.file.read(data.jsLibs)}</script>\n`);
     output += wrapInComments(data.jsMain, `<script type="text/javascript">\n${grunt.file.read(data.jsMain)}</script>\n`);
 
     %><%= output %><% console_log(`Generated '${data.destination}' from '${data.template}'\n`); %>
