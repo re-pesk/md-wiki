@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@types/jquery": "^2.0.60",
+    "@webpack-cli/generators": "^3.0.1",
     "bootstrap": "^3.4.1",
     "echo-cli": "^2.0.0",
     "grunt": "^1.5.3",
