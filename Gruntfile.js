@@ -288,6 +288,57 @@ module.exports = function (grunt) {
                 },
             },
         },
+        'webpack-dev-server': {
+            dev: {
+                entry: './src/_compiled/js/main.js',
+                mode: 'development',
+                devServer: {
+                    port: 3000,
+                    open: ['/mdwiki-debug.html'],
+                    static: [
+                        {
+                            directory: path.resolve(__dirname, 'dist'),
+                        },
+                    ],
+                    watchFiles: [
+                        'Gruntfile.js',
+                        'src/js/*.js',
+                        'src/js/**/*.js',
+                        'src/js/ts/**/*.ts',
+                        'src/js/**/*.tsx',
+                        'src/templates/**/*.html',
+                        'src/index.ejs',
+                    ],
+                },
+            },
+            test: {
+                entry: './src/_compiled/js/main.js',
+                mode: 'development',
+                devServer: {
+                    port: 3000,
+                    open: ['/SpecRunner.html'],
+                    liveReload: true,
+                    static: [
+                        {
+                            directory: path.resolve(__dirname, 'tests'),
+                            watch: true,
+                        },
+                        {
+                            directory: path.resolve(__dirname, 'node_modules'),
+                            watch: false,
+                        },
+                        {
+                            directory: path.resolve(__dirname, 'src/_compiled'),
+                        },
+                    ],
+                    watchFiles: [
+                        'Gruntfile.js',
+                        'tests/spec/*.js',
+                        'tests/**/*.html',
+                    ],
+                },
+            },
+        }
     });
 
     /*** CUSTOM CODED TASKS ***/
@@ -307,6 +358,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('serve', ['build:dev', 'connect:dev', 'watch:dev']);
     grunt.registerTask('test', ['build:dev', 'connect:test', 'watch:test']);
+
+    grunt.registerTask('wp:serve', ['build:dev', 'webpack-dev-server:dev', 'watch:dev']);
+    grunt.registerTask('wp:test', ['build:dev', 'webpack-dev-server:test', 'watch:test']);
 
     grunt.registerTask('clear', ['clean:compiled', 'clean:dist', 'clean:release']);
     grunt.registerTask('copy:release', ['copy:release_prod', 'copy:release_dev', 'copy:release_assets']);
