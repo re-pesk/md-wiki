@@ -257,6 +257,7 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sw?
+*.code-workspace
 
 *_.*
 *.*_
