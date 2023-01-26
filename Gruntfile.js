@@ -184,7 +184,7 @@ module.exports = function (grunt) {
             release_assets: {
                 expand: true,
                 flatten: true,
-                src: [ 'src/release_assets/*' ],
+                src: ['src/release_assets/*'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
             },
             dist: {
@@ -213,7 +213,7 @@ module.exports = function (grunt) {
         },
     });
 
-    grunt.registerTask('index_slim', 'Generate slim mdwiki.html, most scripts on CDN', function() {
+    grunt.registerTask('index_slim', 'Generate slim mdwiki.html, most scripts on CDN', function () {
         createIndex(grunt, 'slim');
     });
 
