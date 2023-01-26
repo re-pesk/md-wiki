@@ -26,36 +26,36 @@ module.exports = function (grunt) {
         },
 
         ownJsFiles: [
-            'js/marked.js',
-            'js/init.js',
-            'js/logging.js',
-            'js/stage.js',
-            'js/main.js',
-            'js/util.js',
-            'js/modules.js',
-            'js/basic_skeleton.js',
-            'js/bootstrap.js',
-            'js/gimmicker.js',
+            'src/js/marked.js',
+            'src/js/init.js',
+            'src/js/logging.js',
+            'src/js/stage.js',
+            'src/js/main.js',
+            'src/js/util.js',
+            'src/js/modules.js',
+            'src/js/basic_skeleton.js',
+            'src/js/bootstrap.js',
+            'src/js/gimmicker.js',
 
             // gimmicks
-            'js/gimmicks/alerts.js',
-            'js/gimmicks/colorbox.js',
-            'js/gimmicks/carousel.js',
-            'js/gimmicks/disqus.js',
-            'js/gimmicks/facebooklike.js',
-            'js/gimmicks/forkmeongithub.js',
-            //'js/gimmicks/github_gist.js',
-            'js/gimmicks/gist.js',
-            'js/gimmicks/googlemaps.js',
-            'js/gimmicks/iframe.js',
-            'js/gimmicks/math.js',
-            'js/gimmicks/prism.js',
-            // 'js/gimmicks/leaflet.js',
-            'js/gimmicks/themechooser.js',
-            'js/gimmicks/twitter.js',
-            'js/gimmicks/youtube_embed.js',
-            'js/gimmicks/chart.js',
-            'js/gimmicks/yuml.js'
+            'src/js/gimmicks/alerts.js',
+            'src/js/gimmicks/colorbox.js',
+            'src/js/gimmicks/carousel.js',
+            'src/js/gimmicks/disqus.js',
+            'src/js/gimmicks/facebooklike.js',
+            'src/js/gimmicks/forkmeongithub.js',
+            //'src/js/gimmicks/github_gist.js',
+            'src/js/gimmicks/gist.js',
+            'src/js/gimmicks/googlemaps.js',
+            'src/js/gimmicks/iframe.js',
+            'src/js/gimmicks/math.js',
+            'src/js/gimmicks/prism.js',
+            // 'src/js/gimmicks/leaflet.js',
+            'src/js/gimmicks/themechooser.js',
+            'src/js/gimmicks/twitter.js',
+            'src/js/gimmicks/youtube_embed.js',
+            'src/js/gimmicks/chart.js',
+            'src/js/gimmicks/yuml.js'
         ],
 
         // files that we always inline (stuff not available on CDN)
@@ -156,7 +156,7 @@ module.exports = function (grunt) {
                 src: 'Gruntfile.js'
             },*/
             js: {
-                src: ['js/*.js', 'js/**/*.js', '!js/marked.js']
+                src: ['src/js/*.js', 'src/js/**/*.js', '!js/marked.js']
             }
         },
         lib_test: {
@@ -223,8 +223,8 @@ module.exports = function (grunt) {
         watch: {
             files: [
                 'Gruntfile.js',
-                'js/*.js',
-                'js/**/*.js',
+                'src/js/*.js',
+                'src/js/**/*.js',
                 'src/index.ejs'
             ],
             tasks: ['devel']
