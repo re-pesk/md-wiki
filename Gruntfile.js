@@ -113,15 +113,15 @@ module.exports = function (grunt) {
         },
         index: {
             fat: {
-                template: 'index.tmpl',
+                template: 'src/index.ejs',
                 dest: 'dist/mdwiki.html'
             },
             slim: {
-                template: 'index.tmpl',
+                template: 'src/index.ejs',
                 dest: 'dist/mdwiki-slim.html'
             },
             debug: {
-                template: 'index.tmpl',
+                template: 'src/index.ejs',
                 dest: 'dist/mdwiki-debug.html'
             }
         },
@@ -207,7 +207,7 @@ module.exports = function (grunt) {
                 'Gruntfile.js',
                 'js/*.js',
                 'js/**/*.js',
-                'index.tmpl'
+                'src/index.ejs'
             ],
             tasks: ['devel']
         },
