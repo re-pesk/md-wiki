@@ -221,6 +221,9 @@ module.exports = function (grunt) {
             }
         },
         watch: {
+            options: {
+                livereload: true,
+            },
             files: [
                 'Gruntfile.js',
                 'src/js/*.js',
@@ -228,6 +231,17 @@ module.exports = function (grunt) {
                 'src/index.ejs'
             ],
             tasks: ['devel']
+        },
+        connect: {
+            dev: {
+                options: {
+                    port: 3000,
+                    hostname: '*',
+                    base: './dist',
+                    open: 'http://localhost:3000/<%= pkg.name %>-debug.html',
+                    debug: true,
+                },
+            },
         },
     });
 
@@ -246,8 +260,9 @@ module.exports = function (grunt) {
 
     /* Debug is basically the fat version but without any minifing */
     grunt.registerTask('release-debug', [/* 'jshint', */ 'concat:dev', 'index_debug', 'copy:assets']);
+    grunt.registerTask('devel', ['release-debug']);
 
-    grunt.registerTask('devel', ['release-debug', 'watch']);
+    grunt.registerTask('serve', ['devel', 'connect:dev', 'watch']);
 
     grunt.registerTask('release', [
         'clean',
