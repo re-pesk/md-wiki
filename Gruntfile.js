@@ -194,6 +194,10 @@ module.exports = function (grunt) {
                 dest: 'docs/'
             },
         },
+        clean: {
+            dist: ['dist/'],
+            release: ['release/'],
+        },
         shell: {
             zip_release: {
                 options: {
@@ -232,6 +236,7 @@ module.exports = function (grunt) {
     grunt.registerTask('devel', ['release-debug', 'reload', 'watch']);
 
     grunt.registerTask('release', [
+        'clean',
         'release-slim', 'release-fat', 'release-debug',
         'copy:release_slim', 'copy:release_fat', 'copy:release_debug', 'copy:release_assets',
         'shell:zip_release'
