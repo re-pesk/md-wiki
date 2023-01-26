@@ -181,10 +181,10 @@ module.exports = function (grunt) {
                 src: ['dist/mdwiki-debug.html'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-debug.html'
             },
-            release_templates: {
+            release_assets: {
                 expand: true,
                 flatten: true,
-                src: ['release_templates/*'],
+                src: [ 'src/release_assets/*' ],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
             },
             dist: {
@@ -233,7 +233,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('release', [
         'release-slim', 'release-fat', 'release-debug',
-        'copy:release_slim', 'copy:release_fat', 'copy:release_debug', 'copy:release_templates',
+        'copy:release_slim', 'copy:release_fat', 'copy:release_debug', 'copy:release_assets',
         'shell:zip_release'
     ]);
     // Default task.
