@@ -4,24 +4,26 @@ var createIndex = function (grunt, mode) {
     'use strict';
     var conf = grunt.config('index')[mode],
         tmpl = grunt.file.read(conf.template),
+        pkg = grunt.config('pkg'),
+        purpose = { dev: 'debugging', prod: 'release' }[mode],
+        isProduction = (mode === 'prod'),
+        fileRead = grunt.file.read,
         fileList = grunt.config('fileList')[mode];
 
     grunt.config.set('templatesString', '');
 
-    // register the task name in global scope so we can access it in the .ejs file
+    // set the data to options object so we can access it in the .ejs file
     const data = {
-        mode,
-        destination: conf.dest,
-        template: conf.template,
-        cssMain: fileList.cssMain,
-        jsLibs: fileList.jsLibs,
-        jsMain: fileList.jsMain,
+        pkg,
+        purpose,
+        isProduction,
+        fileRead,
+        fileList
     };
 
-    grunt.config.set('data', data);
-
-    grunt.file.write(conf.dest, grunt.template.process(tmpl));
-    // grunt.log.writeln('Generated \'' + conf.dest + '\' from \'' + conf.template + '\'');
+    grunt.log.writeln(`Building '${conf.dest}' for ${purpose}`);
+    grunt.file.write(conf.dest, grunt.template.process(tmpl, { data }));
+    grunt.log.writeln(`Generated '${conf.dest}' from '${conf.template}'`);
 };
 
 /*global module:false*/
@@ -37,23 +39,25 @@ module.exports = function (grunt) {
     grunt.initConfig({
         // Metadata.
         pkg: {
-            title: packageJson.title,
-            name: packageJson.name,
-            version: packageJson.version,
-            author: packageJson.author,
+            ...packageJson,
             license: {
                 name: packageJson.license,
                 url: 'https://github.com/Dynalon/mdwiki/blob/master/LICENSE.txt',
             },
-            repository: packageJson.repository,
         },
 
         fileList: {
+
+            ts_folder: 'src/ts/',
+            compiled_ts: 'src/_compiled/js/compiled_ts.js',
+            hbs_folder: 'src/templates',
+            compiled_templates: 'src/_compiled/js/compiled_templates.js',
+
             ownJsFiles: [
                 'src/js/marked.js',
                 'src/js/init.js',
-                'src/_compiled/js/compiled_ts.js',
-                'src/_compiled/js/compiled.templates.js',
+                '<%= fileList.compiled_ts %>',
+                '<%= fileList.compiled_templates %>',
                 'src/js/main.js',
 
                 // gimmicks
@@ -232,13 +236,21 @@ module.exports = function (grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f src/_compiled/js/compiled.templates.js -r src/templates -m src/templates/**/*.html',
+                command: [
+                    'echo-cli "Starting compilation of Handlebars templates."',
+                    './node_modules/.bin/handlebars <%= fileList.hbs_folder %>/**/*.hbs -r <%= fileList.hbs_folder %> -f <%= fileList.compiled_templates %>',
+                    'echo-cli "Compilation of templates is completed. File "<%= fileList.compiled_templates %>" is created."'
+                ].join(' && '),
             },
             ts: {
                 options: {
                     stdout: true,
                 },
-                command: './node_modules/.bin/tsc && echo-cli "Typescript compilation is completed!"',
+                command: [
+                    'echo-cli "Starting compilation of Typescript files."',
+                    './node_modules/.bin/tsc --project <%= fileList.ts_folder %> --outfile <%= fileList.compiled_ts %>',
+                    'echo-cli "Compilation of Typescript files is completed. <%= fileList.compiled_ts %> is crėated."'
+                ].join(' && '),
             },
         },
         watch: {

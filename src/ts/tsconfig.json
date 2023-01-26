@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "declaration": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "removeComments": false,
+    "reactNamespace": "JsxRender"
+  }
+}

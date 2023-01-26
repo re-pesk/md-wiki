@@ -15,7 +15,7 @@ module MDwiki.Templating {
                     path = path.substring(1, path.length);
 
                 // TODO remove .html from CALLER instead of this
-                path = path + ".html";
+                path = path + ".hbs";
                 this.templateFunction = Handlebars.templates[path];
             }
         }
