@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <% 
-    var pkg = grunt.config('pkg');
-    var data = grunt.config('data');
-    var console_log = grunt.log.writeln;
-    var purpose = { dev: 'debugging', prod: 'release' }[data.mode];
-    var isDevMode = (data.mode === 'dev');
-  %><!--
+  <!--
     This is <%= pkg.title %> v<%= pkg.version %> file, created for <%= purpose %> purpose
     (C) 2013-2014 by <%= pkg.author.name %> and contributors. This software is licensed
     under the terms of the <%= pkg.license.name %> license.
@@ -20,22 +14,20 @@
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <meta charset="UTF-8">
     <% 
-    console_log(`Building '${data.destination}' for '${purpose}'\n`);
-
-    const wrapInComments = (name, content) => (isDevMode ? `<!-- START ${name} -->\n${content}<!-- END ${name} -->\n` : content);
+    const wrapInComments = (name, content) => (isProduction ? content : `<!-- START ${name} -->\n${content}<!-- END ${name} -->\n`);
     
     var output = '';
 
-    output += isDevMode ? `<script type="text/javascript">window.MDwikiEnableDebug = true;</script>\n` : '';
+    output += isProduction ? '' : `<script type="text/javascript">window.MDwikiEnableDebug = true;</script>\n`;
     
     // INLINE CSS
-    output += wrapInComments(data.cssMain, `<style id='style:${data.cssMain}'>\n${grunt.file.read(data.cssMain)}</style>\n`);
+    output += wrapInComments(fileList.cssMain, `<style id='style:${fileList.cssMain}'>\n${fileRead(fileList.cssMain)}</style>\n`);
     
     // INLINE SCRIPTS
-    output += wrapInComments(data.jsLibs, `<script type="text/javascript">\n${grunt.file.read(data.jsLibs)}</script>\n`);
-    output += wrapInComments(data.jsMain, `<script type="text/javascript">\n${grunt.file.read(data.jsMain)}</script>\n`);
+    output += wrapInComments(fileList.jsLibs, `<script type="text/javascript">\n${fileRead(fileList.jsLibs)}</script>\n`);
+    output += wrapInComments(fileList.jsMain, `<script type="text/javascript">\n${fileRead(fileList.jsMain)}</script>\n`);
 
-    %><%= output %><% console_log(`Generated '${data.destination}' from '${data.template}'\n`); %>
+    %><%= output %>
   </head>
   <body>
 
@@ -46,6 +38,6 @@
 
     <div id="md-all">
     </div>
-    <%= isDevMode ? `<script src="//localhost:35729/livereload.js"></script>` : '' %>
+    <%= isProduction ? '' : `<script src="//localhost:35729/livereload.js"></script>` %>
   </body>
 </html>
