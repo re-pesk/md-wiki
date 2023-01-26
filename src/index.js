@@ -1,1 +1,2 @@
-console.log("Hello World!");
+import './styles/main.less';
+console.log('Labas');

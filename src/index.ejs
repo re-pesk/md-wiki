@@ -38,6 +38,6 @@
 
     <div id="md-all">
     </div>
-    <%= isProduction ? '' : `<script src="//localhost:35729/livereload.js"></script>` %>
+    <%= useLiveReload ? `<script src="//localhost:35729/livereload.js"></script>` : '' %>
   </body>
 </html>

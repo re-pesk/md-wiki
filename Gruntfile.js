@@ -17,6 +17,7 @@ var createIndex = function (grunt, mode) {
         pkg,
         purpose,
         isProduction,
+        useLiveReload: !isProduction, 
         fileRead,
         fileList
     };

@@ -244,8 +244,9 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/node,grunt,linux,macos,windows,visualstudiocode
 
 release/
+dist*/
 src/ts/*d.ts
-src/_compiled/
+src/_compiled*/
 tests/js/
 tests/**/*.map
 .tscache
