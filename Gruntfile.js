@@ -49,10 +49,14 @@ module.exports = function (grunt) {
         },
 
         fileList: {
+
+            ts_folder: 'src/ts/',
+            compiled_ts: 'src/_compiled/js/compiled_ts.js',
+
             ownJsFiles: [
                 'src/js/marked.js',
                 'src/js/init.js',
-                'src/_compiled/js/compiled_ts.js',
+                '<%= fileList.compiled_ts %>',
                 'src/_compiled/js/compiled.templates.js',
                 'src/js/main.js',
 
@@ -238,7 +242,11 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true,
                 },
-                command: './node_modules/.bin/tsc && echo-cli "Typescript compilation is completed!"',
+                command: [
+                  'echo-cli "Starting compilation of Typescript files."',
+                  './node_modules/.bin/tsc --project <%= fileList.ts_folder %> --outfile <%= fileList.compiled_ts %>',
+                  'echo-cli "Compilation of Typescript files is completed. <%= fileList.compiled_ts %> is crėated."'
+                ].join(' && '),
             },
         },
         watch: {
