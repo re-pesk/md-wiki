@@ -52,12 +52,14 @@ module.exports = function (grunt) {
 
             ts_folder: 'src/ts/',
             compiled_ts: 'src/_compiled/js/compiled_ts.js',
+            hbs_folder: 'src/templates',
+            compiled_templates: 'src/_compiled/js/compiled_templates.js',
 
             ownJsFiles: [
                 'src/js/marked.js',
                 'src/js/init.js',
                 '<%= fileList.compiled_ts %>',
-                'src/_compiled/js/compiled.templates.js',
+                '<%= fileList.compiled_templates %>',
                 'src/js/main.js',
 
                 // gimmicks
@@ -236,7 +238,11 @@ module.exports = function (grunt) {
                 // -f outputfile
                 // -r root for the templates (will mirror the FS structure to the template name)
                 // -m = minify
-                command: './node_modules/.bin/handlebars -f src/_compiled/js/compiled.templates.js -r src/templates -m src/templates/**/*.html',
+                command: [
+                    'echo-cli "Starting compilation of Handlebars templates."',
+                    './node_modules/.bin/handlebars <%= fileList.hbs_folder %>/**/*.hbs -r <%= fileList.hbs_folder %> -f <%= fileList.compiled_templates %>',
+                    'echo-cli "Compilation of templates is completed. File "<%= fileList.compiled_templates %>" is created."'
+                ].join(' && '),
             },
             ts: {
                 options: {
