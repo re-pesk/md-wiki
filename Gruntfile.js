@@ -163,6 +163,12 @@ module.exports = function (grunt) {
             src: ['lib/**/*.js', 'test/**/*.js']
         },
         copy: {
+            assets: {
+                expand: true,
+                cwd: 'src/assets',
+                src: '**',
+                dest: 'dist/'
+            },
             release_fat: {
                 expand: false,
                 flatten: true,
@@ -182,10 +188,18 @@ module.exports = function (grunt) {
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-debug.html'
             },
             release_assets: {
-                expand: true,
-                flatten: true,
-                src: ['src/release_assets/*'],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
+                files: [{
+                    expand: true,
+                    flatten: true,
+                    src: ['src/release_assets/*'],
+                    dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
+                },
+                {
+                    expand: true,
+                    cwd: 'src/assets',
+                    src: '**',
+                    dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
+                }],
             },
             dist: {
                 expand: true,
@@ -227,13 +241,13 @@ module.exports = function (grunt) {
     grunt.registerTask('index_debug', 'Generate mdwiki-fat.html, inline all scripts', function () {
         createIndex(grunt, 'debug');
     });
-    grunt.registerTask('release-slim', [/* 'jshint', */ 'concat:dev', 'uglify:dist', 'index_slim']);
-    grunt.registerTask('release-fat', [/* 'jshint', */ 'concat:dev', 'uglify:dist', 'index_fat']);
+    grunt.registerTask('release-slim', [/* 'jshint', */ 'concat:dev', 'uglify:dist', 'index_slim', 'copy:assets']);
+    grunt.registerTask('release-fat', [/* 'jshint', */ 'concat:dev', 'uglify:dist', 'index_fat', 'copy:assets']);
 
     /* Debug is basically the fat version but without any minifing */
-    grunt.registerTask('release-debug', [/* 'jshint', */ 'concat:dev', 'index_debug']);
+    grunt.registerTask('release-debug', [/* 'jshint', */ 'concat:dev', 'index_debug', 'copy:assets']);
 
-    grunt.registerTask('devel', ['release-debug', 'reload', 'watch']);
+    grunt.registerTask('devel', ['release-debug', 'watch']);
 
     grunt.registerTask('release', [
         'clean',
