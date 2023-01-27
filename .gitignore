@@ -250,6 +250,8 @@ tests/js/
 tests/**/*.map
 .tscache
 
+grunt
+
 dist-ssr
 *.local
 
