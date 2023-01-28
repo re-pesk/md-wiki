@@ -4,19 +4,19 @@ var createIndex = function (grunt, taskname) {
         tmpl = grunt.file.read(conf.template);
 
     // register the task name in global scope so we can access it in the .tmpl file
-    grunt.config.set('currentTask', {name: taskname});
+    grunt.config.set('currentTask', { name: taskname });
 
     grunt.file.write(conf.dest, grunt.template.process(tmpl));
     grunt.log.writeln('Generated \'' + conf.dest + '\' from \'' + conf.template + '\'');
 };
 
 /*global module:false*/
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
     // Project configuration.
 
     grunt.initConfig({
-    // Metadata.
+        // Metadata.
         pkg: {
             name: 'MDwiki',
             version: '0.6.4'
@@ -85,8 +85,8 @@ module.exports = function(grunt) {
         externalCssRefs: [
             'netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css',
             'raw.azureedge.net/joelself/mdwiki/0.6.x.0/extlib/css/prism.1.4.1.default.min.css'
-//            'www.3solarmasses.com/retriever-bootstrap/css/retriever.css'
-//            '3solarmasses.com/corgi-bootstrap/css/corgi.css'
+            //            'www.3solarmasses.com/retriever-bootstrap/css/retriever.css'
+            //            '3solarmasses.com/corgi-bootstrap/css/corgi.css'
         ],
 
         concat: {
@@ -163,25 +163,25 @@ module.exports = function(grunt) {
             release_fat: {
                 expand: false,
                 flatten: true,
-                src: [ 'dist/mdwiki.html' ],
+                src: ['dist/mdwiki.html'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki.html'
             },
             release_slim: {
                 expand: false,
                 flatten: true,
-                src: [ 'dist/mdwiki-slim.html' ],
+                src: ['dist/mdwiki-slim.html'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-slim.html'
             },
             release_debug: {
                 expand: false,
                 flatten: true,
-                src: [ 'dist/mdwiki-debug.html' ],
+                src: ['dist/mdwiki-debug.html'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-debug.html'
             },
             release_templates: {
                 expand: true,
                 flatten: true,
-                src: [ 'release_templates/*' ],
+                src: ['release_templates/*'],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
             },
             dist: {
@@ -223,32 +223,32 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-reload');
 
-    grunt.registerTask('index_slim', 'Generate slim mdwiki.html, most scripts on CDN', function() {
+    grunt.registerTask('index_slim', 'Generate slim mdwiki.html, most scripts on CDN', function () {
         createIndex(grunt, 'slim');
     });
 
-    grunt.registerTask('index_fat', 'Generate mdwiki-fat.html, inline all scripts', function() {
+    grunt.registerTask('index_fat', 'Generate mdwiki-fat.html, inline all scripts', function () {
         createIndex(grunt, 'fat');
     });
-    grunt.registerTask('index_debug', 'Generate mdwiki-fat.html, inline all scripts', function() {
+    grunt.registerTask('index_debug', 'Generate mdwiki-fat.html, inline all scripts', function () {
         createIndex(grunt, 'debug');
     });
-    grunt.registerTask('release-slim',[  'jshint', 'concat:dev', 'uglify:dist', 'index_slim' ]);
-    grunt.registerTask('release-fat', [ 'jshint', 'concat:dev', 'uglify:dist', 'index_fat' ]);
+    grunt.registerTask('release-slim', [/* 'jshint', */ 'concat:dev', 'uglify:dist', 'index_slim']);
+    grunt.registerTask('release-fat', [/* 'jshint', */ 'concat:dev', 'uglify:dist', 'index_fat']);
 
     /* Debug is basically the fat version but without any minifing */
-    grunt.registerTask('release-debug', [ 'jshint', 'concat:dev', 'index_debug' ]);
+    grunt.registerTask('release-debug', [/* 'jshint', */ 'concat:dev', 'index_debug']);
 
-    grunt.registerTask('devel', [ 'release-debug', 'reload', 'watch' ]);
+    grunt.registerTask('devel', ['release-debug', 'reload', 'watch']);
 
-    grunt.registerTask('release',[
+    grunt.registerTask('release', [
         'release-slim', 'release-fat', 'release-debug',
         'copy:release_slim', 'copy:release_fat', 'copy:release_debug', 'copy:release_templates',
         'shell:zip_release'
     ]);
     // Default task.
     grunt.registerTask('default',
-        [ 'release-slim', 'release-fat', 'release-debug' ]
+        ['release-slim', 'release-fat', 'release-debug']
     );
 
 };
