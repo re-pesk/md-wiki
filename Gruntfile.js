@@ -15,6 +15,8 @@ module.exports = function (grunt) {
     'use strict';
     // Project configuration.
 
+    require('load-grunt-tasks')(grunt);
+
     grunt.initConfig({
         // Metadata.
         pkg: {
@@ -208,22 +210,9 @@ module.exports = function (grunt) {
             ],
             tasks: ['devel']
         },
-        reload: {
-            port: 35729,
-            liveReload: {}
-        }
     });
 
-    // These plugins provide necessary tasks.
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-shell');
-    grunt.loadNpmTasks('grunt-reload');
-
-    grunt.registerTask('index_slim', 'Generate slim mdwiki.html, most scripts on CDN', function () {
+    grunt.registerTask('index_slim', 'Generate slim mdwiki.html, most scripts on CDN', function() {
         createIndex(grunt, 'slim');
     });
 
