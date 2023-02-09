@@ -217,27 +217,51 @@ module.exports = function (grunt) {
                 options: {
                     stdout: true
                 },
-                command: 'cd release && zip -r mdwiki-<%= grunt.config("pkg").version %>.zip mdwiki-<%= grunt.config("pkg").version %>'
+                command: ['cd release', 'zip -r mdwiki-<%= grunt.config("pkg").version %>.zip mdwiki-<%= grunt.config("pkg").version %>'].join(' && '),
             }
         },
         watch: {
             options: {
-                livereload: true,
+                livereload: 35729,
             },
-            files: [
-                'Gruntfile.js',
-                'src/js/*.js',
-                'src/js/**/*.js',
-                'src/index.ejs'
-            ],
-            tasks: ['devel']
+            dev: {
+                files: [
+                    'Gruntfile.js',
+                    'src/js/*.js',
+                    'src/js/**/*.js',
+                    'src/index.ejs'
+                ],
+                tasks: ['build:debug']
+            },
+            dist: {
+                files: [
+                    'dist/**/*[!_].html'
+                ],
+                tasks: ['copy:dist']
+            },
+            docs: {
+                files: [
+                    'docs/**/*'
+                ],
+            },
         },
         connect: {
-            dev: {
+            dist: {
                 options: {
+                    livereload: true,
                     port: 3000,
-                    hostname: '*',
+                    hostname: 'localhost',
                     base: './dist',
+                    open: 'http://localhost:3000/<%= pkg.name %>-debug.html',
+                    debug: true,
+                },
+            },
+            docs: {
+                options: {
+                    livereload: true,
+                    port: 3000,
+                    hostname: 'localhost',
+                    base: ['./docs', './'],
                     open: 'http://localhost:3000/<%= pkg.name %>-debug.html',
                     debug: true,
                 },
@@ -260,9 +284,10 @@ module.exports = function (grunt) {
 
     /* Debug is basically the fat version but without any minifing */
     grunt.registerTask('release-debug', [/* 'jshint', */ 'concat:dev', 'index_debug', 'copy:assets']);
-    grunt.registerTask('devel', ['release-debug']);
+    grunt.registerTask('dev', ['release-debug']);
 
-    grunt.registerTask('serve', ['devel', 'connect:dev', 'watch']);
+    grunt.registerTask('serve', ['connect:dist', 'watch:dev']);
+    grunt.registerTask('docs', ['copy:dist', 'connect:docs', 'watch']);
 
     grunt.registerTask('release', [
         'clean',
