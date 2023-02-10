@@ -183,7 +183,13 @@ module.exports = function(grunt) {
                 flatten: true,
                 src: [ 'release_templates/*' ],
                 dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
-            }
+            },
+            dist: {
+                expand: true,
+                cwd: 'dist',
+                src: '**/*[!_].html',
+                dest: 'docs/'
+            },
         },
         shell: {
             zip_release: {
