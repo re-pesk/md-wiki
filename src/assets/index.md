@@ -12,7 +12,7 @@ See <https://github.com/Dynalon/mdwiki/releases> for original project and readil
 
 ## How to build from source
 
-(applies to master branch, stable may differ)
+(applies to this branch, others may differ)
 
 1. Install node.js >= 16.0.0 and npm (if not included)
 2. Clone the mdwiki repo
