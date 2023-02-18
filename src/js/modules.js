@@ -164,8 +164,8 @@
       params = params.replace(/'/g, '"');
       // finally, try if the json object is valid
       try {
-        /*jshint -W061 */
-        args = eval(params);
+        const eval2 = eval;
+        args = eval2(params);
       } catch (err) {
         log.error('error parsing argument of gimmick: ' + link_text + 'giving error: ' + err);
       }

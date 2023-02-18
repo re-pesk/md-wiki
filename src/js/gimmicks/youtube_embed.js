@@ -13,7 +13,7 @@
       var href = $this.attr('href');
       if (href !== undefined) {
         // extract the v parameter from youtube
-        var exp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+        var exp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
         var m = href.match(exp);
 
         if (m && m[1].length === 11) {

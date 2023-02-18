@@ -6,6 +6,7 @@
 // to be in the global scope
 var googlemapsLoadDone, googlemapsReady;
 
+// eslint-disable-next-line no-unused-vars
 googlemapsReady = function() {
   'use strict';
   googlemapsLoadDone.resolve();

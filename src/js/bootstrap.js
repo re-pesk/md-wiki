@@ -5,7 +5,7 @@
 (function ($) {
   'use strict';
 
-  var navStyle = '';
+  // var navStyle = '';
 
   // PRIVATE FUNCTIONS:
 
@@ -49,7 +49,7 @@
     if ($('#md-menu').length <= 0) {
       return;
     }
-    navStyle = 'top';
+    // navStyle = 'top';
     var $menuContent = $('#md-menu').children();
 
     // $('#md-menu').addClass ('navbar navbar-default navbar-fixed-top');

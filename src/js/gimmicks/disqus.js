@@ -10,7 +10,7 @@
     var default_options = {
       identifier: ''
     };
-    var options = $.extend(default_options, opt);
+    /* var options =*/ $.extend(default_options, opt);
     var disqus_div = $('<div id="disqus_thread" class="md-external md-external-noheight md-external-nowidth" >' + '<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></div>');
     disqus_div.css('margin-top', '2em');
     return $links.each(function (i, link) {
@@ -40,13 +40,13 @@
             // by default, disqus will use the current url to determine a thread
             // since we might have different parameters present, we remove them
             // disqus_* vars HAVE TO BE IN GLOBAL SCOPE
-            var disqus_url = window.location.href;
-            var disqus_identifier;
-            if (options.identifier.length > 0) {
-              disqus_identifier = options.identifier;
-            } else {
-              disqus_identifier = disqus_url;
-            }
+            // var disqus_url = window.location.href;
+            // var disqus_identifier;
+            // if (options.identifier.length > 0) {
+            //   disqus_identifier = options.identifier;
+            // } else {
+            //   disqus_identifier = disqus_url;
+            // }
 
             // dynamically load the disqus script
             var dsq = document.createElement('script');
