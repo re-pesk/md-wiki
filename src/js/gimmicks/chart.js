@@ -2,16 +2,18 @@
  * chart.js
  */
 
-/* eslint-disable */
-(function ($) {
+// eslint-disable-next-line no-var
+var Chart;
 
-  var scripturl = '//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js';
+(() => {
+  const $ = window.jQuery;
 
-  var log = $.md.getLogger();
+  const scripturl = '//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js';
 
-  function chart($links, opt/*, text*/) {
-    return $links.each(function (i, link) {
+  const log = $.md.getLogger();
 
+  function chart($links, opt /* , text */) {
+    return $links.each((i, link) => {
       // Get the options for this gimmick
       //      labelColumn: This is a string the indicates the column that will be used to
       //                   label the data points
@@ -22,18 +24,18 @@
       //                    options.
       //      chartType:   This string is the type of chart we want to render. Bar, Line,
       //                   or Radar. Defaults to Line.
-      var default_options = {
+      const defaultOptions = {
         chartType: 'Line',
-        canvasId: 'chartGimmick' + Math.floor((Math.random() * 1000) + 1),
+        canvasId: `chartGimmick${Math.floor((Math.random() * 1000) + 1)}`,
         chartOptions: {
-          responsive: false
-        }
+          responsive: false,
+        },
       };
-      var options = $.extend({}, default_options, opt);
+      const options = $.extend({}, defaultOptions, opt);
 
-      var $link = $(link);
+      const $link = $(link);
 
-      var table = $link.parents().find('table').last();
+      const table = $link.parents().find('table').last();
       if (table.length === 0) {
         log.error('Chart Gimmick: No tables found on the page.');
         $link.remove();
@@ -41,38 +43,34 @@
       }
 
       // Replace the Gimmick with the canvas that chartJS needs
-      var myHtml = $('<canvas id="' + options.canvasId + '"></canvas>');
+      const myHtml = $(`<canvas id="${options.canvasId}"></canvas>`);
       myHtml.width(options.width || '450px');
       myHtml.height(options.height || '250px');
       $link.replaceWith(myHtml);
 
       // This is the object that is given to the chart frame work for rendering. It will be
       // built up by processing the html table that is found on the table.
-      var chartConfig = {
-        'datasets': [],
-        'labels': []
+      const chartConfig = {
+        datasets: [],
+        labels: [],
       };
 
-      var chartAvailableToRender = true;
+      let chartAvailableToRender = true;
 
       // These variables hold the indices of the columns in the table we care about. They will
       // be populated as we process the table based on the options that are given in the
       // gimmick
-      var labelColumnIndex = -1;
-      var dataColumnIndices = [];
+      let labelColumnIndex = -1;
+      const dataColumnIndices = [];
 
       // Get the index of the columns that we care about for charting
-      table.find('th').each(function (index) {
-
+      table.find('th').each((index, _this) => {
         // This is the column that labels each data point
-        if (this.textContent === options.labelColumn) {
+        if (_this.textContent === options.labelColumn) {
           labelColumnIndex = index;
-        }
-
-        // Check if this is a data column
-        else {
-          for (var i = 0; i < options.dataColumns.length; i++) {
-            if (this.textContent === options.dataColumns[i]) {
+        } else { // Check if this is a data column
+          for (let j = 0; j < options.dataColumns.length; j += 1) {
+            if (_this.textContent === options.dataColumns[i]) {
               dataColumnIndices.push(index);
             }
           }
@@ -80,21 +78,19 @@
       });
 
       // Get the data
-      table.find('tr').each(function (/*rowIndex*/) {
-        $(this).find('td').each(function (colIndex) {
-
+      table.find('tr').each((rowIndex, tr) => {
+        $(tr).find('td').each((colIndex, td) => {
           if (colIndex === labelColumnIndex) {
-            chartConfig.labels.push(this.textContent);
+            chartConfig.labels.push(td.textContent);
           } else {
-            for (var i = 0; i < dataColumnIndices.length; i++) {
+            for (let n = 0; n < dataColumnIndices.length; n += 1) {
               if (colIndex === dataColumnIndices[i]) {
-
                 if (chartConfig.datasets[i] === undefined) {
                   chartConfig.datasets[i] = {};
                   chartConfig.datasets[i].data = [];
                 }
 
-                chartConfig.datasets[i].data.push(this.textContent);
+                chartConfig.datasets[i].data.push(td.textContent);
               }
             }
           }
@@ -104,16 +100,16 @@
       // No Chart data found
       if (chartConfig.datasets[i] === undefined) {
         chartAvailableToRender = false;
-        log.error('Chart Gimmick: No data was found for the chart. Make sure that there ' +
-          'is a tables on the page. Check that your ' +
-          'column headers match the chart configuration.');
+        log.error('Chart Gimmick: No data was found for the chart. Make sure that there '
+          + 'is a tables on the page. Check that your '
+          + 'column headers match the chart configuration.');
       }
 
       if (chartAvailableToRender) {
-        var canvas = document.getElementById(options.canvasId);
-        var ctx = canvas.getContext('2d');
-        $.md.stage('postgimmick').subscribe(function (done) {
-          setTimeout(function () {
+        const canvas = document.getElementById(options.canvasId);
+        const ctx = canvas.getContext('2d');
+        $.md.stage('postgimmick').subscribe((done) => {
+          setTimeout(() => {
             new Chart(ctx)[options.chartType](chartConfig, options.chartOptions);
           });
           done();
@@ -122,21 +118,20 @@
     });
   }
 
-  var chartGimmick = {
+  const chartGimmick = {
     name: 'chart',
     version: $.md.version,
-    once: function () {
+    once() {
       $.md.linkGimmick(this, 'chart', chart);
 
       // load the chart js
       $.md.registerScript(this, scripturl, {
         license: 'MIT',
         loadstage: 'skel_ready',
-        finishstage: 'gimmick'
+        finishstage: 'gimmick',
       });
-    }
+    },
   };
 
   $.md.registerGimmick(chartGimmick);
-
-})(window.jQuery);
+})();

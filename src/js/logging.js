@@ -2,32 +2,31 @@
  * logging.js
  */
 
-/* eslint-disable */
-(function ($) {
+(() => {
+  const $ = window.jQuery;
+  $.md.getLogger = () => {
+    const { loglevel } = $.md;
 
-  $.md.getLogger = function () {
-
-    var loglevel = $.md.loglevel;
-
-    var log = function (logtarget) {
+    const log = (logtarget) => {
       // var self = this;
-      var level = loglevel[logtarget];
-      return function (msg) {
+      const level = loglevel[logtarget];
+      return (msg) => {
         if ($.md.logThreshold <= level) {
-          console.log('[' + logtarget + '] ' + msg);
+          // eslint-disable-next-line no-console
+          console.log(`[${logtarget}] ${msg}`);
         }
       };
     };
 
-    var logger = {};
-    logger.trace = log('TRACE');
-    logger.debug = log('DEBUG');
-    logger.info = log('INFO');
-    logger.warn = log('WARN');
-    logger.error = log('ERROR');
-    logger.fatal = log('FATAL');
+    const logger = {
+      trace: log('TRACE'),
+      debug: log('DEBUG'),
+      info: log('INFO'),
+      warn: log('WARN'),
+      error: log('ERROR'),
+      fatal: log('FATAL'),
+    };
 
     return logger;
   };
-
-})(window.jQuery);
+})();

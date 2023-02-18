@@ -2,21 +2,21 @@
  * facebooklike.js
  */
 
-/* eslint-disable */
-(function ($) {
+(() => {
+  const $ = window.jQuery;
 
-  var language = window.navigator.userLanguage || window.navigator.language;
-  var code = language + '_' + language.toUpperCase();
-  var fbRootDiv = $('<div id="fb-root" />');
-  var fbScriptHref = $.md.prepareLink('connect.facebook.net/' + code + '/all.js#xfbml=1');
-  var fbscript = '(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "' + fbScriptHref + '"; fjs.parentNode.insertBefore(js, fjs);}(document, "script", "facebook-jssdk"));';
+  const language = window.navigator.userLanguage || window.navigator.language;
+  const code = `${language}_${language.toUpperCase()}`;
+  const fbRootDiv = $('<div id="fb-root" />');
+  const fbScriptHref = $.md.prepareLink(`connect.facebook.net/${code}/all.js#xfbml=1`);
+  const fbscript = `(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "${fbScriptHref}"; fjs.parentNode.insertBefore(js, fjs);}(document, "script", "facebook-jssdk"));`;
 
-  function facebooklike($link, opt/*, text*/) {
-    var default_options = {
+  function facebooklike($link, opt /* , text */) {
+    const defaultOptions = {
       layout: 'standard',
-      showfaces: true
+      showfaces: true,
     };
-    var options = $.extend({}, default_options, opt);
+    const options = $.extend({}, defaultOptions, opt);
     // Due to a bug, we can have underscores _ in a markdown link
     // so we insert the underscores needed by facebook here
     if (options.layout === 'boxcount') {
@@ -26,33 +26,32 @@
       options.layout = 'button_count';
     }
 
-    return $link.each(function (i, e) {
-      var $this = $(e);
-      var href = $this.attr('href');
+    return $link.each((i, e) => {
+      const $this = $(e);
+      const href = $this.attr('href');
       $('body').append(fbRootDiv);
 
-      var $fb_div = $('<div class="fb-like" data-send="false" data-width="450"></div>');
-      $fb_div.attr('data-href', href);
-      $fb_div.attr('data-layout', options.layout);
-      $fb_div.attr('data-show-faces', options.showfaces);
+      const $fbDiv = $('<div class="fb-like" data-send="false" data-width="450"></div>');
+      $fbDiv.attr('data-href', href);
+      $fbDiv.attr('data-layout', options.layout);
+      $fbDiv.attr('data-show-faces', options.showfaces);
 
-      $this.replaceWith($fb_div);
+      $this.replaceWith($fbDiv);
     });
   }
 
-  var facebookLikeGimmick = {
+  const facebookLikeGimmick = {
     name: 'FacebookLike',
     version: $.md.version,
-    once: function () {
+    once() {
       $.md.linkGimmick(this, 'facebooklike', facebooklike);
       $.md.registerScript(this, fbscript, {
         license: 'APACHE2',
         loadstage: 'postgimmick',
-        finishstage: 'all_ready'
+        finishstage: 'all_ready',
       });
-    }
+    },
   };
 
   $.md.registerGimmick(facebookLikeGimmick);
-
-})(window.jQuery);
+})();

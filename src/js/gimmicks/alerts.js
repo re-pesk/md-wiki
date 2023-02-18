@@ -2,27 +2,27 @@
  * alerts.js
  */
 
-/* eslint-disable */
-(function ($) {
+(() => {
+  const $ = window.jQuery;
 
   // picks out the paragraphs that start with a trigger word
-  function select_paragraphs() {
-    var note = ['note', 'beachte'];
-    var warning = ['achtung', 'attention', 'warnung', 'warning', 'atención', 'guarda', 'advertimiento'];
-    var hint = ['hint', 'tipp', 'tip', 'hinweis'];
-    var exp = note.concat(warning);
+  function selectParagraphs() {
+    const note = ['note', 'beachte'];
+    const warning = ['achtung', 'attention', 'warnung', 'warning', 'atención', 'guarda', 'advertimiento'];
+    const hint = ['hint', 'tipp', 'tip', 'hinweis'];
+    let exp = note.concat(warning);
     exp = exp.concat(hint);
-    var matches = [];
+    const matches = [];
 
-    $('p').filter(function () {
-      var $par = $(this);
+    $('p').each((i, _this) => {
+      const $par = $(_this);
       // check against each expression
-      $(exp).each(function (i, trigger) {
-        var txt = $par.text().toLowerCase();
+      $(exp).each((_i, trigger) => {
+        const txt = $par.text().toLowerCase();
         // we match only paragrachps in which the 'trigger' expression
         // is follow by a ! or :
-        var re = new RegExp(trigger + '(:|!)+.*', 'i');
-        var alertType = 'none';
+        const re = new RegExp(`${trigger}(:|!)+.*`, 'i');
+        let alertType = 'none';
         if (txt.match(re) !== null) {
           if ($.inArray(trigger, note) >= 0) {
             alertType = 'note';
@@ -33,7 +33,7 @@
           }
           matches.push({
             p: $par,
-            alertType: alertType
+            alertType,
           });
         }
       });
@@ -45,10 +45,10 @@
   // needed since we scale down images via css and want them to be accessible
   // in original format
   function createAlerts() {
-    var matches = $(select_paragraphs());
-    matches.each(function () {
-      var $p = $(this.p);
-      var type = this.alertType;
+    const matches = $(selectParagraphs());
+    matches.each((i, _this) => {
+      const $p = $(_this.p);
+      const type = _this.alertType;
       $p.addClass('alert');
 
       if (type === 'note') {
@@ -61,17 +61,16 @@
     });
   }
 
-  var alertsGimmick = {
+  const alertsGimmick = {
     name: 'alerts',
     // TODO
-    //version: $.md.version,
-    load: function () {
-      $.md.stage('bootstrap').subscribe(function (done) {
+    // version: $.md.version,
+    load() {
+      $.md.stage('bootstrap').subscribe((done) => {
         createAlerts();
         done();
       });
-    }
+    },
   };
   $.md.registerGimmick(alertsGimmick);
-
-})(window.jQuery);
+})();

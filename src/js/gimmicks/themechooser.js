@@ -2,10 +2,10 @@
  * themechooser.js
  */
 
-/* eslint-disable */
-(function ($) {
+(() => {
+  const $ = window.jQuery;
 
-  var themes = [
+  const themes = [
     { name: 'bootstrap', url: 'cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' },
     { name: 'cerulean', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/cerulean/bootstrap.min.css' },
     { name: 'cosmo', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/cosmo/bootstrap.min.css' },
@@ -18,13 +18,14 @@
     { name: 'slate', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/slate/bootstrap.min.css' },
     { name: 'spacelab', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/spacelab/bootstrap.min.css' },
     { name: 'united', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/united/bootstrap.min.css' },
-    { name: 'yeti', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/yeti/bootstrap.min.css' }
+    { name: 'yeti', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/yeti/bootstrap.min.css' },
   ];
 
-  var useChooser = false;
-  var log = $.md.getLogger();
+  let useChooser = false;
+  const log = $.md.getLogger();
 
-  var set_theme = function (theme) {
+  const setTheme = (themeArg) => {
+    let theme = themeArg;
     theme.inverse = theme.inverse || false;
 
     if (theme.url === undefined) {
@@ -32,24 +33,22 @@
         log.error('Theme name must be given!');
         return;
       }
-      var saved_theme = themes.filter(function (t) {
-        return t.name === theme.name;
-      })[0];
-      if (!saved_theme) {
-        log.error('Theme ' + name + ' not found, removing link');
+      const savedTheme = themes.filter((t) => t.name === theme.name)[0];
+      if (!savedTheme) {
+        // eslint-disable-next-line no-restricted-globals
+        log.error(`Theme ${name} not found, removing link`);
         return;
       }
-      theme = $.extend(theme, saved_theme);
+      theme = $.extend(theme, savedTheme);
     }
-
 
     $('link[rel=stylesheet][href*="netdna.bootstrapcdn.com"]')
       .remove();
 
     // slim instance has no bootstrap hardcoded in
-    var has_default_bootstrap_css = $('style[id*=bootstrap]').length > 0;
+    const hasDefaultBootstrapCss = $('style[id*=bootstrap]').length > 0;
 
-    if (theme.name !== 'bootstrap' || !has_default_bootstrap_css) {
+    if (theme.name !== 'bootstrap' || !hasDefaultBootstrapCss) {
       // in devel & fat version the style is inlined, remove it
       $('style[id*=bootstrap]').remove();
 
@@ -67,16 +66,16 @@
     }
   };
 
-  var apply_theme = function ($links, opt, text) {
+  const applyTheme = ($links, optArg, text) => {
+    const opt = optArg;
     opt.name = opt.name || text;
-    $links.each(function (/*i, link*/) {
-      $.md.stage('postgimmick').subscribe(function (done) {
+    $links.each((/* i, link */) => {
+      $.md.stage('postgimmick').subscribe((done) => {
         // var $link = $(link);
-
         // only set a theme if no theme from the chooser is selected,
         // or if the chooser isn't enabled
         if (window.localStorage.theme === undefined || !useChooser) {
-          set_theme(opt);
+          setTheme(opt);
         }
 
         done();
@@ -85,35 +84,33 @@
     $links.remove();
   };
 
-  var restore_theme = function (opt) {
+  const restoreTheme = (optArg) => {
+    let opt = optArg;
     if (window.localStorage.theme) {
       opt = $.extend({ name: window.localStorage.theme }, opt);
-      set_theme(opt);
+      setTheme(opt);
     }
-  };  'use strict';
+  };
 
-
-  var themechooser = function ($links, opt, text) {
-
+  const themechooser = ($links, opt, text) => {
     useChooser = true;
-    $.md.stage('bootstrap').subscribe(function (done) {
-      restore_theme(opt);
+    $.md.stage('bootstrap').subscribe((done) => {
+      restoreTheme(opt);
       done();
     });
 
-    return $links.each(function (i, e) {
-      var $this = $(e);
-      var $chooser = $('<a href=""></a><ul></ul>'
-      );
+    return $links.each((i, e) => {
+      const $this = $(e);
+      const $chooser = $('<a href=""></a><ul></ul>');
       $chooser.eq(0).text(text);
 
-      $.each(themes, function (i, theme) {
-        var $li = $('<li></li>');
+      $.each(themes, (_i, theme) => {
+        const $li = $('<li></li>');
         $chooser.eq(1).append($li);
-        /*var $a =*/ $('<a/>')
+        /* var $a = */ $('<a/>')
           .text(theme.name)
           .attr('href', '')
-          .click(function (ev) {
+          .click((ev) => {
             ev.preventDefault();
             window.localStorage.theme = theme.name;
             window.location.reload();
@@ -122,14 +119,14 @@
       });
 
       $chooser.eq(1).append('<li class="divider" />');
-      var $li = $('<li/>');
-      var $a_use_default = $('<a>Use default</a>');
-      $a_use_default.click(function (ev) {
+      const $li = $('<li/>');
+      const $aUseDefault = $('<a>Use default</a>');
+      $aUseDefault.click((ev) => {
         ev.preventDefault();
         window.localStorage.removeItem('theme');
         window.location.reload();
       });
-      $li.append($a_use_default);
+      $li.append($aUseDefault);
       $chooser.eq(1).append($li);
 
       $chooser.eq(1).append('<li class="divider" />');
@@ -138,15 +135,13 @@
     });
   };
 
-  var themeChooserGimmick = {
+  const themeChooserGimmick = {
     name: 'Themes',
     version: $.md.version,
-    once: function () {
+    once() {
       $.md.linkGimmick(this, 'themechooser', themechooser, 'skel_ready');
-      $.md.linkGimmick(this, 'theme', apply_theme);
-
-    }
+      $.md.linkGimmick(this, 'theme', applyTheme);
+    },
   };
   $.md.registerGimmick(themeChooserGimmick);
-
-})(window.jQuery);
+})();

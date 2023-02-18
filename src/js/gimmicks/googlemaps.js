@@ -2,60 +2,61 @@
  * googlemaps.js
  */
 
-/* eslint-disable */
 // ugly, but the google loader requires the callback fn
 // to be in the global scope
-var googlemapsLoadDone;
 
+// eslint-disable-next-line no-var
+var google;
 // eslint-disable-next-line no-unused-vars
-window.googlemapsReady = function() {
-  googlemapsLoadDone.resolve();
+window.googlemapsReady = () => {
+  window.googlemapsLoadDone.resolve();
 };
 
-(function ($) {
-  var scripturl = 'https://maps.google.com/maps/api/js?sensor=false&callback=googlemapsReady';
+(() => {
+  const $ = window.jQuery;
+  const scripturl = 'https://maps.google.com/maps/api/js?sensor=false&callback=googlemapsReady';
 
-  function set_map(opt/*, div_id*/) {
-
+  function setMap(optArg /* , divId */) {
+    const opt = optArg;
     // google uses rather complicated mapnames, we transform our simple ones
-    var mt = opt.maptype.toUpperCase();
+    const mt = opt.maptype.toUpperCase();
     opt.mapTypeId = google.maps.MapTypeId[mt];
-    var geocoder = new google.maps.Geocoder();
+    const geocoder = new google.maps.Geocoder();
 
     // geocode performs address to coordinate transformation
-    geocoder.geocode({ address: opt.address }, function (result, status) {
+    geocoder.geocode({ address: opt.address }, (result, status) => {
       if (status !== 'OK') {
         return;
       }
 
       // add the retrieved coords to the options object
-      var coords = result[0].geometry.location;
+      const coords = result[0].geometry.location;
 
-      var options = $.extend({}, opt, { center: coords });
-      // var gmap = new google.maps.Map(document.getElementById(div_id), options);
+      const options = $.extend({}, opt, { center: coords });
+      // var gmap = new google.maps.Map(document.getElementById(divId), options);
       if (options.marker === true) {
         // var marker = new google.maps.Marker({ position: coords, map: gmap });
       }
     });
   }
 
-  function googlemaps($links, opt/*, text*/) {
-    var $maps_links = $links;
+  function googlemaps($links, opt /* , text */) {
+    const $mapsLinks = $links;
     // var counter = (new Date()).getTime();
-    return $maps_links.each(function (i, e) {
-      var $link = $(e);
-      var default_options = {
+    return $mapsLinks.each((i, e) => {
+      const $link = $(e);
+      const defaultOptions = {
         zoom: 11,
         marker: true,
         scrollwheel: false,
-        maptype: 'roadmap'
+        maptype: 'roadmap',
       };
-      var options = $.extend({}, default_options, opt);
+      const options = $.extend({}, defaultOptions, opt);
       if (options.address === undefined) {
         options.address = $link.attr('href');
       }
-      var div_id = 'google-map-' + Math.floor(Math.random() * 100000);
-      var $mapsdiv = $('<div class="md-external md-external-nowidth" id="' + div_id + '"/>');
+      const divId = `google-map-${Math.floor(Math.random() * 100000)}`;
+      const $mapsdiv = $(`<div class="md-external md-external-nowidth" id="${divId}"/>`);
       /* TODO height & width must be set AFTER the theme script went through
       implement an on event, maybe?
       if (options["width"] !== undefined) {
@@ -70,15 +71,15 @@ window.googlemapsReady = function() {
       $link.replaceWith($mapsdiv);
       // the div is already put into the site and will be formated,
       // we can now run async
-      set_map(options, div_id);
+      setMap(options, divId);
     });
   }
-  
-  var googleMapsGimmick = {
+
+  const googleMapsGimmick = {
     name: 'googlemaps',
     version: $.md.version,
-    once: function () {
-      googlemapsLoadDone = $.Deferred();
+    once() {
+      window.googlemapsLoadDone = $.Deferred();
 
       // register the gimmick:googlemaps identifier
       $.md.linkGimmick(this, 'googlemaps', googlemaps);
@@ -87,13 +88,13 @@ window.googlemapsReady = function() {
       $.md.registerScript(this, scripturl, {
         license: 'EXCEPTION',
         loadstage: 'skel_ready',
-        finishstage: 'bootstrap'
+        finishstage: 'bootstrap',
       });
 
-      $.md.stage('bootstrap').subscribe(function (done) {
+      $.md.stage('bootstrap').subscribe((done) => {
         // defer the pregimmick phase until the google script fully loaded
         if ($.md.triggerIsActive('googlemaps')) {
-          googlemapsLoadDone.done(function () {
+          window.googlemapsLoadDone.done(() => {
             done();
           });
         } else {
@@ -101,9 +102,8 @@ window.googlemapsReady = function() {
           done();
         }
       });
-    }
+    },
   };
 
   $.md.registerGimmick(googleMapsGimmick);
-
-})(window.jQuery);
+})();

@@ -2,38 +2,35 @@
  * gist.js
  */
 
-/* eslint-disable */
-(function ($) {
-
+(() => {
+  const $ = window.jQuery;
   function gist($links, opt, href) {
     $().lazygist('init');
-    return $links.each(function (i, link) {
-      var default_options = {
+    return $links.each((i, link) => {
+      const defaultOptions = {
         scheme: 'https',
-        path: 'gist.github.com/'
+        path: 'gist.github.com/',
       };
-      var options = $.extend(default_options, opt);
-      var $link = $(link);
-      var gistDiv = $('<div class="gist_here" data-id="' + href + '" />');
+      const options = $.extend(defaultOptions, opt);
+      const $link = $(link);
+      const gistDiv = $(`<div class="gist_here" data-id="${href}" />`);
       $link.replaceWith(gistDiv);
       gistDiv.lazygist({
         // we dont want a specific file so modify the url template
-        url_template: '{scheme}://{path}{id}.js'.replace(/\{scheme\}/g, options.scheme).replace(/\{path\}/g, options.path)
+        url_template: '{scheme}://{path}{id}.js'.replace(/\{scheme\}/g, options.scheme).replace(/\{path\}/g, options.path),
       });
     });
   }
 
-  var gistGimmick = {
+  const gistGimmick = {
     name: 'gist',
-    once: function () {
+    once() {
       $.md.linkGimmick(this, 'gist', gist);
-    }
+    },
   };
 
   $.md.registerGimmick(gistGimmick);
-
 })(window.jQuery);
-
 
 /**
 * Lazygist v0.2pre
@@ -49,42 +46,35 @@
 * Licensed under the MIT license.
 */
 
-(function ($, document) {
-
+(() => {
+  const $ = window.jQuery;
   //
   // note:
   // this plugin is not stateful
   // and will not communicate with own instances at different elements
   //
+  const pluginName = 'lazygist';
+  const version = '0.2pre';
+  const defaults = {
+    // adding the ?file parameter to choose a file
+    url_template: 'https://gist.github.com/{id}.js?file={file}',
 
-  var pluginName = 'lazygist',
-    version = '0.2pre',
-
-    defaults = {
-      // adding the ?file parameter to choose a file
-      'url_template': 'https://gist.github.com/{id}.js?file={file}',
-
-      // if these are strings, the attributes will be read from the element
-      'id': 'data-id',
-      'file': 'data-file'
-    },
-
-    options,
-
-    // will be replaced
-    /*jshint -W060 */
-    originwrite = document.write,
-
-    // stylesheet urls found in document.write calls
-    // they are cached to write them once to the document,
-    // not three times for three gists
-    stylesheets = [],
-
-    // cache gist-ids to know which are already appended to the dom
-    ids_dom = [],
-
-    // remember gist-ids if their javascript is already loaded
-    ids_ajax = [];
+    // if these are strings, the attributes will be read from the element
+    id: 'data-id',
+    file: 'data-file',
+  };
+  let options;
+  // will be replaced
+  /* jshint -W060 */
+  const originwrite = document.write;
+  // stylesheet urls found in document.write calls
+  // they are cached to write them once to the document,
+  // not three times for three gists
+  const stylesheets = [];
+  // cache gist-ids to know which are already appended to the dom
+  const idsDom = [];
+  // remember gist-ids if their javascript is already loaded
+  const idsAjax = [];
 
   /**
    * private special document.write function
@@ -98,70 +88,64 @@
    * an ajax call by jQuery. One *cannot* know which gist-anchor
    * to use. You can only read the id from the content.
    */
-  function _write(content) {
 
-    var expression, // for regexp results
-      href, // from the url
-      id; // from the content
+  // eslint-disable-next-line no-underscore-dangle
+  function _write(content, ...args) {
+    let expression; // for regexp results
+    let href; // from the url
+    let id; // from the content
 
     if (content.indexOf('rel="stylesheet"') !== -1) {
       href = $(content).attr('href');
 
       // check if stylesheet is already inserted
       if ($.inArray(href, stylesheets) === -1) {
-
         $('head').append(content);
         stylesheets.push(href);
       }
-
     } else if (content.indexOf('id="gist') !== -1) {
       // This is the newer gist URL style, ignoring the hostname for GitHub EE instances
       expression = /https?:\/\/gist.*?\/.*\/(.*)#/.exec(content);
-      if (expression !== null) {
-        id = expression[1];
-      } else {
+      if (expression == null) {
         // This will catch older versions of GitHub EE
         expression = /gist\/.+?\/([a-f0-9]+)\/raw/g.exec(content);
-        if (expression !== null) {
-          id = expression[1];
-        }
+      }
+      if (expression !== null) {
+        [, id] = expression;
       }
       if (id !== undefined) {
-
         // test if id is already loaded
-        if ($.inArray(id, ids_dom) !== -1) {
+        if ($.inArray(id, idsDom) !== -1) {
           // just do nothin, if gist is already attached to the dom
           return;
         }
 
-        ids_dom.push(id);
+        idsDom.push(id);
 
-        $('.gist_here[data-id=' + id + ']').append(content);
+        $(`.gist_here[data-id=${id}]`).append(content);
       }
     } else {
       // this is a fallback for interoperability
-      originwrite.apply(document, arguments);
+      originwrite.apply(document, [content, ...args]);
     }
   }
 
-  var methods = {
-
+  const methods = {
     /**
      * Standard init function
      * No magic here
      */
-    init: function (options_input) {
-
+    init(optionsInput) {
       // default options are default
-      options = $.extend({}, defaults, options_input);
+      options = $.extend({}, defaults, optionsInput);
 
       // can be reset
-      /*jshint -W061 */
+      /* jshint -W061 */
       document.write = _write;
 
-      $.each(options, function (index, value) {
+      $.each(options, (index, value) => {
         if (typeof value !== 'string') {
-          throw new TypeError(value + ' (' + (typeof value) + ') is not a string');
+          throw new TypeError(`${value} (${typeof value}) is not a string`);
         }
       });
 
@@ -171,30 +155,27 @@
     /**
      * Load the gists
      */
-    load: function () {
+    load() {
       // (1) iterate over gist anchors
       // (2) append the gist-html through the new document.write func (see _write)
-
       // (1)
-      return this.filter('[' + options.id + ']').each(function () {
-
-        var id = $(this).attr(options.id),
-          file = $(this).attr(options.file),
-          src;
+      return this.filter(`[${options.id}]`).each((j, _this) => {
+        const id = $(_this).attr(options.id);
+        const file = $(_this).attr(options.file);
+        let src;
 
         if (id !== undefined) {
-
-          if ($.inArray(id, ids_ajax) !== -1) {
+          if ($.inArray(id, idsAjax) !== -1) {
             // just do nothin, if gist is already ajaxed
             return;
           }
 
-          ids_ajax.push(id);
+          idsAjax.push(id);
 
           src = options.url_template.replace(/\{id\}/g, id).replace(/\{file\}/g, file);
 
           // (2) this will trigger our _write function
-          $.getScript(src, function () {
+          $.getScript(src, () => {
           });
         }
       });
@@ -203,28 +184,25 @@
     /**
      * Just reset the write function
      */
-    reset_write: function () {
+    reset_write() {
       document.write = originwrite;
 
       return this;
-    }
+    },
   };
 
   // method invocation - from jQuery.com
-  $.fn[pluginName] = function (method) {
-
+  // eslint-disable-next-line func-names
+  $.fn[pluginName] = function (method, ...args) {
     if (methods[method]) {
-      return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-
-    } else if (typeof method === 'object' || !method) {
-      return methods.init.apply(this, arguments);
-
-    } else {
-      $.error('Method ' + method + ' does not exist on jQuery.lazygist');
+      return methods[method].apply(this, args);
     }
+    if (typeof method === 'object' || !method) {
+      return methods.init.apply(this, [method, ...args]);
+    }
+    return $.error(`Method ${method} does not exist on jQuery.lazygist`);
   };
 
   // expose version for your interest
   $.fn[pluginName].version = version;
-
-})(window.jQuery, document);
+})();

@@ -2,49 +2,47 @@
  * iframe.js
  */
 
-/* eslint-disable */
-(function ($) {
-
-  function create_iframe($links, opt/*, text*/) {
-    return $links.each(function (i, link) {
-      var $link = $(link);
-      var href = $link.attr('href');
-      var $iframe = $('<iframe class="col-md-12" style="border: 0px solid red; height: 650px;"></iframe>');
+(() => {
+  const $ = window.jQuery;
+  function createIframe($links, opt /* , text */) {
+    return $links.each((i, link) => {
+      const $link = $(link);
+      const href = $link.attr('href');
+      const $iframe = $('<iframe class="col-md-12" style="border: 0px solid red; height: 650px;"></iframe>');
       $iframe.attr('src', href);
       $link.replaceWith($iframe);
 
-      if (opt.width)
+      if (opt.width) {
         $iframe.css('width', opt.width);
-      if (opt.height)
+      }
+      if (opt.height) {
         $iframe.css('height', opt.height);
-      else {
-        var updateSizeFn = function () {
-          var offset = $iframe.offset();
-          var winHeight = $(window).height();
-          var newHeight = winHeight - offset.top - 5;
+      } else {
+        const updateSizeFn = () => {
+          const offset = $iframe.offset();
+          const winHeight = $(window).height();
+          const newHeight = winHeight - offset.top - 5;
           $iframe.height(newHeight);
         };
 
-        $iframe.on('load', function(/*done*/) {
+        $iframe.on('load', (/* done */) => {
           updateSizeFn();
         });
 
-        $(window).on('resize', function () {
+        $(window).on('resize', () => {
           updateSizeFn();
         });
       }
-
     });
   }
 
-  var iframeGimmick = {
+  const iframeGimmick = {
     name: 'iframe',
     version: $.md.version,
-    once: function () {
-      $.md.linkGimmick(this, 'iframe', create_iframe);
-    }
+    once() {
+      $.md.linkGimmick(this, 'iframe', createIframe);
+    },
   };
 
   $.md.registerGimmick(iframeGimmick);
-
-})(window.jQuery);
+})();

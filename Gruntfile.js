@@ -62,13 +62,13 @@ module.exports = () => {
         dest: 'dist/<%= pkg.name %>-debug.html',
         bundle: 'src/_compiled/js/<%= pkg.name %>.js',
 
-                cssFiles: [
-                    { name: 'node_modules/bootstrap/dist/css/bootstrap.css' },
-                    { name: 'node_modules/prismjs/themes/prism.css' },
-                    { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.css' },
-                    { name: 'src/lib/jquery-colorbox/css/colorbox.css' },
-                    { name: 'src/css/<%= pkg.name %>.css' },
-                ],
+        cssFiles: [
+          { name: 'node_modules/bootstrap/dist/css/bootstrap.css' },
+          { name: 'node_modules/prismjs/themes/prism.css' },
+          { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.css' },
+          { name: 'src/lib/jquery-colorbox/css/colorbox.css' },
+          { name: 'src/css/<%= pkg.name %>.css' },
+        ],
 
         jsFiles: [
           { name: 'node_modules/jquery/dist/jquery.js' },
@@ -86,13 +86,13 @@ module.exports = () => {
         dest: 'dist/<%= pkg.name %>.html',
         bundle: 'src/_compiled/js/<%= pkg.name %>.min.js',
 
-                cssFiles: [
-                    { name: 'node_modules/bootstrap/dist/css/bootstrap.min.css', inline: true },
-                    { name: 'node_modules/prismjs/themes/prism.min.css', inline: true },
-                    { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.min.css', inline: true },
-                    { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
-                    { name: 'src/css/<%= pkg.name %>.css', inline: true },
-                ],
+        cssFiles: [
+          { name: 'node_modules/bootstrap/dist/css/bootstrap.min.css', inline: true },
+          { name: 'node_modules/prismjs/themes/prism.min.css', inline: true },
+          { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.min.css', inline: true },
+          { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
+          { name: 'src/css/<%= pkg.name %>.css', inline: true },
+        ],
 
         jsFiles: [
           { name: 'node_modules/jquery/dist/jquery.min.js', inline: true },
@@ -112,23 +112,23 @@ module.exports = () => {
         dest: 'dist/<%= pkg.name %>-slim.html',
         bundle: 'src/_compiled/js/<%= pkg.name %>.min.js',
 
-                cssFiles: [
-                    { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' },
-                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css' },
-                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.css' },
-                    { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
-                    { name: 'src/css/<%= pkg.name %>.css', inline: true },
-                ],
+        cssFiles: [
+          { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' },
+          { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css' },
+          { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.css' },
+          { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
+          { name: 'src/css/<%= pkg.name %>.css', inline: true },
+        ],
 
-                jsFiles: [
-                    { name: '//cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js' },
-                    { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js' },
-                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js' },
-                    { name: '//cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/components/prism-bash.min.js,npm/prismjs@1.29.0/components/prism-c.min.js,npm/prismjs@1.29.0/components/prism-clike.min.js,npm/prismjs@1.29.0/components/prism-coffeescript.min.js,npm/prismjs@1.29.0/components/prism-cpp.min.js,npm/prismjs@1.29.0/components/prism-csharp.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-css-extras.min.js,npm/prismjs@1.29.0/components/prism-go.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-markdown.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-ruby.min.js,npm/prismjs@1.29.0/components/prism-sass.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-uri.min.js,npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js,npm/prismjs@1.29.0/plugins/keep-markup/prism-keep-markup.min.js,npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.js' },
-                    { name: '//cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox-min.min.js' },
-                    { name: '//cdn.jsdelivr.net/npm/marked@0.3.19/marked.min.js' },
-                    { name: '<%= index.slim.bundle %>', inline: true },
-                ],
+        jsFiles: [
+          { name: '//cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js' },
+          { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js' },
+          { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js' },
+          { name: '//cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/components/prism-bash.min.js,npm/prismjs@1.29.0/components/prism-c.min.js,npm/prismjs@1.29.0/components/prism-clike.min.js,npm/prismjs@1.29.0/components/prism-coffeescript.min.js,npm/prismjs@1.29.0/components/prism-cpp.min.js,npm/prismjs@1.29.0/components/prism-csharp.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-css-extras.min.js,npm/prismjs@1.29.0/components/prism-go.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-markdown.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-ruby.min.js,npm/prismjs@1.29.0/components/prism-sass.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-uri.min.js,npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js,npm/prismjs@1.29.0/plugins/keep-markup/prism-keep-markup.min.js,npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.js' },
+          { name: '//cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox-min.min.js' },
+          { name: '//cdn.jsdelivr.net/npm/marked@0.3.19/marked.min.js' },
+          { name: '<%= index.slim.bundle %>', inline: true },
+        ],
 
         makeFileId,
       },

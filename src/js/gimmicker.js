@@ -2,21 +2,23 @@
  * gimmickers.js
  */
 
-/* eslint-disable */
-(function ($) {
+(() => {
+  const $ = window.jQuery;
 
-  $.gimmicks = $.fn.gimmicks = function (method) {
+  // eslint-disable-next-line func-names
+  $.fn.gimmicks = function (method, ...args) {
     if (method === undefined) {
       return;
     }
     // call the gimmick
-    if ($.fn.gimmicks.methods[method]) {
-      return $.fn.gimmicks.methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-    } else {
-      $.error('Gimmick ' + method + ' does not exist on jQuery.gimmicks');
+    if (!$.fn.gimmicks.methods[method]) {
+      $.error(`Gimmick ${method} does not exist on jQuery.gimmicks`);
     }
+    // eslint-disable-next-line consistent-return
+    return $.fn.gimmicks.methods[method].apply(this, args);
   };
 
-  // TODO underscores _ in Markdown links are not allowed! bug in our MD imlemenation
+  $.gimmicks = $.fn.gimmicks;
 
-})(window.jQuery);
+  // TODO underscores _ in Markdown links are not allowed! bug in our MD imlemenation
+})();

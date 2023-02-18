@@ -2,43 +2,40 @@
  * youtube_embed.js
  */
 
-/* eslint-disable */
-(function ($) {
-
+(() => {
+  const $ = window.jQuery;
   function youtubeLinkToIframe() {
-    var $youtube_links = $('a[href*=youtube\\.com]:empty, a[href*=youtu\\.be]:empty');
+    const $youtubeLinks = $('a[href*=youtube\\.com]:empty, a[href*=youtu\\.be]:empty');
 
-    $youtube_links.each(function () {
-      var $this = $(this);
-      var href = $this.attr('href');
+    $youtubeLinks.each((i, _this) => {
+      const $this = $(_this);
+      const href = $this.attr('href');
       if (href !== undefined) {
         // extract the v parameter from youtube
-        var exp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
-        var m = href.match(exp);
+        const exp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
+        const m = href.match(exp);
 
         if (m && m[1].length === 11) {
           // insert the iframe
-          var short_handle = m[1];
-          var frame = $('<iframe class="md-external" frameborder="0" allowfullscreen></iframe>');
-          frame.attr('src', '//youtube.com/embed/' + short_handle);
+          const shortHandle = m[1];
+          const frame = $('<iframe class="md-external" frameborder="0" allowfullscreen></iframe>');
+          frame.attr('src', `//youtube.com/embed/${shortHandle}`);
           // remove the a tag
           $this.replaceWith(frame);
-
         }
       }
     });
   }
 
-  var youtubeGimmick = {
+  const youtubeGimmick = {
     name: 'youtube',
-    load: function () {
-      $.md.stage('gimmick').subscribe(function (done) {
+    load() {
+      $.md.stage('gimmick').subscribe((done) => {
         youtubeLinkToIframe();
         done();
       });
-    }
+    },
   };
 
   $.md.registerGimmick(youtubeGimmick);
-
-})(window.jQuery);
+})();

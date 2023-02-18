@@ -2,10 +2,10 @@
  * main.js
  */
 
-/* eslint-disable */
-(function ($) {
-
-  var log = $.md.getLogger();
+(() => {
+  const $ = window.jQuery;
+  const { marked } = window;
+  const log = $.md.getLogger();
 
   function init() {
     $.md.stages = [
@@ -38,148 +38,144 @@
       $.Stage('all_ready'),
 
       // used for integration tests, not intended to use in MDwiki itself
-      $.Stage('final_tests')
+      $.Stage('final_tests'),
     ];
 
-    $.md.stage = function (name) {
-      var m = $.grep($.md.stages, function (e/*, i*/) {
-        return e.name === name;
-      });
+    $.md.stage = (name) => {
+      const m = $.grep($.md.stages, (e /* , i */) => (e.name === name));
       if (m.length === 0) {
-        $.error('A stage by name ' + name + '  does not exist');
-      } else {
-        return m[0];
+        $.error(`A stage by name ${name}  does not exist`);
       }
+      return m[0];
     };
   }
   init();
 
   function resetStages() {
-    var old_stages = $.md.stages;
+    const oldStages = $.md.stages;
     $.md.stages = [];
-    $(old_stages).each(function (i, e) {
+    $(oldStages).each((i, e) => {
       $.md.stages.push($.Stage(e.name));
     });
   }
 
-  var publicMethods = {};
+  const publicMethods = {};
   $.md.publicMethods = $.extend({}, $.md.publicMethods, publicMethods);
 
   function transformMarkdown(markdown) {
-    var options = {
+    const options = {
       gfm: true,
       tables: true,
-      breaks: true
+      breaks: true,
     };
-    if ($.md.config.lineBreaks === 'original')
+    if ($.md.config.lineBreaks === 'original') {
       options.breaks = false;
-    else if ($.md.config.lineBreaks === 'gfm')
+    } else if ($.md.config.lineBreaks === 'gfm') {
       options.breaks = true;
+    }
 
     marked.setOptions(options);
 
     // get sample markdown
-    var uglyHtml = marked(markdown);
+    const uglyHtml = marked(markdown);
     return uglyHtml;
   }
 
   // load [include](/foo/bar.md) external links
-  function loadExternalIncludes(parent_dfd) {
-
+  function loadExternalIncludes(parentDfd) {
     function findExternalIncludes() {
-      return $('a').filter(function () {
-        var href = $(this).attr('href');
-        var text = $(this).toptext();
-        var isMarkdown = $.md.util.hasMarkdownFileExtension(href);
-        var isInclude = text === 'include';
-        var isPreview = text.startsWith('preview:');
+      return $('a').filter((i, _this) => {
+        const href = $(_this).attr('href');
+        const text = $(_this).toptext();
+        const isMarkdown = $.md.util.hasMarkdownFileExtension(href);
+        const isInclude = text === 'include';
+        const isPreview = text.startsWith('preview:');
         return (isInclude || isPreview) && isMarkdown;
       });
     }
 
-    function selectPreviewElements($jqcol, num_elements) {
+    function selectPreviewElements($jqcol, numElements) {
       function isTextNode(node) {
         return node.nodeType === 3;
       }
-      var count = 0;
-      var elements = [];
-      $jqcol.each(function (i, e) {
-        if (count < num_elements) {
+      let count = 0;
+      const elements = [];
+      $jqcol.each((i, e) => {
+        if (count < numElements) {
           elements.push(e);
-          if (!isTextNode(e)) count++;
+          if (!isTextNode(e)) {
+            count += 1;
+          }
         }
       });
       return $(elements);
     }
 
-    var external_links = findExternalIncludes();
+    const externalLinks = findExternalIncludes();
     // continue execution when all external resources are fully loaded
-    var latch = $.md.util.countDownLatch(external_links.length);
-    latch.always(function () {
-      parent_dfd.resolve();
+    const latch = $.md.util.countDownLatch(externalLinks.length);
+    latch.always(() => {
+      parentDfd.resolve();
     });
 
-    external_links.each(function (i, e) {
-      var $el = $(e);
-      var href = $el.attr('href');
-      var text = $el.toptext();
+    externalLinks.each((i, e) => {
+      const $el = $(e);
+      const href = $el.attr('href');
+      const text = $el.toptext();
 
       $.ajax({
         url: href,
-        dataType: 'text'
+        dataType: 'text',
       })
-        .done(function (data) {
-          var $html = $(transformMarkdown(data));
+        .done((data) => {
+          const $html = $(transformMarkdown(data));
           if (text.startsWith('preview:')) {
             // only insert the selected number of paragraphs; default 3
-            var num_preview_elements = parseInt(text.substring(8), 10) || 3;
-            var $preview = selectPreviewElements($html, num_preview_elements);
-            $preview.last().append('<a href="' + href + '"> ...read more &#10140;</a>');
+            const numPreviewElements = parseInt(text.substring(8), 10) || 3;
+            const $preview = selectPreviewElements($html, numPreviewElements);
+            $preview.last().append(`<a href="${href}"> ...read more &#10140;</a>`);
             $preview.insertBefore($el.parent('p').eq(0));
             $el.remove();
           } else {
             $html.insertAfter($el.parents('p'));
             $el.remove();
           }
-        }).always(function () {
+        }).always(() => {
           latch.countDown();
         });
     });
   }
 
   function registerFetchMarkdown() {
+    let md = '';
 
-    var md = '';
-
-    $.md.stage('init').subscribe(function (done) {
-
-      var ajaxReq = {
+    $.md.stage('init').subscribe((done) => {
+      const ajaxReq = {
         url: $.md.mainHref,
-        dataType: 'text'
+        dataType: 'text',
       };
 
       // Request the md page
-      $.ajax(ajaxReq).done(function (data) {
-        md = data;
-        done();
-      })
+      $.ajax(ajaxReq)
+        .done((data) => {
+          md = data;
+          done();
+        })
 
         // Failed to find the md page we were looking for
-        .fail(function () {
-
+        .fail(() => {
           // Warn that this page wasn't found
-          var log = $.md.getLogger();
-          log.warn('Could not get ' + $.md.mainHref);
+          log.warn(`Could not get ${$.md.mainHref}`);
 
           // Attempt to gracefully recover by displaying a user defined 404 page
           ajaxReq.url = '404.md';
-          $.ajax(ajaxReq).done(function (data) {
+          $.ajax(ajaxReq).done((data) => {
             md = data;
             done();
           })
 
             // The user has not defined a 404.md.
-            .fail(function (/*data*/) {
+            .fail((/* data */) => {
               log.fatal('Could not get a user defined 404.md');
 
               // Our last attempt to provide a good user expierence by proving a hard coded
@@ -192,203 +188,188 @@
     });
 
     // find baseUrl
-    $.md.stage('transform').subscribe(function (done) {
-      var len = $.md.mainHref.lastIndexOf('/');
-      var baseUrl = $.md.mainHref.substring(0, len + 1);
+    $.md.stage('transform').subscribe((done) => {
+      const len = $.md.mainHref.lastIndexOf('/');
+      const baseUrl = $.md.mainHref.substring(0, len + 1);
       $.md.baseUrl = baseUrl;
       done();
     });
 
-    $.md.stage('transform').subscribe(function (done) {
-      var uglyHtml = transformMarkdown(md);
+    $.md.stage('transform').subscribe((done) => {
+      const uglyHtml = transformMarkdown(md);
       $('#md-content').html(uglyHtml);
       md = '';
-      var dfd = $.Deferred();
+      const dfd = $.Deferred();
       loadExternalIncludes(dfd);
-      dfd.always(function () {
+      dfd.always(() => {
         done();
       });
     });
   }
 
   function isSpecialLink(href) {
-    if (!href) return false;
+    if (!href) { return false; }
 
-    if (href.lastIndexOf('data:') >= 0)
-      return true;
+    if (href.lastIndexOf('data:') >= 0) { return true; }
 
-    if (href.startsWith('mailto:'))
-      return true;
+    if (href.startsWith('mailto:')) { return true; }
 
-    if (href.startsWith('file:'))
-      return true;
+    if (href.startsWith('file:')) { return true; }
 
-    if (href.startsWith('ftp:'))
-      return true;
+    if (href.startsWith('ftp:')) { return true; }
+
+    return false;
 
     // TODO capture more special links: every non-http link with : like
     // torrent:// etc.
   }
 
   // modify internal links so we load them through our engine
-  function processPageLinks(domElement, baseUrl) {
-    var html = $(domElement);
-    if (baseUrl === undefined) {
-      baseUrl = '';
-    }
+  function processPageLinks(domElement, baseUrl = '') {
+    const html = $(domElement);
+
     // HACK against marked: empty links will have empy href attribute
     // we remove the href attribute from the a tag
-    html.find('a').not('#md-menu a').filter(function () {
-      var $this = $(this);
-      var attr = $this.attr('href');
-      if (!attr || attr.length === 0)
-        $this.removeAttr('href');
+    html.find('a').not('#md-menu a').each((i, _this) => {
+      const $this = $(_this);
+      const attr = $this.attr('href');
+      if (!attr || attr.length === 0) { $this.removeAttr('href'); }
     });
 
-    html.find('a, img').each(function (i, e) {
-      var link = $(e);
+    html.find('a, img').each((i, e) => {
+      const link = $(e);
       // link must be jquery collection
-      var isImage = false;
-      var hrefAttribute = 'href';
+      let isImage = false;
+      let hrefAttribute = 'href';
 
       if (!link.attr(hrefAttribute)) {
         isImage = true;
         hrefAttribute = 'src';
       }
-      var href = link.attr(hrefAttribute);
+      const href = link.attr(hrefAttribute);
 
-      if (href && href.lastIndexOf('#!') >= 0)
-        return;
+      if (href && href.lastIndexOf('#!') >= 0) { return; }
 
-      if (isSpecialLink(href))
-        return;
+      if (isSpecialLink(href)) { return; }
 
       if (!isImage && href.startsWith('#') && !href.startsWith('#!')) {
         // in-page link
-        link.click(function (ev) {
+        link.click((ev) => {
           ev.preventDefault();
           $.md.scrollToInPageAnchor(href);
         });
       }
 
-      if (!$.md.util.isRelativeUrl(href))
-        return;
+      if (!$.md.util.isRelativeUrl(href)) { return; }
 
-      if (isImage && !$.md.util.isRelativePath(href))
-        return;
+      if (isImage && !$.md.util.isRelativePath(href)) { return; }
 
-      if (!isImage && $.md.util.isGimmickLink(link))
-        return;
+      if (!isImage && $.md.util.isGimmickLink(link)) { return; }
 
-      function build_link(url) {
-        if ($.md.util.hasMarkdownFileExtension(url))
-          return '#!' + url;
-        else
-          return url;
+      function buildLink(url) {
+        if ($.md.util.hasMarkdownFileExtension(url)) return `#!${url}`;
+
+        return url;
       }
 
-      var newHref = baseUrl + href;
-      if (isImage)
+      const newHref = baseUrl + href;
+      if (isImage) {
         link.attr(hrefAttribute, newHref);
-      else if ($.md.util.isRelativePath(href))
-        link.attr(hrefAttribute, build_link(newHref));
-      else
-        link.attr(hrefAttribute, build_link(href));
+      } else if ($.md.util.isRelativePath(href)) {
+        link.attr(hrefAttribute, buildLink(newHref));
+      } else {
+        link.attr(hrefAttribute, buildLink(href));
+      }
     });
   }
 
-  var navMD = '';
+  let navMD = '';
   $.md.NavigationDfd = $.Deferred();
-  var ajaxReq = {
+  const ajaxReq = {
     url: 'navigation.md',
-    dataType: 'text'
+    dataType: 'text',
   };
-  $.ajax(ajaxReq).done(function (data) {
+  $.ajax(ajaxReq).done((data) => {
     navMD = data;
     $.md.NavigationDfd.resolve();
-  }).fail(function () {
+  }).fail(() => {
     $.md.NavigationDfd.reject();
   });
 
   function registerBuildNavigation() {
-
-    $.md.stage('init').subscribe(function (done) {
-      $.md.NavigationDfd.done(function () {
+    $.md.stage('init').subscribe((done) => {
+      $.md.NavigationDfd.done(() => {
         done();
       })
-        .fail(function () {
+        .fail(() => {
           done();
         });
     });
 
-    $.md.stage('transform').subscribe(function (done) {
+    $.md.stage('transform').subscribe((done) => {
       if (navMD === '') {
-        var log = $.md.getLogger();
         log.info('no navgiation.md found, not using a navbar');
         done();
         return;
       }
 
-      var navHtml = marked(navMD);
+      const navHtml = marked(navMD);
       // TODO why are <script> tags from navHtml APPENDED to the jqcol?
-      var $h = $('<div>' + navHtml + '</div>');
+      const $h = $(`<div>${navHtml}</div>`);
 
       // insert <scripts> from navigation.md into the DOM
-      $h.each(function (i, e) {
+      $h.each((i, e) => {
         if (e.tagName === 'SCRIPT') {
           $('script').first().before(e);
         }
       });
 
       // TODO .html() is evil!!!
-      var $navContent = $h.eq(0);
-      $navContent.find('p').each(function (i, e) {
-        var $el = $(e);
+      const $navContent = $h.eq(0);
+      $navContent.find('p').each((i, e) => {
+        const $el = $(e);
         $el.replaceWith($el.html());
       });
       $('#md-menu').append($navContent.html());
       done();
     });
 
-    $.md.stage('bootstrap').subscribe(function (done) {
+    $.md.stage('bootstrap').subscribe((done) => {
       processPageLinks($('#md-menu'));
       done();
     });
 
-    $.md.stage('postgimmick').subscribe(function (done) {
-      var num_links = $('#md-menu a').length;
-      var has_header = $('#md-menu .navbar-brand').eq(0).toptext().trim().length > 0;
-      if (!has_header && num_links <= 1)
-        $('#md-menu').hide();
+    $.md.stage('postgimmick').subscribe((done) => {
+      const numLinks = $('#md-menu a').length;
+      const hasHeader = $('#md-menu .navbar-brand').eq(0).toptext().trim().length > 0;
+      if (!hasHeader && numLinks <= 1) { $('#md-menu').hide(); }
 
       done();
     });
   }
 
   $.md.ConfigDfd = $.Deferred();
-  $.ajax({ url: 'config.json', dataType: 'text' }).done(function (data) {
+  $.ajax({ url: 'config.json', dataType: 'text' }).done((data) => {
     try {
-      var data_json = JSON.parse(data);
-      $.md.config = $.extend($.md.config, data_json);
+      const dataJson = JSON.parse(data);
+      $.md.config = $.extend($.md.config, dataJson);
       log.info('Found a valid config.json file, using configuration');
     } catch (err) {
-      log.error('config.json was not JSON parsable: ' + err);
+      log.error(`config.json was not JSON parsable: ${err}`);
     }
     $.md.ConfigDfd.resolve();
-  }).fail(function (err, textStatus) {
-    log.error('unable to retrieve config.json: ' + textStatus);
+  }).fail((err, textStatus) => {
+    log.error(`unable to retrieve config.json: ${textStatus}`);
     $.md.ConfigDfd.reject();
   });
   function registerFetchConfig() {
-
-    $.md.stage('init').subscribe(function (done) {
+    $.md.stage('init').subscribe((done) => {
       // TODO 404 won't get cached, requesting it every reload is not good
       // maybe use cookies? or disable re-loading of the page
-      //$.ajax('config.json').done(function(data){
-      $.md.ConfigDfd.done(function () {
+      // $.ajax('config.json').done(function(data){
+      $.md.ConfigDfd.done(() => {
         done();
-      }).fail(function () {
-        var log = $.md.getLogger();
+      }).fail(() => {
         log.info('No config.json found, using default settings');
         done();
       });
@@ -396,48 +377,45 @@
   }
 
   function registerClearContent() {
-
-    $.md.stage('init').subscribe(function (done) {
+    $.md.stage('init').subscribe((done) => {
       $('#md-all').empty();
-      var skel = '<div id="md-body"><div id="md-title"></div><div id="md-menu">' +
-        '</div><div id="md-content"></div></div>';
+      const skel = '<div id="md-body"><div id="md-title"></div><div id="md-menu">'
+        + '</div><div id="md-content"></div></div>';
       $('#md-all').prepend($(skel));
       done();
     });
-
   }
 
   function runStages() {
-
     // wire the stages up
-    $.md.stage('init').done(function () {
+    $.md.stage('init').done(() => {
       $.md.stage('load').run();
     });
-    $.md.stage('load').done(function () {
+    $.md.stage('load').done(() => {
       $.md.stage('transform').run();
     });
-    $.md.stage('transform').done(function () {
+    $.md.stage('transform').done(() => {
       $.md.stage('ready').run();
     });
-    $.md.stage('ready').done(function () {
+    $.md.stage('ready').done(() => {
       $.md.stage('skel_ready').run();
     });
-    $.md.stage('skel_ready').done(function () {
+    $.md.stage('skel_ready').done(() => {
       $.md.stage('bootstrap').run();
     });
-    $.md.stage('bootstrap').done(function () {
+    $.md.stage('bootstrap').done(() => {
       $.md.stage('pregimmick').run();
     });
-    $.md.stage('pregimmick').done(function () {
+    $.md.stage('pregimmick').done(() => {
       $.md.stage('gimmick').run();
     });
-    $.md.stage('gimmick').done(function () {
+    $.md.stage('gimmick').done(() => {
       $.md.stage('postgimmick').run();
     });
-    $.md.stage('postgimmick').done(function () {
+    $.md.stage('postgimmick').done(() => {
       $.md.stage('all_ready').run();
     });
-    $.md.stage('all_ready').done(function () {
+    $.md.stage('all_ready').done(() => {
       $('html').removeClass('md-hidden-load');
 
       // phantomjs hook when we are done
@@ -447,7 +425,7 @@
 
       $.md.stage('final_tests').run();
     });
-    $.md.stage('final_tests').done(function () {
+    $.md.stage('final_tests').done(() => {
       // reset the stages for next iteration
       resetStages();
 
@@ -458,46 +436,45 @@
 
     // trigger the whole process by runing the init stage
     $.md.stage('init').run();
-    return;
   }
 
-  function loadContent(href) {
+  function loadContent(hrefArg) {
+    let href = hrefArg;
     if (href.startsWith('/')) {
       // prevent cross-domain inclusions to prevent possible XSS
-      href = '/./' + href;
+      href = `/./${href}`;
     } else {
-      href = './' + href;
+      href = `./${href}`;
     }
     $.md.mainHref = href;
-
 
     registerFetchMarkdown();
     registerClearContent();
 
     // find out which link gimmicks we need
-    $.md.stage('ready').subscribe(function (done) {
+    $.md.stage('ready').subscribe((done) => {
       $.md.initializeGimmicks();
       $.md.registerLinkGimmicks();
       done();
     });
 
     // wire up the load method of the modules
-    $.each($.md.gimmicks, function (i, module) {
+    $.each($.md.gimmicks, (i, module) => {
       if (module.load === undefined) {
         return;
       }
-      $.md.stage('load').subscribe(function (done) {
+      $.md.stage('load').subscribe((done) => {
         module.load();
         done();
       });
     });
 
-    $.md.stage('ready').subscribe(function (done) {
+    $.md.stage('ready').subscribe((done) => {
       $.md('createBasicSkeleton');
       done();
     });
 
-    $.md.stage('bootstrap').subscribe(function (done) {
+    $.md.stage('bootstrap').subscribe((done) => {
       $.mdbootstrap('bootstrapify');
       processPageLinks($('#md-content'), $.md.baseUrl);
       done();
@@ -507,7 +484,7 @@
 
   function extractHashData() {
     // first char is the # or #!
-    var href;
+    let href;
     if (window.location.hash.startsWith('#!')) {
       href = window.location.hash.substring(2);
     } else {
@@ -516,34 +493,30 @@
     href = decodeURIComponent(href);
 
     // extract possible in-page anchor
-    var ex_pos = href.indexOf('#');
-    if (ex_pos !== -1) {
-      $.md.inPageAnchor = href.substring(ex_pos + 1);
-      $.md.mainHref = href.substring(0, ex_pos);
+    const exPos = href.indexOf('#');
+    if (exPos !== -1) {
+      $.md.inPageAnchor = href.substring(exPos + 1);
+      $.md.mainHref = href.substring(0, exPos);
     } else {
       $.md.mainHref = href;
     }
   }
 
   function appendDefaultFilenameToHash() {
-    var newHashString = '';
-    var currentHashString = window.location.hash || '';
-    if (currentHashString === '' ||
-      currentHashString === '#' ||
-      currentHashString === '#!') {
+    let newHashString = '';
+    const currentHashString = window.location.hash || '';
+    if (currentHashString === ''
+      || currentHashString === '#'
+      || currentHashString === '#!') {
       newHashString = '#!index.md';
+    } else if (currentHashString.startsWith('#!')
+      && currentHashString.endsWith('/')) {
+      newHashString = `${currentHashString}index.md`;
     }
-    else if (currentHashString.startsWith('#!') &&
-      currentHashString.endsWith('/')
-    ) {
-      newHashString = currentHashString + 'index.md';
-    }
-    if (newHashString)
-      window.location.hash = newHashString;
+    if (newHashString) { window.location.hash = newHashString; }
   }
 
-  $(document).ready(function () {
-
+  $(document).ready(() => {
     // stage init stuff
     registerFetchConfig();
     registerBuildNavigation();
@@ -551,11 +524,10 @@
 
     appendDefaultFilenameToHash();
 
-    $(window).bind('hashchange', function () {
+    $(window).bind('hashchange', () => {
       window.location.reload(false);
     });
 
     loadContent($.md.mainHref);
   });
-
-})(window.jQuery);
+})();

@@ -2,24 +2,22 @@
  * math.js
  */
 
-/* eslint-disable */
-(function ($) {
-
-  function load_mathjax($links/*, opt, ref*/) {
+(() => {
+  const $ = window.jQuery;
+  function loadMathjax($links /* , opt, ref */) {
     $links.remove();
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = $.md.prepareLink('cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
     document.getElementsByTagName('head')[0].appendChild(script);
   }
 
-  var mathGimmick = {
+  const mathGimmick = {
     name: 'math',
-    once: function () {
-      $.md.linkGimmick(this, 'math', load_mathjax);
-    }
+    once() {
+      $.md.linkGimmick(this, 'math', loadMathjax);
+    },
   };
 
   $.md.registerGimmick(mathGimmick);
-
-})(window.jQuery);
+})();
