@@ -258,7 +258,7 @@
             // if the page menu is affixed, it is not a child of the
             // <md-left-column> anymore and therefore does not inherit
             // its width. On every resize, change the class accordingly
-            var width_left_column = $('#md-left-column').css('width');
+            var width_left_column = $('#md-left-column').width();
             $('#md-page-menu').css('width', width_left_column);
         };
 

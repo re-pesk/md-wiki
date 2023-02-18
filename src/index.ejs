@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<!--
+   This is <%= pkg.title %> v<%= pkg.version %> in <%= mode %> mode
+   (C) 2013 by <%= pkg.author.name %> and contributors. This software is licensed
+   under the terms of the <%= pkg.license.name %> with additional terms applied.
+   See <%= pkg.license.url %> for more detail.
+   See <%= pkg.repository.url %> for a copy of the source code.
+-->
+  <head>
+    <title><%= pkg.title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="fragment" content="!">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <meta charset="UTF-8">
+<%
+    const wrapInComments = (name, content) => (isDebug ? `<!-- START ${name} -->\n${content}<!-- END ${name} -->\n` : content );
+
+    const style_id = (name) => ((!isDebug && makeFileId) ? ` id="style:${name}"` : '')
+    const script_id = (name) => ((!isDebug && makeFileId ) ? ` id="script:${name}"` : '')
+
+    var output = '';
+
+    // css
+    cssFiles.forEach(fileData => (
+      output += fileData.inline 
+      ? wrapInComments(fileData.name, `<style${style_id(fileData.name)}>\n${fileRead(fileData.name)}\n</style>`) 
+      : `<link rel="stylesheet" href="${fileData.name}" type="text/css"></link>\n`
+    ));
+
+    // js
+    jsFiles.forEach(fileData => (
+      output += fileData.inline 
+      ? wrapInComments(fileData.name, `<script${script_id(fileData.name)}>\n${fileRead(fileData.name)}\n</script>\n`) 
+      : `<script type="text/javascript" src="${fileData.name}"></script>\n`
+    ));
+
+    (isDebug ? output += '<script type="text/javascript">$.md.logThreshold = $.md.loglevel.DEBUG;</script>' : '')
+%><%= output %>
+  </head>
+  <body>
+    <noscript>
+        This website requires Javascript to be enabled. Please turn on Javascript
+        and reload the page.
+    </noscript>
+
+    <div id="md-all">
+    </div>
+  </body>
+</html>
