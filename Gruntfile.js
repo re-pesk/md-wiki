@@ -29,7 +29,6 @@ module.exports = function (grunt) {
         pkg: require('./.metadata'),
 
         ownJsFiles: [
-            'src/js/marked.js',
             'src/js/init.js',
             'src/js/logging.js',
             'src/js/stage.js',
@@ -131,6 +130,7 @@ module.exports = function (grunt) {
                     { name: 'node_modules/prismjs/prism.js' },
                     { name: 'src/_compiled/js/prism-ext.js' },
                     { name: 'node_modules/jquery-colorbox/jquery.colorbox.js' },
+                    { name: 'node_modules/marked/lib/marked.js' },
                     { name: '<%= concat.dev.dest %>' },
                 ],
             },
@@ -153,6 +153,7 @@ module.exports = function (grunt) {
                     { name: 'node_modules/prismjs/prism.js', inline: true },
                     { name: 'src/_compiled/js/prism-ext.min.js', inline: true },
                     { name: 'node_modules/jquery-colorbox/jquery.colorbox-min.js', inline: true },
+                    { name: 'node_modules/marked/marked.min.js', inline: true },
                     { name: '<%= uglify.dist.dest %>', inline: true },
                 ],
 
@@ -177,6 +178,7 @@ module.exports = function (grunt) {
                     { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js' },
                     { name: '//cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/components/prism-bash.min.js,npm/prismjs@1.29.0/components/prism-c.min.js,npm/prismjs@1.29.0/components/prism-clike.min.js,npm/prismjs@1.29.0/components/prism-coffeescript.min.js,npm/prismjs@1.29.0/components/prism-cpp.min.js,npm/prismjs@1.29.0/components/prism-csharp.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-css-extras.min.js,npm/prismjs@1.29.0/components/prism-go.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-markdown.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-ruby.min.js,npm/prismjs@1.29.0/components/prism-sass.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-uri.min.js,npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js,npm/prismjs@1.29.0/plugins/keep-markup/prism-keep-markup.min.js,npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.js' },
                     { name: '//cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox-min.min.js' },
+                    { name: '//cdn.jsdelivr.net/npm/marked@0.3.19/marked.min.js' },
                     { name: '<%= uglify.dist.dest %>', inline: true },
                 ],
 
