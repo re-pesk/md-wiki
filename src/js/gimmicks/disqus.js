@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   var alreadyDone = false;
   var disqus = function ($links, opt/*, text*/) {

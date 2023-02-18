@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   var supportedLangs = [
     'abap',

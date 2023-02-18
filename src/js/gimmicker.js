@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   $.gimmicks = $.fn.gimmicks = function (method) {
     if (method === undefined) {

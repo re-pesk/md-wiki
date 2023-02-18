@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   // no license information given in the widget.js -> OTHER
   var widgetHref = $.md.prepareLink('platform.twitter.com/widgets.js');

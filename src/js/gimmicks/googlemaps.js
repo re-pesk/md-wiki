@@ -4,16 +4,14 @@
 
 // ugly, but the google loader requires the callback fn
 // to be in the global scope
-var googlemapsLoadDone, googlemapsReady;
+var googlemapsLoadDone;
 
 // eslint-disable-next-line no-unused-vars
-googlemapsReady = function() {
-  'use strict';
+window.googlemapsReady = function() {
   googlemapsLoadDone.resolve();
 };
 
 (function ($) {
-  'use strict';
   var scripturl = 'https://maps.google.com/maps/api/js?sensor=false&callback=googlemapsReady';
 
   function set_map(opt/*, div_id*/) {

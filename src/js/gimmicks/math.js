@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   function load_mathjax($links/*, opt, ref*/) {
     $links.remove();

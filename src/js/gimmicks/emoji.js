@@ -29,7 +29,7 @@
  * [TORTUE_CDN]: http://www.tortue.me/
  */
 (function ($) {
-  'use strict';
+
   function createEmojis() {
     var content = $('#md-content');
     var html = content.html();

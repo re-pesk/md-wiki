@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   function gist($links, opt, href) {
     $().lazygist('init');
@@ -50,7 +49,6 @@
 */
 
 (function ($, document) {
-  'use strict';
 
   //
   // note:

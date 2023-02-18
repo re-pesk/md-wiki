@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   // set the page title to the browser document title, optionally picking
   // the first h1 element as title if no title is given

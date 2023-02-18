@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   // hide the whole page so we dont see the DOM flickering
   // will be shown upon page load complete or error

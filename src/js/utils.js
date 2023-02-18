@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   var publicMethods = {
     isRelativeUrl: function (url) {
