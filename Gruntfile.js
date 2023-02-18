@@ -1,126 +1,186 @@
-var createIndex = function (grunt, taskname) {
+var createIndex = function (grunt, mode, indexData) {
     'use strict';
-    var conf = grunt.config('index')[taskname],
-        tmpl = grunt.file.read(conf.template);
+    const tmpl = grunt.file.read(indexData.template),
+        data = {
+            mode,
+            pkg : grunt.config('pkg'),
+            isDebug: (mode === 'debug'),
+            isFat: (mode === 'fat'),
+            fileRead: grunt.file.read,
+            ...indexData,
+        };
 
-    // register the task name in global scope so we can access it in the .tmpl file
-    grunt.config.set('currentTask', {name: taskname});
-
-    grunt.file.write(conf.dest, grunt.template.process(tmpl));
-    grunt.log.writeln('Generated \'' + conf.dest + '\' from \'' + conf.template + '\'');
+    grunt.log.writeln(`Building single index.html in ${mode} mode`);
+    grunt.file.write(data.dest, grunt.template.process(tmpl, { data }));
+    grunt.log.writeln(`Generated '${data.dest}' from '${data.template}'`);
 };
 
 /*global module:false*/
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
     // Project configuration.
 
+    require('load-grunt-tasks')(grunt);
+
+    const makeFileId = true;
+
     grunt.initConfig({
-    // Metadata.
-        pkg: {
-            name: 'MDwiki',
-            version: '0.6.4'
-        },
+        // Metadata.
+        pkg: require('./.metadata'),
 
         ownJsFiles: [
-            'js/marked.js',
-            'js/init.js',
-            'js/logging.js',
-            'js/stage.js',
-            'js/main.js',
-            'js/util.js',
-            'js/modules.js',
-            'js/basic_skeleton.js',
-            'js/bootstrap.js',
-            'js/gimmicker.js',
+            'src/js/marked.js',
+            'src/js/init.js',
+            'src/js/logging.js',
+            'src/js/stage.js',
+            'src/js/main.js',
+            'src/js/util.js',
+            'src/js/modules.js',
+            'src/js/basic_skeleton.js',
+            'src/js/bootstrap.js',
+            'src/js/gimmicker.js',
 
             // gimmicks
-            'js/gimmicks/alerts.js',
-            'js/gimmicks/colorbox.js',
-            'js/gimmicks/carousel.js',
-            'js/gimmicks/disqus.js',
-            'js/gimmicks/facebooklike.js',
-            'js/gimmicks/forkmeongithub.js',
-            //'js/gimmicks/github_gist.js',
-            'js/gimmicks/gist.js',
-            'js/gimmicks/googlemaps.js',
-            'js/gimmicks/iframe.js',
-            'js/gimmicks/math.js',
-            'js/gimmicks/prism.js',
-            // 'js/gimmicks/leaflet.js',
-            'js/gimmicks/themechooser.js',
-            'js/gimmicks/twitter.js',
-            'js/gimmicks/youtube_embed.js',
-            'js/gimmicks/chart.js',
-            'js/gimmicks/yuml.js'
-        ],
-
-        // files that we always inline (stuff not available on CDN)
-        internalCssFiles: [
-            'extlib/css/colorbox.css'
-        ],
-        // ONLY PUT ALREADY MINIFIED FILES IN HERE!
-        internalJsFiles: [
-            'extlib/js/jquery.colorbox.min.js'
-        ],
-
-        // files that we inline in the fat release (basically everything)
-        // ONLY PUT ALREADY MINIFIED FILES IN HERE!
-        externalJsFiles: [
-            'extlib/js/jquery-1.8.3.min.js',
-            'extlib/js/bootstrap-3.0.0.min.js',
-            'extlib/js/prism.1.4.1.min.js'
-        ],
-        externalCssFiles: [
-            'extlib/css/bootstrap-3.0.0.min.css',
-            'extlib/css/prism.1.4.1.default.min.css'
-        ],
-
-        // references we add in the slim release (stuff available on CDN locations)
-        externalJsRefs: [
-            'ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',
-            'netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js',
-            'raw.azureedge.net/joelself/mdwiki/0.6.x.0/extlib/js/prism.1.4.1.min.js'
-        ],
-        externalCssRefs: [
-            'netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css',
-            'raw.azureedge.net/joelself/mdwiki/0.6.x.0/extlib/css/prism.1.4.1.default.min.css'
-//            'www.3solarmasses.com/retriever-bootstrap/css/retriever.css'
-//            '3solarmasses.com/corgi-bootstrap/css/corgi.css'
+            'src/js/gimmicks/alerts.js',
+            'src/js/gimmicks/colorbox.js',
+            'src/js/gimmicks/carousel.js',
+            'src/js/gimmicks/disqus.js',
+            'src/js/gimmicks/facebooklike.js',
+            'src/js/gimmicks/forkmeongithub.js',
+            //'src/js/gimmicks/github_gist.js',
+            'src/js/gimmicks/gist.js',
+            'src/js/gimmicks/googlemaps.js',
+            'src/js/gimmicks/iframe.js',
+            'src/js/gimmicks/math.js',
+            'src/js/gimmicks/prism.js',
+            // 'src/js/gimmicks/leaflet.js',
+            'src/js/gimmicks/themechooser.js',
+            'src/js/gimmicks/twitter.js',
+            'src/js/gimmicks/youtube_embed.js',
+            'src/js/gimmicks/chart.js',
+            'src/js/gimmicks/yuml.js'
         ],
 
         concat: {
             options: {
-                //banner: '<%= banner %>',
-                stripBanners: true
+                stripBanners: false
             },
             dev: {
                 src: '<%= ownJsFiles %>',
-                dest: 'dist/<%= pkg.name %>.js'
+                dest: 'src/_compiled/js/<%= pkg.name %>.js'
+            },
+            prismjs: {
+                files: {
+                    'src/_compiled/js/prism-ext.js': [
+                        'node_modules/prismjs/components/prism-bash.js',
+                        'node_modules/prismjs/components/prism-c.js',
+                        'node_modules/prismjs/components/prism-clike.js',
+                        'node_modules/prismjs/components/prism-coffeescript.js',
+                        'node_modules/prismjs/components/prism-cpp.js',
+                        'node_modules/prismjs/components/prism-csharp.js',
+                        'node_modules/prismjs/components/prism-css.js',
+                        'node_modules/prismjs/components/prism-css-extras.js',
+                        'node_modules/prismjs/components/prism-go.js',
+                        'node_modules/prismjs/components/prism-javascript.js',
+                        'node_modules/prismjs/components/prism-markup.js',
+                        'node_modules/prismjs/components/prism-python.js',
+                        'node_modules/prismjs/components/prism-ruby.js',
+                        'node_modules/prismjs/components/prism-sass.js',
+                        'node_modules/prismjs/components/prism-sql.js',
+                        'node_modules/prismjs/components/prism-uri.js',
+                        'node_modules/prismjs/plugins/autoloader/prism-autoloader.js',
+                        'node_modules/prismjs/plugins/keep-markup/prism-keep-markup.js',
+                        'node_modules/prismjs/plugins/previewers/prism-previewers.js',
+                    ],
+                },
             }
         },
         uglify: {
             options: {
-                // banner: '<%= banner %>'
+                stripBanners: true
             },
             dist: {
                 src: '<%= concat.dev.dest %>',
-                dest: 'dist/<%= pkg.name %>.min.js'
+                dest: 'src/_compiled/js/<%= pkg.name %>.min.js'
+            },
+            prismjs: {
+                files: {
+                    'src/_compiled/js/prism.min.js': 'node_modules/prismjs/prism.js',
+                    'src/_compiled/js/prism-ext.min.js': 'src/_compiled/js/prism-ext.js',
+                }
             }
         },
         index: {
+            debug: {
+                description: 'Generate <%= pkg.name %>-debug.html, inline all scripts unminified',
+                template: 'src/index.ejs',
+                dest: 'dist/<%= pkg.name %>-debug.html',
+
+                cssFiles: [
+                    { name: 'node_modules/bootstrap/dist/css/bootstrap.css' },
+                    { name: 'node_modules/prismjs/themes/prism.css' },
+                    { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.css' },
+                    { name: 'src/lib/jquery-colorbox/css/colorbox.css' },
+                    { name: 'src/css/<%= pkg.name %>.css' },
+                ],
+
+                jsFiles: [
+                    { name: 'node_modules/jquery/dist/jquery.js' },
+                    { name: 'node_modules/bootstrap/dist/js/bootstrap.js' },
+                    { name: 'node_modules/prismjs/prism.js' },
+                    { name: 'src/_compiled/js/prism-ext.js' },
+                    { name: 'node_modules/jquery-colorbox/jquery.colorbox.js' },
+                    { name: '<%= concat.dev.dest %>' },
+                ],
+            },
             fat: {
-                template: 'index.tmpl',
-                dest: 'dist/mdwiki.html'
+                description: 'Generate <%= pkg.name %>.html, inline all scripts',
+                template: 'src/index.ejs',
+                dest: 'dist/<%= pkg.name %>.html',
+
+                cssFiles: [
+                    { name: 'node_modules/bootstrap/dist/css/bootstrap.min.css', inline: true },
+                    { name: 'node_modules/prismjs/themes/prism.min.css', inline: true },
+                    { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.min.css', inline: true },
+                    { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
+                    { name: 'src/css/<%= pkg.name %>.css', inline: true },
+                ],
+
+                jsFiles: [
+                    { name: 'node_modules/jquery/dist/jquery.min.js', inline: true },
+                    { name: 'node_modules/bootstrap/dist/js/bootstrap.min.js', inline: true },
+                    { name: 'node_modules/prismjs/prism.js', inline: true },
+                    { name: 'src/_compiled/js/prism-ext.min.js', inline: true },
+                    { name: 'node_modules/jquery-colorbox/jquery.colorbox-min.js', inline: true },
+                    { name: '<%= uglify.dist.dest %>', inline: true },
+                ],
+
+                makeFileId,
             },
             slim: {
-                template: 'index.tmpl',
-                dest: 'dist/mdwiki-slim.html'
+                description: 'Generate <%= pkg.name %>-slim.html, most scripts on CDN',
+                template: 'src/index.ejs',
+                dest: 'dist/<%= pkg.name %>-slim.html',
+
+                cssFiles: [
+                    { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' },
+                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css' },
+                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.css' },
+                    { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
+                    { name: 'src/css/<%= pkg.name %>.css', inline: true },
+                ],
+
+                jsFiles: [
+                    { name: '//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js' },
+                    { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js' },
+                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js' },
+                    { name: '//cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/components/prism-bash.min.js,npm/prismjs@1.29.0/components/prism-c.min.js,npm/prismjs@1.29.0/components/prism-clike.min.js,npm/prismjs@1.29.0/components/prism-coffeescript.min.js,npm/prismjs@1.29.0/components/prism-cpp.min.js,npm/prismjs@1.29.0/components/prism-csharp.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-go.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-ruby.min.js,npm/prismjs@1.29.0/components/prism-sass.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-uri.min.js,npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js,npm/prismjs@1.29.0/plugins/keep-markup/prism-keep-markup.min.js,npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.js' },
+                    { name: '//cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox-min.min.js' },
+                    { name: '<%= uglify.dist.dest %>', inline: true },
+                ],
+
+                makeFileId,
             },
-            debug: {
-                template: 'index.tmpl',
-                dest: 'dist/mdwiki-debug.html'
-            }
         },
         /* make it use .jshintrc */
         jshint: {
@@ -153,36 +213,50 @@ module.exports = function(grunt) {
                 src: 'Gruntfile.js'
             },*/
             js: {
-                src: ['js/*.js', 'js/**/*.js', '!js/marked.js']
+                src: ['src/js/*.js', 'src/js/**/*.js', '!js/marked.js']
             }
         },
         lib_test: {
             src: ['lib/**/*.js', 'test/**/*.js']
         },
         copy: {
+            assets: {
+                expand: true,
+                cwd: 'src/assets',
+                src: '**',
+                dest: 'dist/'
+            },
             release_fat: {
                 expand: false,
                 flatten: true,
-                src: [ 'dist/mdwiki.html' ],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki.html'
+                src: ['dist/<%= pkg.name %>.html'],
+                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>.html'
             },
             release_slim: {
                 expand: false,
                 flatten: true,
-                src: [ 'dist/mdwiki-slim.html' ],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-slim.html'
+                src: ['dist/<%= pkg.name %>-slim.html'],
+                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-slim.html'
             },
             release_debug: {
                 expand: false,
                 flatten: true,
-                src: [ 'dist/mdwiki-debug.html' ],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/mdwiki-debug.html'
+                src: ['dist/<%= pkg.name %>-debug.html'],
+                dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-debug.html'
             },
-            release_templates: {
-                expand: true,
-                flatten: true,
-                src: [ 'release_templates/*' ],
-                dest: 'release/mdwiki-<%= grunt.config("pkg").version %>/'
+            release_assets: {
+                files: [{
+                    expand: true,
+                    flatten: true,
+                    src: ['src/release_assets/*'],
+                    dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+                },
+                {
+                    expand: true,
+                    cwd: 'src/assets',
+                    src: '**',
+                    dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+                }],
             },
             dist: {
                 expand: true,
@@ -191,64 +265,98 @@ module.exports = function(grunt) {
                 dest: 'docs/'
             },
         },
+        clean: {
+            dist: ['dist/'],
+            release: ['release/'],
+        },
         shell: {
             zip_release: {
                 options: {
                     stdout: true
                 },
-                command: 'cd release && zip -r mdwiki-<%= grunt.config("pkg").version %>.zip mdwiki-<%= grunt.config("pkg").version %>'
+                command: [
+                  'cd release',
+                  'zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>'
+                ].join(' && '),
             }
         },
         watch: {
-            files: [
-                'Gruntfile.js',
-                'js/*.js',
-                'js/**/*.js',
-                'index.tmpl'
-            ],
-            tasks: ['devel']
+            options: {
+                livereload: 35729,
+            },
+            dev: {
+                files: [
+                    'Gruntfile.js',
+                    'src/js/*.js',
+                    'src/js/**/*.js',
+                    'src/index.ejs'
+                ],
+                tasks: ['build:debug']
+            },
+            dist: {
+                files: [
+                    'dist/**/*[!_].html'
+                ],
+                tasks: ['copy:dist']
+            },
+            docs: {
+                files: [
+                    'docs/**/*'
+                ],
+            },
         },
-        reload: {
-            port: 35729,
-            liveReload: {}
-        }
+        connect: {
+            dist: {
+                options: {
+                    livereload: true,
+                    port: 3000,
+                    hostname: 'localhost',
+                    base: ['./dist', './'],
+                    open: 'http://localhost:3000/<%= pkg.name %>-debug.html',
+                    debug: true,
+                },
+            },
+            docs: {
+                options: {
+                    livereload: true,
+                    port: 3000,
+                    hostname: 'localhost',
+                    base: ['./docs', './'],
+                    open: 'http://localhost:3000/<%= pkg.name %>-debug.html',
+                    debug: true,
+                },
+            },
+        },
     });
 
-    // These plugins provide necessary tasks.
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-shell');
-    grunt.loadNpmTasks('grunt-reload');
-
-    grunt.registerTask('index_slim', 'Generate slim mdwiki.html, most scripts on CDN', function() {
-        createIndex(grunt, 'slim');
+    grunt.registerMultiTask('index', 'Generate .html files', function () {
+        grunt.log.writeln(this.data.description)
+        createIndex(grunt, this.target, this.data);
     });
 
-    grunt.registerTask('index_fat', 'Generate mdwiki-fat.html, inline all scripts', function() {
-        createIndex(grunt, 'fat');
-    });
-    grunt.registerTask('index_debug', 'Generate mdwiki-fat.html, inline all scripts', function() {
-        createIndex(grunt, 'debug');
-    });
-    grunt.registerTask('release-slim',[  'jshint', 'concat:dev', 'uglify:dist', 'index_slim' ]);
-    grunt.registerTask('release-fat', [ 'jshint', 'concat:dev', 'uglify:dist', 'index_fat' ]);
+    grunt.registerTask('build:slim', [/* 'jshint', */ 'concat', 'uglify', 'index:slim', 'copy:assets']);
+    grunt.registerTask('build:fat', [/* 'jshint', */ 'concat', 'uglify', 'index:fat', 'copy:assets']);
 
     /* Debug is basically the fat version but without any minifing */
-    grunt.registerTask('release-debug', [ 'jshint', 'concat:dev', 'index_debug' ]);
+    grunt.registerTask('build:debug', [/* 'jshint', */ 'concat', 'index:debug', 'copy:assets']);
+    grunt.registerTask('build', ['build:slim', 'build:fat', 'build:debug']);
+    grunt.registerTask('dev', ['build:debug']);
 
-    grunt.registerTask('devel', [ 'release-debug', 'reload', 'watch' ]);
+    grunt.registerTask('serve', ['connect:dist', 'watch:dev']);
+    grunt.registerTask('docs', ['copy:dist', 'connect:docs', 'watch']);
 
-    grunt.registerTask('release',[
-        'release-slim', 'release-fat', 'release-debug',
-        'copy:release_slim', 'copy:release_fat', 'copy:release_debug', 'copy:release_templates',
+    grunt.registerTask('copy:release', 'Make MDwiki release', (subtask) => grunt.task.run(`copy:release_${subtask}`));
+
+    grunt.registerTask('release', [
+        'clean',
+        'build',
+        'copy:release:slim', 'copy:release:fat', 'copy:release:debug', 'copy:release:assets',
         'shell:zip_release'
     ]);
+
     // Default task.
     grunt.registerTask('default',
-        [ 'release-slim', 'release-fat', 'release-debug' ]
+        ['clean', 'build']
     );
 
 };

@@ -27,6 +27,9 @@
             }
         },
         hasMarkdownFileExtension: function (str) {
+            if (!str) {
+                return str;
+            }
             var markdownExtensions = [ '.md', '.markdown', '.mdown' ];
             var result = false;
             var value = str.toLowerCase().split('#')[0];
