@@ -1,15 +1,12 @@
-Contribute
-==========
+# Contribute
 
 MDwiki is an open source effort. All kinds of contributions are always welcome!
 
-Contributing Documentation
-------------
+## Contributing Documentation
 
 The MDwiki website is realized itself with MDwiki. You can just [fork MDwiki on GitHub](http://github.com/Dynalon/mdwiki), modify the `gh-pages` branch and send a pull request. There is no need to submit a CLA whatsoever.
 
-Contributing Sourcecode
---------------
+## Contributing Sourcecode
 
 If you are a developer, feel free to [fork MDwiki at GitHub](http://github.com/Dynalon/mdwiki) and send in pull requests. Right now there are no real coding guidelines, but included in the MDwiki source tree is an [.editorrc](http://editorconfig.org/) that you should use and respect.
 
@@ -21,12 +18,10 @@ The CLA is using the template text from the [Harmony Project](http://harmonyagre
 
 1. Select a contributor license agreement and submit the form at the very bottom of the page:
 
-  * [CLA for individuals (private persons)](cla-individual.md)
-  * [CLA for entities (companies, bureaus and so on)](cla-entity.md)
-
+    * [CLA for individuals (private persons)](cla-individual.md)
+    * [CLA for entities (companies, bureaus and so on)](cla-entity.md)
 
 2. Open a pull request **after** you submitted the CLA agreement. In the pull request message, explicitly state that you have submitted the agreement so that I can match your GitHub nickname against the submitted data.
 3. The pull request is considered for code review and merged into the MDwiki source if everything is ok :)
 
 Note: For future contributions, you can directly open up new pull requests and do **not** need to follow steps 1. and 2.
-

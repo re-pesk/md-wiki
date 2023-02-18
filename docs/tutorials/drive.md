@@ -1,41 +1,38 @@
-Host with Google Drive
-================
+# Host with Google Drive
 
-About
------
+## About
 
 This tutorial describes how to maintain a copy of MDwiki with [Google Drive](http://drive.google.com)
 
 Note: This tutorial is incomplete. Please help us by completing it for beginner users: [Contribute](contribute)
 
-Intructions
------------
+## Intructions
 
 ### Step 1: Get Google Drive Account
 
 ### Step 2: Download `mdwiki.html` into a folder in My Drive
 
-  * Rename to index.html if wanted
+* Rename to index.html if wanted
 
-### Step 3: Edit and make your .md files, etc. 
+<!-- markdownlint-disable-next-line MD026-->
+### Step 3: Edit and make your .md files, etc.
 
-  * Use your favorite texteditor
-  * In the same folder :)
+* Use your favorite texteditor
+* In the same folder :)
 
 ### Step 4: Share the Folder Publicly
 
-  * In the folder, on the top, click the down facing arrow next to the folder name
-  * Navigate to Share > Share...
-  * If there is an option at the bottom of the window, press "Advanced"
-  * Under "Who has Access" press the blue "Change..." link
-  * Change it to Public on the Web > Can View, and press Save
-  * Press Done
-  * On the sidebar, under "Details" there should be a section called "Hosting" and a link under it, that is the URL.
-  * If it works, you're done!
-  * Visit a demo site: 
-  
-Additional Notes
----------------
+* In the folder, on the top, click the down facing arrow next to the folder name
+* Navigate to Share > Share...
+* If there is an option at the bottom of the window, press "Advanced"
+* Under "Who has Access" press the blue "Change..." link
+* Change it to Public on the Web > Can View, and press Save
+* Press Done
+* On the sidebar, under "Details" there should be a section called "Hosting" and a link under it, that is the URL.
+* If it works, you're done!
+* Visit a demo site.
+
+## Additional Notes
 
 ### Demo Website
 

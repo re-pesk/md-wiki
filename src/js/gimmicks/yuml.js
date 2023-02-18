@@ -1,3 +1,7 @@
+/**
+ * yuml.js
+ */
+
 /* # YUML GIMMICK
  *
  * Create diagrams in no time with [yUML][yUML].
@@ -32,48 +36,50 @@
  * [yUML]: http://www.yuml.me/
  * [LGPL]: http://www.gnu.org/copyleft/lesser.html
  */
-(function($) {
-    'use strict';
-    function yuml($link, opt, text) {
-        var default_options = {
-            type: 'class',  /* { class, activity, usecase } */
-            style: 'plain', /* { plain, scruffy } */
-            direction: 'LR',      /* LR, TB, RL */
-            scale: '100'
-        };
-        var options = $.extend ({}, default_options, opt);
 
-        return $link.each(function(i,e) {
-
-            var $this = $(e);
-            var url = 'https://yuml.me/diagram/';
-            var data = $this.attr('href');
-            var title = $this.attr('title');
-
-            title = (title ? title : '');
-
-            /* `FOOBAR´ => (FOOBAR) */
-            data = data.replace( new RegExp('`', 'g'), '(' ).replace( new RegExp('´', 'g'), ')' );
-
-            url += options.style + ';dir:' + options.direction + ';scale:' + options.scale + '/' + options.type + '/' + data;
-
-            var $img = $('<img src="' + url + '" title="' + title + '" alt="' + title + '">');
-
-            $this.replaceWith($img);
-        });
-    }
-    var yumlGimmick = {
-        name: 'yuml',
-        version: $.md.version,
-        once: function() {
-            $.md.linkGimmick(this, 'yuml', yuml);
-            $.md.registerScript(this, '', {
-                license: 'LGPL',
-                loadstage: 'postgimmick',
-                finishstage: 'all_ready'
-            });
-        }
+(function ($) {
+  'use strict';
+  function yuml($link, opt/*, text*/) {
+    var default_options = {
+      type: 'class',  /* { class, activity, usecase } */
+      style: 'plain', /* { plain, scruffy } */
+      direction: 'LR',      /* LR, TB, RL */
+      scale: '100'
     };
-    $.md.registerGimmick(yumlGimmick);
+    var options = $.extend({}, default_options, opt);
 
-}(jQuery));
+    return $link.each(function (i, e) {
+
+      var $this = $(e);
+      var url = 'https://yuml.me/diagram/';
+      var data = $this.attr('href');
+      var title = $this.attr('title');
+
+      title = (title ? title : '');
+
+      /* `FOOBAR´ => (FOOBAR) */
+      data = data.replace(new RegExp('`', 'g'), '(').replace(new RegExp('´', 'g'), ')');
+
+      url += options.style + ';dir:' + options.direction + ';scale:' + options.scale + '/' + options.type + '/' + data;
+
+      var $img = $('<img src="' + url + '" title="' + title + '" alt="' + title + '">');
+
+      $this.replaceWith($img);
+    });
+  }
+  var yumlGimmick = {
+    name: 'yuml',
+    version: $.md.version,
+    once: function () {
+      $.md.linkGimmick(this, 'yuml', yuml);
+      $.md.registerScript(this, '', {
+        license: 'LGPL',
+        loadstage: 'postgimmick',
+        finishstage: 'all_ready'
+      });
+    }
+  };
+
+  $.md.registerGimmick(yumlGimmick);
+
+})(window.jQuery);

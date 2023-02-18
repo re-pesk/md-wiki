@@ -1,11 +1,8 @@
-Hosting on GitHub
-=================
+# Hosting on GitHub
 
 Note: This tutorial is incomplete. Please help us by completing it for beginner users: [Contribute][contribute].
 
-About
-------
-
+## About
 
 This tutorial describes how to setup a public website using MDwiki  which is hosted through [GitHub][GitHub]. GitHub is a perfect choice for hosting, and the MDwiki project website located at <http://www.mdwiki.info> is also hosted on GitHub.
 
@@ -21,8 +18,7 @@ The advantages on using GitHub for your website or wiki:
 
 [GitHub]: http://www.github.com
 
-Steps
-------
+## Steps
 
 ### Step 1: Get a GitHub account
 
@@ -43,6 +39,5 @@ Enjoy!
 ### Additional notes
 
 Note: This tutorial is incomplete. Please help completing it for beginner users by [contributing][contribute].
-
 
 [contribute]: ../contribute/index.md
