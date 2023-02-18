@@ -4,12 +4,13 @@
 
 (function ($) {
   'use strict';
+
   $.md.getLogger = function () {
 
     var loglevel = $.md.loglevel;
 
     var log = function (logtarget) {
-      var self = this;
+      // var self = this;
       var level = loglevel[logtarget];
       return function (msg) {
         if ($.md.logThreshold <= level) {
@@ -28,4 +29,5 @@
 
     return logger;
   };
-}(jQuery));
+
+})(window.jQuery);

@@ -4,70 +4,52 @@
 
 (function ($) {
   'use strict';
-  // call the gimmick
-  $.mdbootstrap = function (method) {
-    if ($.mdbootstrap.publicMethods[method]) {
-      return $.mdbootstrap.publicMethods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-    } else {
-      $.error('Method ' + method + ' does not exist on jquery.mdbootstrap');
-    }
-  };
-  // simple wrapper around $().bind
-  $.mdbootstrap.events = [];
-  $.mdbootstrap.bind = function (ev, func) {
-    $(document).bind(ev, func);
-    $.mdbootstrap.events.push(ev);
-  };
-  $.mdbootstrap.trigger = function (ev) {
-    $(document).trigger(ev);
-  };
 
-  var navStyle = '';
-
-  // PUBLIC API functions that are exposed
-  var publicMethods = {
-    bootstrapify: function () {
-      createPageSkeleton();
-      buildMenu();
-      changeHeading();
-      replaceImageParagraphs();
-
-      $('table').addClass('table').addClass('table-bordered');
-      //pullRightBumper ();
-
-      // remove the margin for headings h1 and h2 that are the first
-      // on page
-      //if (navStyle == "sub" || (navStyle == "top" && $('#md-title').text ().trim ().length === 0))
-      //    $(".md-first-heading").css ("margin-top", "0");
-
-      // external content should run after gimmicks were run
-      $.md.stage('pregimmick').subscribe(function (done) {
-        if ($.md.config.useSideMenu !== false) {
-          createPageContentMenu();
-        }
-        addFooter();
-        addAdditionalFooterText();
-        done();
-      });
-      $.md.stage('postgimmick').subscribe(function (done) {
-        adjustExternalContent();
-        highlightActiveLink();
-
-        done();
-      });
-    }
-  };
-  // register the public API functions
-  $.mdbootstrap.publicMethods = $.extend({}, $.mdbootstrap.publicMethods, publicMethods);
+  // var navStyle = '';
 
   // PRIVATE FUNCTIONS:
+
+  // the navbar has different height depending on theme, number of navbar entries,
+  // and window/device width. Therefore recalculate on start and upon window resize
+  function set_offset_to_navbar() {
+    var height = $('#md-main-navbar').height() + 10;
+    $('#md-body').css('margin-top', height + 'px');
+  }
+  function check_offset_to_navbar() {
+    // HACK this is VERY UGLY. When an external theme is used, we don't know when the
+    // css style will be finished loading - and we can only correctly calculate
+    // the height AFTER it has completely loaded.
+    var navbar_height = 0;
+
+    var dfd1 = $.md.util.repeatUntil(40, function () {
+      navbar_height = $('#md-main-navbar').height();
+      return (navbar_height > 35) && (navbar_height < 481);
+    }, 25);
+
+    dfd1.done(function () {
+      navbar_height = $('#md-main-navbar').height();
+      set_offset_to_navbar();
+      // now bootstrap changes this maybe after a while, again watch for changes
+      var dfd2 = $.md.util.repeatUntil(20, function () {
+        return navbar_height !== $('#md-main-navbar').height();
+      }, 25);
+      dfd2.done(function () {
+        // it changed, so we need to change it again
+        set_offset_to_navbar();
+      });
+      // and finally, for real slow computers, make sure it is changed if changin very late
+      $.md.util.wait(2000).done(function () {
+        set_offset_to_navbar();
+      });
+    });
+  }
 
   function buildTopNav() {
     // replace with the navbar skeleton
     if ($('#md-menu').length <= 0) {
       return;
     }
-    navStyle = 'top';
+    // navStyle = 'top';
     var $menuContent = $('#md-menu').children();
 
     // $('#md-menu').addClass ('navbar navbar-default navbar-fixed-top');
@@ -113,41 +95,7 @@
       done();
     });
   }
-  // the navbar has different height depending on theme, number of navbar entries,
-  // and window/device width. Therefore recalculate on start and upon window resize
-  function set_offset_to_navbar() {
-    var height = $('#md-main-navbar').height() + 10;
-    $('#md-body').css('margin-top', height + 'px');
-  }
-  function check_offset_to_navbar() {
-    // HACK this is VERY UGLY. When an external theme is used, we don't know when the
-    // css style will be finished loading - and we can only correctly calculate
-    // the height AFTER it has completely loaded.
-    var navbar_height = 0;
-
-    var dfd1 = $.md.util.repeatUntil(40, function () {
-      navbar_height = $('#md-main-navbar').height();
-      return (navbar_height > 35) && (navbar_height < 481);
-    }, 25);
-
-    dfd1.done(function () {
-      navbar_height = $('#md-main-navbar').height();
-      set_offset_to_navbar();
-      // now bootstrap changes this maybe after a while, again watch for changes
-      var dfd2 = $.md.util.repeatUntil(20, function () {
-        return navbar_height !== $('#md-main-navbar').height();
-      }, 25);
-      dfd2.done(function () {
-        // it changed, so we need to change it again
-        set_offset_to_navbar();
-      });
-      // and finally, for real slow computers, make sure it is changed if changin very late
-      $.md.util.wait(2000).done(function () {
-        set_offset_to_navbar();
-      });
-    });
-  }
-  function buildSubNav() {
+  // function buildSubNav() {
     // replace with the navbar skeleton
     /* BROKEN CODE
     if ($('#md-menu').length <= 0) {
@@ -167,7 +115,7 @@
 
     $('#md-menu-container').insertAfter ($('#md-title-container'));
     */
-  }
+  // }
 
   function buildMenu() {
     if ($('#md-menu a').length === 0) {
@@ -301,7 +249,7 @@
     //affix.css('top','-250px');
 
     var $pannel = $('<div class="panel panel-default"><ul class="list-group"/></div>');
-    var $ul = $pannel.find("ul");
+    var $ul = $pannel.find('ul');
     affixDiv.append($pannel);
 
     $headings.each(function (i, e) {
@@ -353,14 +301,14 @@
     $('#md-content').addClass('col-md-12');
 
   }
-  function pullRightBumper() {
+  // function pullRightBumper() {
     /*     $("span.bumper").each (function () {
          $this = $(this);
          $this.prev().addClass ("pull-right");
        });
        $('span.bumper').addClass ('pull-right');
    */
-  }
+  // }
 
   function changeHeading() {
 
@@ -509,4 +457,61 @@
       $('.md-copyright-footer #md-footer-additional').html(text);
     }
   }
-}(jQuery));
+
+  // END PRIVATE FUNCTIONS
+
+  // call the gimmick
+  $.mdbootstrap = function (method) {
+    if ($.mdbootstrap.publicMethods[method]) {
+      return $.mdbootstrap.publicMethods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    } else {
+      $.error('Method ' + method + ' does not exist on jquery.mdbootstrap');
+    }
+  };
+  // simple wrapper around $().bind
+  $.mdbootstrap.events = [];
+  $.mdbootstrap.bind = function (ev, func) {
+    $(document).bind(ev, func);
+    $.mdbootstrap.events.push(ev);
+  };
+  $.mdbootstrap.trigger = function (ev) {
+    $(document).trigger(ev);
+  };
+
+  // PUBLIC API functions that are exposed
+  var publicMethods = {
+    bootstrapify: function () {
+      createPageSkeleton();
+      buildMenu();
+      changeHeading();
+      replaceImageParagraphs();
+
+      $('table').addClass('table').addClass('table-bordered');
+      //pullRightBumper ();
+
+      // remove the margin for headings h1 and h2 that are the first
+      // on page
+      //if (navStyle == "sub" || (navStyle == "top" && $('#md-title').text ().trim ().length === 0))
+      //    $(".md-first-heading").css ("margin-top", "0");
+
+      // external content should run after gimmicks were run
+      $.md.stage('pregimmick').subscribe(function (done) {
+        if ($.md.config.useSideMenu !== false) {
+          createPageContentMenu();
+        }
+        addFooter();
+        addAdditionalFooterText();
+        done();
+      });
+      $.md.stage('postgimmick').subscribe(function (done) {
+        adjustExternalContent();
+        highlightActiveLink();
+
+        done();
+      });
+    }
+  };
+  // register the public API functions
+  $.mdbootstrap.publicMethods = $.extend({}, $.mdbootstrap.publicMethods, publicMethods);
+
+})(window.jQuery);

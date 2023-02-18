@@ -3,29 +3,7 @@
  */
 
 (function ($) {
-  var publicMethods = {
-    createBasicSkeleton: function () {
-
-      setPageTitle();
-      wrapParagraphText();
-      linkImagesToSelf();
-      groupImages();
-      removeBreaks();
-      addInpageAnchors();
-
-      $.md.stage('all_ready').subscribe(function (done) {
-        if ($.md.inPageAnchor !== '') {
-          $.md.util.wait(500).then(function () {
-            $.md.scrollToInPageAnchor($.md.inPageAnchor);
-          });
-        }
-        done();
-      });
-      return;
-
-    }
-  };
-  $.md.publicMethods = $.extend({}, $.md.publicMethods, publicMethods);
+  'use strict';
 
   // set the page title to the browser document title, optionally picking
   // the first h1 element as title if no title is given
@@ -37,12 +15,45 @@
     $pageTitle = $('#md-content h1').eq(0);
     if ($.trim($pageTitle.toptext()).length > 0) {
       $('#md-title').prepend($pageTitle);
-      var title = $pageTitle.toptext();
+      // var title = $pageTitle.toptext();
       // document.title = title;
     } else {
       $('#md-title').remove();
     }
   }
+
+  function getFloatClass(par) {
+    var $p = $(par);
+    var floatClass = '';
+
+    // reduce content of the paragraph to images
+    var nonTextContents = $p.contents().filter(function () {
+      if (this.tagName === 'IMG' || this.tagName === 'IFRAME') {
+        return true;
+      }
+      else if (this.tagName === 'A') {
+        return $(this).find('img').length > 0;
+      }
+      else {
+        return $.trim($(this).text()).length > 0;
+      }
+    });
+    // check the first element - if its an image or a link with image, we go left
+    var elem = nonTextContents[0];
+    if (elem !== undefined && elem !== null) {
+      if (elem.tagName === 'IMG' || elem.tagName === 'IFRAME') {
+        floatClass = 'md-float-left';
+      }
+      else if (elem.tagName === 'A' && $(elem).find('img').length > 0) {
+        floatClass = 'md-float-left';
+      }
+      else {
+        floatClass = 'md-float-right';
+      }
+    }
+    return floatClass;
+  }
+
   function wrapParagraphText() {
     // TODO is this true for marked.js?
 
@@ -104,37 +115,6 @@
     // remove any breaks from image groups
     $('.md-image-group').find('br').remove();
   }
-  function getFloatClass(par) {
-    var $p = $(par);
-    var floatClass = '';
-
-    // reduce content of the paragraph to images
-    var nonTextContents = $p.contents().filter(function () {
-      if (this.tagName === 'IMG' || this.tagName === 'IFRAME') {
-        return true;
-      }
-      else if (this.tagName === 'A') {
-        return $(this).find('img').length > 0;
-      }
-      else {
-        return $.trim($(this).text()).length > 0;
-      }
-    });
-    // check the first element - if its an image or a link with image, we go left
-    var elem = nonTextContents[0];
-    if (elem !== undefined && elem !== null) {
-      if (elem.tagName === 'IMG' || elem.tagName === 'IFRAME') {
-        floatClass = 'md-float-left';
-      }
-      else if (elem.tagName === 'A' && $(elem).find('img').length > 0) {
-        floatClass = 'md-float-left';
-      }
-      else {
-        floatClass = 'md-float-right';
-      }
-    }
-    return floatClass;
-  }
   // images are put in the same image group as long as there is
   // not separating paragraph between them
   function groupImages() {
@@ -149,7 +129,7 @@
   function linkImagesToSelf() {
     function selectNonLinkedImages() {
       // only select images that do not have a non-empty parent link
-      $images = $('img').filter(function (index) {
+      var $images = $('img').filter(function (/*index*/) {
         var $parent_link = $(this).parents('a').eq(0);
         if ($parent_link.length === 0) return true;
         var attr = $parent_link.attr('href');
@@ -157,8 +137,8 @@
       });
       return $images;
     }
-    var $images = selectNonLinkedImages();
-    return $images.each(function () {
+    var $nonLinkedImages = selectNonLinkedImages();
+    return $nonLinkedImages.each(function () {
       var $this = $(this);
       var img_src = $this.attr('src');
       var img_title = $this.attr('title');
@@ -197,7 +177,7 @@
     // adds a link to the navigation at the top of the page
     function addJumpLinkToTOC($heading) {
       if ($.md.config.useSideMenu === false) return;
-      if ($heading.prop("tagName") !== 'H2') return;
+      if ($heading.prop('tagName') !== 'H2') return;
 
       var c = $.md.config.tocAnchor;
       if (c === '')
@@ -249,4 +229,29 @@
     });
   };
 
-}(jQuery));
+  var publicMethods = {
+    createBasicSkeleton: function () {
+
+      setPageTitle();
+      wrapParagraphText();
+      linkImagesToSelf();
+      groupImages();
+      removeBreaks();
+      addInpageAnchors();
+
+      $.md.stage('all_ready').subscribe(function (done) {
+        if ($.md.inPageAnchor !== '') {
+          $.md.util.wait(500).then(function () {
+            $.md.scrollToInPageAnchor($.md.inPageAnchor);
+          });
+        }
+        done();
+      });
+      return;
+
+    }
+  };
+
+  $.md.publicMethods = $.extend({}, $.md.publicMethods, publicMethods);
+
+})(window.jQuery);

@@ -3,17 +3,7 @@
  */
 
 (function ($) {
-  //'use strict';
-  var youtubeGimmick = {
-    name: 'youtube',
-    load: function () {
-      $.md.stage('gimmick').subscribe(function (done) {
-        youtubeLinkToIframe();
-        done();
-      });
-    }
-  };
-  $.md.registerGimmick(youtubeGimmick);
+  'use strict';
 
   function youtubeLinkToIframe() {
     var $youtube_links = $('a[href*=youtube\\.com]:empty, a[href*=youtu\\.be]:empty');
@@ -23,7 +13,7 @@
       var href = $this.attr('href');
       if (href !== undefined) {
         // extract the v parameter from youtube
-        var exp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+        var exp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
         var m = href.match(exp);
 
         if (m && m[1].length === 11) {
@@ -38,4 +28,17 @@
       }
     });
   }
-}(jQuery));
+
+  var youtubeGimmick = {
+    name: 'youtube',
+    load: function () {
+      $.md.stage('gimmick').subscribe(function (done) {
+        youtubeLinkToIframe();
+        done();
+      });
+    }
+  };
+
+  $.md.registerGimmick(youtubeGimmick);
+
+})(window.jQuery);

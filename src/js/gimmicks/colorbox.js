@@ -3,8 +3,8 @@
  */
 
 (function ($) {
+  'use strict';
   // makes trouble, find out why
-  //'use strict';
   var colorboxGimmick = {
     name: 'colorbox',
     load: function () {
@@ -57,4 +57,5 @@
     }
   };
   $.gimmicks.methods = $.extend({}, $.fn.gimmicks.methods, methods);
-}(jQuery));
+
+})(window.jQuery);

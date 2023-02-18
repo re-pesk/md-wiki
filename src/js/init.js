@@ -51,4 +51,4 @@
   // $.md.logThreshold = $.md.loglevel.DEBUG;
   $.md.logThreshold = $.md.loglevel.WARN;
 
-}(jQuery));
+})(window.jQuery);

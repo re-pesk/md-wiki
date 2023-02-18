@@ -4,13 +4,6 @@
 
 (function ($) {
   'use strict';
-  var gistGimmick = {
-    name: 'gist',
-    once: function () {
-      $.md.linkGimmick(this, 'gist', gist);
-    }
-  };
-  $.md.registerGimmick(gistGimmick);
 
   function gist($links, opt, href) {
     $().lazygist('init');
@@ -29,7 +22,17 @@
       });
     });
   }
-}(jQuery));
+
+  var gistGimmick = {
+    name: 'gist',
+    once: function () {
+      $.md.linkGimmick(this, 'gist', gist);
+    }
+  };
+
+  $.md.registerGimmick(gistGimmick);
+
+})(window.jQuery);
 
 
 /**
@@ -46,8 +49,8 @@
 * Licensed under the MIT license.
 */
 
-(function ($, window, document, undefined) {
-  "use strict";
+(function ($, document) {
+  'use strict';
 
   //
   // note:
@@ -55,8 +58,8 @@
   // and will not communicate with own instances at different elements
   //
 
-  var pluginName = "lazygist",
-    version = "0.2pre",
+  var pluginName = 'lazygist',
+    version = '0.2pre',
 
     defaults = {
       // adding the ?file parameter to choose a file
@@ -82,73 +85,7 @@
     ids_dom = [],
 
     // remember gist-ids if their javascript is already loaded
-    ids_ajax = [],
-
-    methods = {
-
-      /**
-       * Standard init function
-       * No magic here
-       */
-      init: function (options_input) {
-
-        // default options are default
-        options = $.extend({}, defaults, options_input);
-
-        // can be reset
-        /*jshint -W061 */
-        document.write = _write;
-
-        $.each(options, function (index, value) {
-          if (typeof value !== 'string') {
-            throw new TypeError(value + ' (' + (typeof value) + ') is not a string');
-          }
-        });
-
-        return this.lazygist('load');
-      },
-
-      /**
-       * Load the gists
-       */
-      load: function () {
-        // (1) iterate over gist anchors
-        // (2) append the gist-html through the new document.write func (see _write)
-
-        // (1)
-        return this.filter('[' + options.id + ']').each(function () {
-
-          var id = $(this).attr(options.id),
-            file = $(this).attr(options.file),
-            src;
-
-          if (id !== undefined) {
-
-            if ($.inArray(id, ids_ajax) !== -1) {
-              // just do nothin, if gist is already ajaxed
-              return;
-            }
-
-            ids_ajax.push(id);
-
-            src = options.url_template.replace(/\{id\}/g, id).replace(/\{file\}/g, file);
-
-            // (2) this will trigger our _write function
-            $.getScript(src, function () {
-            });
-          }
-        });
-      },
-
-      /**
-       * Just reset the write function
-       */
-      reset_write: function () {
-        document.write = originwrite;
-
-        return this;
-      }
-    };
+    ids_ajax = [];
 
   /**
    * private special document.write function
@@ -208,6 +145,72 @@
     }
   }
 
+  var methods = {
+
+    /**
+     * Standard init function
+     * No magic here
+     */
+    init: function (options_input) {
+
+      // default options are default
+      options = $.extend({}, defaults, options_input);
+
+      // can be reset
+      /*jshint -W061 */
+      document.write = _write;
+
+      $.each(options, function (index, value) {
+        if (typeof value !== 'string') {
+          throw new TypeError(value + ' (' + (typeof value) + ') is not a string');
+        }
+      });
+
+      return this.lazygist('load');
+    },
+
+    /**
+     * Load the gists
+     */
+    load: function () {
+      // (1) iterate over gist anchors
+      // (2) append the gist-html through the new document.write func (see _write)
+
+      // (1)
+      return this.filter('[' + options.id + ']').each(function () {
+
+        var id = $(this).attr(options.id),
+          file = $(this).attr(options.file),
+          src;
+
+        if (id !== undefined) {
+
+          if ($.inArray(id, ids_ajax) !== -1) {
+            // just do nothin, if gist is already ajaxed
+            return;
+          }
+
+          ids_ajax.push(id);
+
+          src = options.url_template.replace(/\{id\}/g, id).replace(/\{file\}/g, file);
+
+          // (2) this will trigger our _write function
+          $.getScript(src, function () {
+          });
+        }
+      });
+    },
+
+    /**
+     * Just reset the write function
+     */
+    reset_write: function () {
+      document.write = originwrite;
+
+      return this;
+    }
+  };
+
   // method invocation - from jQuery.com
   $.fn[pluginName] = function (method) {
 
@@ -225,4 +228,4 @@
   // expose version for your interest
   $.fn[pluginName].version = version;
 
-})(jQuery, window, document);
+})(window.jQuery, document);

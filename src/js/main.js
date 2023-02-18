@@ -42,7 +42,7 @@
     ];
 
     $.md.stage = function (name) {
-      var m = $.grep($.md.stages, function (e, i) {
+      var m = $.grep($.md.stages, function (e/*, i*/) {
         return e.name === name;
       });
       if (m.length === 0) {
@@ -81,70 +81,6 @@
     // get sample markdown
     var uglyHtml = marked(markdown);
     return uglyHtml;
-  }
-
-  function registerFetchMarkdown() {
-
-    var md = '';
-
-    $.md.stage('init').subscribe(function (done) {
-
-      var ajaxReq = {
-        url: $.md.mainHref,
-        dataType: 'text'
-      };
-
-      // Request the md page
-      $.ajax(ajaxReq).done(function (data) {
-        md = data;
-        done();
-      })
-
-        // Failed to find the md page we were looking for
-        .fail(function () {
-
-          // Warn that this page wasn't found
-          var log = $.md.getLogger();
-          log.warn('Could not get ' + $.md.mainHref);
-
-          // Attempt to gracefully recover by displaying a user defined 404 page
-          ajaxReq.url = '404.md';
-          $.ajax(ajaxReq).done(function (data) {
-            md = data;
-            done();
-          })
-
-            // The user has not defined a 404.md.
-            .fail(function (data) {
-              log.fatal('Could not get a user defined 404.md');
-
-              // Our last attempt to provide a good user expierence by proving a hard coded
-              // 'page not found' text.
-              md = "# Page Not Found";
-
-              done();
-            });
-        });
-    });
-
-    // find baseUrl
-    $.md.stage('transform').subscribe(function (done) {
-      var len = $.md.mainHref.lastIndexOf('/');
-      var baseUrl = $.md.mainHref.substring(0, len + 1);
-      $.md.baseUrl = baseUrl;
-      done();
-    });
-
-    $.md.stage('transform').subscribe(function (done) {
-      var uglyHtml = transformMarkdown(md);
-      $('#md-content').html(uglyHtml);
-      md = '';
-      var dfd = $.Deferred();
-      loadExternalIncludes(dfd);
-      dfd.always(function () {
-        done();
-      });
-    });
   }
 
   // load [include](/foo/bar.md) external links
@@ -208,6 +144,70 @@
         }).always(function () {
           latch.countDown();
         });
+    });
+  }
+
+  function registerFetchMarkdown() {
+
+    var md = '';
+
+    $.md.stage('init').subscribe(function (done) {
+
+      var ajaxReq = {
+        url: $.md.mainHref,
+        dataType: 'text'
+      };
+
+      // Request the md page
+      $.ajax(ajaxReq).done(function (data) {
+        md = data;
+        done();
+      })
+
+        // Failed to find the md page we were looking for
+        .fail(function () {
+
+          // Warn that this page wasn't found
+          var log = $.md.getLogger();
+          log.warn('Could not get ' + $.md.mainHref);
+
+          // Attempt to gracefully recover by displaying a user defined 404 page
+          ajaxReq.url = '404.md';
+          $.ajax(ajaxReq).done(function (data) {
+            md = data;
+            done();
+          })
+
+            // The user has not defined a 404.md.
+            .fail(function (/*data*/) {
+              log.fatal('Could not get a user defined 404.md');
+
+              // Our last attempt to provide a good user expierence by proving a hard coded
+              // 'page not found' text.
+              md = '# Page Not Found';
+
+              done();
+            });
+        });
+    });
+
+    // find baseUrl
+    $.md.stage('transform').subscribe(function (done) {
+      var len = $.md.mainHref.lastIndexOf('/');
+      var baseUrl = $.md.mainHref.substring(0, len + 1);
+      $.md.baseUrl = baseUrl;
+      done();
+    });
+
+    $.md.stage('transform').subscribe(function (done) {
+      var uglyHtml = transformMarkdown(md);
+      $('#md-content').html(uglyHtml);
+      md = '';
+      var dfd = $.Deferred();
+      loadExternalIncludes(dfd);
+      dfd.always(function () {
+        done();
+      });
     });
   }
 
@@ -406,49 +406,6 @@
     });
 
   }
-  function loadContent(href) {
-    if (href.startsWith('/')) {
-      // prevent cross-domain inclusions to prevent possible XSS
-      href = "/./" + href;
-    } else {
-      href = "./" + href;
-    }
-    $.md.mainHref = href;
-
-
-    registerFetchMarkdown();
-    registerClearContent();
-
-    // find out which link gimmicks we need
-    $.md.stage('ready').subscribe(function (done) {
-      $.md.initializeGimmicks();
-      $.md.registerLinkGimmicks();
-      done();
-    });
-
-    // wire up the load method of the modules
-    $.each($.md.gimmicks, function (i, module) {
-      if (module.load === undefined) {
-        return;
-      }
-      $.md.stage('load').subscribe(function (done) {
-        module.load();
-        done();
-      });
-    });
-
-    $.md.stage('ready').subscribe(function (done) {
-      $.md('createBasicSkeleton');
-      done();
-    });
-
-    $.md.stage('bootstrap').subscribe(function (done) {
-      $.mdbootstrap('bootstrapify');
-      processPageLinks($('#md-content'), $.md.baseUrl);
-      done();
-    });
-    runStages();
-  }
 
   function runStages() {
 
@@ -504,6 +461,50 @@
     return;
   }
 
+  function loadContent(href) {
+    if (href.startsWith('/')) {
+      // prevent cross-domain inclusions to prevent possible XSS
+      href = '/./' + href;
+    } else {
+      href = './' + href;
+    }
+    $.md.mainHref = href;
+
+
+    registerFetchMarkdown();
+    registerClearContent();
+
+    // find out which link gimmicks we need
+    $.md.stage('ready').subscribe(function (done) {
+      $.md.initializeGimmicks();
+      $.md.registerLinkGimmicks();
+      done();
+    });
+
+    // wire up the load method of the modules
+    $.each($.md.gimmicks, function (i, module) {
+      if (module.load === undefined) {
+        return;
+      }
+      $.md.stage('load').subscribe(function (done) {
+        module.load();
+        done();
+      });
+    });
+
+    $.md.stage('ready').subscribe(function (done) {
+      $.md('createBasicSkeleton');
+      done();
+    });
+
+    $.md.stage('bootstrap').subscribe(function (done) {
+      $.mdbootstrap('bootstrapify');
+      processPageLinks($('#md-content'), $.md.baseUrl);
+      done();
+    });
+    runStages();
+  }
+
   function extractHashData() {
     // first char is the # or #!
     var href;
@@ -556,4 +557,5 @@
 
     loadContent($.md.mainHref);
   });
-}(jQuery));
+
+})(window.jQuery);

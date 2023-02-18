@@ -3,15 +3,9 @@
  */
 
 (function ($) {
-  var mathGimmick = {
-    name: 'math',
-    once: function () {
-      $.md.linkGimmick(this, 'math', load_mathjax);
-    }
-  };
-  $.md.registerGimmick(mathGimmick);
+  'use strict';
 
-  function load_mathjax($links, opt, ref) {
+  function load_mathjax($links/*, opt, ref*/) {
     $links.remove();
     var script = document.createElement('script');
     script.type = 'text/javascript';
@@ -19,4 +13,13 @@
     document.getElementsByTagName('head')[0].appendChild(script);
   }
 
-}(jQuery));
+  var mathGimmick = {
+    name: 'math',
+    once: function () {
+      $.md.linkGimmick(this, 'math', load_mathjax);
+    }
+  };
+
+  $.md.registerGimmick(mathGimmick);
+
+})(window.jQuery);

@@ -1,4 +1,7 @@
-var createIndex = function (grunt, mode, indexData) {
+const grunt = require('grunt');
+require('load-grunt-tasks')(grunt);
+
+var createIndex = function (mode, indexData) {
     'use strict';
     const tmpl = grunt.file.read(indexData.template),
         data = {
@@ -15,13 +18,9 @@ var createIndex = function (grunt, mode, indexData) {
     grunt.log.writeln(`Generated '${data.dest}' from '${data.template}'`);
 };
 
-/*global module:false*/
-module.exports = function (grunt) {
+module.exports = function () {
     'use strict';
     // Project configuration.
-
-    require('load-grunt-tasks')(grunt);
-
     const makeFileId = true;
 
     grunt.initConfig({
@@ -185,39 +184,12 @@ module.exports = function (grunt) {
                 makeFileId,
             },
         },
-        /* make it use .jshintrc */
-        jshint: {
+        eslint: {
             options: {
-                curly: false,
-                eqeqeq: true,
-                immed: true,
-                latedef: true,
-                newcap: true,
-                noarg: true,
-                sub: true,
-                undef: true,
-                unused: false,
-                boss: true,
-                eqnull: true,
-                browser: true,
-                globals: {
-                    jQuery: true,
-                    marked: true,
-                    google: true,
-                    hljs: true,
-                    /* leaflet.js*/
-                    L: true,
-                    console: true,
-                    Chart: true,
-                    Prism: true
-                }
+                overrideConfigFile: '.eslintrc.js',
+                globInputPaths: true,
             },
-            /*gruntfile: {
-                src: 'Gruntfile.js'
-            },*/
-            js: {
-                src: ['src/js/*.js', 'src/js/**/*.js', '!js/marked.js']
-            }
+            js: ['src/js/*[!_].js', 'src/js/**/*[!_].js'],
         },
         lib_test: {
             src: ['lib/**/*.js', 'test/**/*.js']
@@ -334,14 +306,14 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask('index', 'Generate .html files', function () {
         grunt.log.writeln(this.data.description)
-        createIndex(grunt, this.target, this.data);
+        createIndex(this.target, this.data);
     });
 
-    grunt.registerTask('build:slim', [/* 'jshint', */ 'concat', 'uglify', 'index:slim', 'copy:assets']);
-    grunt.registerTask('build:fat', [/* 'jshint', */ 'concat', 'uglify', 'index:fat', 'copy:assets']);
+    grunt.registerTask('build:slim', ['eslint', 'concat', 'uglify', 'index:slim', 'copy:assets']);
+    grunt.registerTask('build:fat', ['eslint', 'concat', 'uglify', 'index:fat', 'copy:assets']);
 
     /* Debug is basically the fat version but without any minifing */
-    grunt.registerTask('build:debug', [/* 'jshint', */ 'concat', 'index:debug', 'copy:assets']);
+    grunt.registerTask('build:debug', ['eslint', 'concat', 'index:debug', 'copy:assets']);
     grunt.registerTask('build', ['build:slim', 'build:fat', 'build:debug']);
     grunt.registerTask('dev', ['build:debug']);
 

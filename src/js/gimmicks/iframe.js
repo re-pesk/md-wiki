@@ -4,16 +4,8 @@
 
 (function ($) {
   'use strict';
-  var iframeGimmick = {
-    name: 'iframe',
-    version: $.md.version,
-    once: function () {
-      $.md.linkGimmick(this, 'iframe', create_iframe);
-    }
-  };
-  $.md.registerGimmick(iframeGimmick);
 
-  function create_iframe($links, opt, text) {
+  function create_iframe($links, opt/*, text*/) {
     return $links.each(function (i, link) {
       var $link = $(link);
       var href = $link.attr('href');
@@ -33,7 +25,7 @@
           $iframe.height(newHeight);
         };
 
-        $iframe.on('load', function(done) {
+        $iframe.on('load', function(/*done*/) {
           updateSizeFn();
         });
 
@@ -44,4 +36,15 @@
 
     });
   }
-}(jQuery));
+
+  var iframeGimmick = {
+    name: 'iframe',
+    version: $.md.version,
+    once: function () {
+      $.md.linkGimmick(this, 'iframe', create_iframe);
+    }
+  };
+
+  $.md.registerGimmick(iframeGimmick);
+
+})(window.jQuery);

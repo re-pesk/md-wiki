@@ -2,15 +2,16 @@
   "name": "mdwiki",
   "version": "0.6.5",
   "devDependencies": {
+    "eslint": "^8.33.0",
     "grunt": "^1.5.3",
     "grunt-cli": "^1.4.3",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-concat": "^2.1.0",
     "grunt-contrib-connect": "^3.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
+    "grunt-eslint": "^24.0.1",
     "grunt-shell": "^4.0.0",
     "load-grunt-tasks": "^5.1.0"
   },

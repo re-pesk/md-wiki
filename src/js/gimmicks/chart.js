@@ -7,25 +7,9 @@
 
   var scripturl = '//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js';
 
-  var chartGimmick = {
-    name: 'chart',
-    version: $.md.version,
-    once: function () {
-      $.md.linkGimmick(this, 'chart', chart);
-
-      // load the chart js
-      $.md.registerScript(this, scripturl, {
-        license: 'MIT',
-        loadstage: 'skel_ready',
-        finishstage: 'gimmick'
-      });
-    }
-  };
-  $.md.registerGimmick(chartGimmick);
-
   var log = $.md.getLogger();
 
-  function chart($links, opt, text) {
+  function chart($links, opt/*, text*/) {
     return $links.each(function (i, link) {
 
       // Get the options for this gimmick
@@ -49,7 +33,7 @@
 
       var $link = $(link);
 
-      var table = $link.parents().find("table").last();
+      var table = $link.parents().find('table').last();
       if (table.length === 0) {
         log.error('Chart Gimmick: No tables found on the page.');
         $link.remove();
@@ -65,8 +49,8 @@
       // This is the object that is given to the chart frame work for rendering. It will be
       // built up by processing the html table that is found on the table.
       var chartConfig = {
-        "datasets": [],
-        "labels": []
+        'datasets': [],
+        'labels': []
       };
 
       var chartAvailableToRender = true;
@@ -78,7 +62,7 @@
       var dataColumnIndices = [];
 
       // Get the index of the columns that we care about for charting
-      table.find("th").each(function (index) {
+      table.find('th').each(function (index) {
 
         // This is the column that labels each data point
         if (this.textContent === options.labelColumn) {
@@ -96,8 +80,8 @@
       });
 
       // Get the data
-      table.find("tr").each(function (rowIndex) {
-        $(this).find("td").each(function (colIndex) {
+      table.find('tr').each(function (/*rowIndex*/) {
+        $(this).find('td').each(function (colIndex) {
 
           if (colIndex === labelColumnIndex) {
             chartConfig.labels.push(this.textContent);
@@ -138,4 +122,21 @@
     });
   }
 
-}(jQuery));
+  var chartGimmick = {
+    name: 'chart',
+    version: $.md.version,
+    once: function () {
+      $.md.linkGimmick(this, 'chart', chart);
+
+      // load the chart js
+      $.md.registerScript(this, scripturl, {
+        license: 'MIT',
+        loadstage: 'skel_ready',
+        finishstage: 'gimmick'
+      });
+    }
+  };
+
+  $.md.registerGimmick(chartGimmick);
+
+})(window.jQuery);

@@ -3,6 +3,8 @@
  */
 
 (function ($) {
+  'use strict';
+
   var publicMethods = {
     isRelativeUrl: function (url) {
       if (url === undefined) {
@@ -123,4 +125,4 @@
     return dfd;
   };
 
-}(jQuery));
+})(window.jQuery);
