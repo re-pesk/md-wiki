@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.4.1",
-    "jquery": "^1.12.4",
+    "jquery": "^3.6.3",
     "jquery-colorbox": "^1.6.4",
     "prismjs": "^1.29.0"
   }

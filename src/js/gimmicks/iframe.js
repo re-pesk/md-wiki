@@ -33,11 +33,11 @@
           $iframe.height(newHeight);
         };
 
-        $iframe.load(function (done) {
+        $iframe.on('load', function(done) {
           updateSizeFn();
         });
 
-        $(window).resize(function () {
+        $(window).on('resize', function () {
           updateSizeFn();
         });
       }
