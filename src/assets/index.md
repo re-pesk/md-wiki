@@ -4,17 +4,17 @@
 
 ## See <http://www.mdwiki.info> for more info and documentation.
 
-## !! This project is currently unmaintained !!
+## !! This fork of original project is currently only for experiments and not for production use !!
 
 ## Download
 
-See <https://github.com/Dynalon/mdwiki/releases> for readily precompiled releases.
+See <https://github.com/Dynalon/mdwiki/releases> for original project and readily precompiled releases.
 
 ## How to build from source
 
-(applies to master branch, stable may differ)
+(applies to this branch, others may differ)
 
-1. Install node.js >= 18.0.0 and npm (if not included)
+1. Install node.js >= 16.0.0 and npm (if not included)
 2. Clone the mdwiki repo
 3. Install deps and build MDwiki:
 
@@ -30,21 +30,13 @@ See <https://github.com/Dynalon/mdwiki/releases> for readily precompiled release
 
 5. Development server
 
-    For development, use
+    For loqading of development server, use
 
     ```bash
     ./node_modules/.bin/grunt serve
     ```
 
-6. Unittests
-
-    For loading tests, use
-
-    ```bash
-    ./node_modules/.bin/grunt test
-    ```
-
-7. Release
+6. Release
 
     For creating release files, use
 
