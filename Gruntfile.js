@@ -34,7 +34,7 @@ module.exports = function (grunt) {
             'src/js/logging.js',
             'src/js/stage.js',
             'src/js/main.js',
-            'src/js/util.js',
+            'src/js/utils.js',
             'src/js/modules.js',
             'src/js/basic_skeleton.js',
             'src/js/bootstrap.js',
