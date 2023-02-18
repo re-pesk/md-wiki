@@ -1,7 +1,7 @@
 module.exports = {
     title: "MDwiki",
     name: "mdwiki",
-    version: "0.6.4",
+    version: "0.6.5",
     description: "Markdown Wiki",
     homepage: "http://dynalon.github.io/mdwiki",
     author: {
