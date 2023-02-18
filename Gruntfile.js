@@ -1,35 +1,36 @@
 const grunt = require('grunt');
 require('load-grunt-tasks')(grunt);
 const terser = require('@rollup/plugin-terser');
+const pkg = require('./.metadata');
 
-var createIndex = function (mode, indexData) {
-  const tmpl = grunt.file.read(indexData.template),
-    data = {
-      mode,
-      pkg: grunt.config('pkg'),
-      isDebug: (mode === 'debug'),
-      isFat: (mode === 'fat'),
-      fileRead: grunt.file.read,
-      ...indexData,
-    };
+const createIndex = (mode, indexData) => {
+  const tmpl = grunt.file.read(indexData.template);
+  const data = {
+    mode,
+    pkg,
+    isDebug: (mode === 'debug'),
+    isFat: (mode === 'fat'),
+    fileRead: grunt.file.read,
+    ...indexData,
+  };
 
   grunt.log.writeln(`Building single index.html in ${mode} mode`);
   grunt.file.write(data.dest, grunt.template.process(tmpl, { data }));
   grunt.log.writeln(`Generated '${data.dest}' from '${data.template}'`);
 };
 
-module.exports = function () {
+module.exports = () => {
   // Project configuration.
   const makeFileId = true;
 
   grunt.initConfig({
     // Metadata.
-    pkg: require('./.metadata.js'),
+    pkg,
     rollup: {
       debug: {
         options: {
           output: {
-            format: 'iife',
+            format: 'es',
             strict: true,
           },
         },
@@ -40,9 +41,11 @@ module.exports = function () {
       },
       fat: {
         options: {
-          plugins: [terser()],
+          plugins: [
+            terser(),
+          ],
           output: {
-            format: 'iife',
+            format: 'es',
           },
         },
         files: {
@@ -59,13 +62,13 @@ module.exports = function () {
         dest: 'dist/<%= pkg.name %>-debug.html',
         bundle: 'src/_compiled/js/<%= pkg.name %>.js',
 
-                cssFiles: [
-                    { name: 'node_modules/bootstrap/dist/css/bootstrap.css' },
-                    { name: 'node_modules/prismjs/themes/prism.css' },
-                    { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.css' },
-                    { name: 'src/lib/jquery-colorbox/css/colorbox.css' },
-                    { name: 'src/css/<%= pkg.name %>.css' },
-                ],
+        cssFiles: [
+          { name: 'node_modules/bootstrap/dist/css/bootstrap.css' },
+          { name: 'node_modules/prismjs/themes/prism.css' },
+          { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.css' },
+          { name: 'src/lib/jquery-colorbox/css/colorbox.css' },
+          { name: 'src/css/<%= pkg.name %>.css' },
+        ],
 
         jsFiles: [
           { name: 'node_modules/jquery/dist/jquery.js' },
@@ -83,13 +86,13 @@ module.exports = function () {
         dest: 'dist/<%= pkg.name %>.html',
         bundle: 'src/_compiled/js/<%= pkg.name %>.min.js',
 
-                cssFiles: [
-                    { name: 'node_modules/bootstrap/dist/css/bootstrap.min.css', inline: true },
-                    { name: 'node_modules/prismjs/themes/prism.min.css', inline: true },
-                    { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.min.css', inline: true },
-                    { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
-                    { name: 'src/css/<%= pkg.name %>.css', inline: true },
-                ],
+        cssFiles: [
+          { name: 'node_modules/bootstrap/dist/css/bootstrap.min.css', inline: true },
+          { name: 'node_modules/prismjs/themes/prism.min.css', inline: true },
+          { name: 'node_modules/prismjs/plugins/previewers/prism-previewers.min.css', inline: true },
+          { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
+          { name: 'src/css/<%= pkg.name %>.css', inline: true },
+        ],
 
         jsFiles: [
           { name: 'node_modules/jquery/dist/jquery.min.js', inline: true },
@@ -109,23 +112,23 @@ module.exports = function () {
         dest: 'dist/<%= pkg.name %>-slim.html',
         bundle: 'src/_compiled/js/<%= pkg.name %>.min.js',
 
-                cssFiles: [
-                    { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' },
-                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css' },
-                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.css' },
-                    { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
-                    { name: 'src/css/<%= pkg.name %>.css', inline: true },
-                ],
+        cssFiles: [
+          { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' },
+          { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css' },
+          { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.css' },
+          { name: 'src/lib/jquery-colorbox/css/colorbox.css', inline: true },
+          { name: 'src/css/<%= pkg.name %>.css', inline: true },
+        ],
 
-                jsFiles: [
-                    { name: '//cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js' },
-                    { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js' },
-                    { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js' },
-                    { name: '//cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/components/prism-bash.min.js,npm/prismjs@1.29.0/components/prism-c.min.js,npm/prismjs@1.29.0/components/prism-clike.min.js,npm/prismjs@1.29.0/components/prism-coffeescript.min.js,npm/prismjs@1.29.0/components/prism-cpp.min.js,npm/prismjs@1.29.0/components/prism-csharp.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-css-extras.min.js,npm/prismjs@1.29.0/components/prism-go.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-markdown.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-ruby.min.js,npm/prismjs@1.29.0/components/prism-sass.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-uri.min.js,npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js,npm/prismjs@1.29.0/plugins/keep-markup/prism-keep-markup.min.js,npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.js' },
-                    { name: '//cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox-min.min.js' },
-                    { name: '//cdn.jsdelivr.net/npm/marked@0.3.19/marked.min.js' },
-                    { name: '<%= index.slim.bundle %>', inline: true },
-                ],
+        jsFiles: [
+          { name: '//cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js' },
+          { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js' },
+          { name: '//cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js' },
+          { name: '//cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/components/prism-bash.min.js,npm/prismjs@1.29.0/components/prism-c.min.js,npm/prismjs@1.29.0/components/prism-clike.min.js,npm/prismjs@1.29.0/components/prism-coffeescript.min.js,npm/prismjs@1.29.0/components/prism-cpp.min.js,npm/prismjs@1.29.0/components/prism-csharp.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-css-extras.min.js,npm/prismjs@1.29.0/components/prism-go.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-markdown.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-ruby.min.js,npm/prismjs@1.29.0/components/prism-sass.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-uri.min.js,npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js,npm/prismjs@1.29.0/plugins/keep-markup/prism-keep-markup.min.js,npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.js' },
+          { name: '//cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox-min.min.js' },
+          { name: '//cdn.jsdelivr.net/npm/marked@0.3.19/marked.min.js' },
+          { name: '<%= index.slim.bundle %>', inline: true },
+        ],
 
         makeFileId,
       },
@@ -138,52 +141,52 @@ module.exports = function () {
       js: ['src/js/*[!_].js', 'src/js/**/*[!_].js'],
     },
     lib_test: {
-      src: ['lib/**/*.js', 'test/**/*.js']
+      src: ['lib/**/*.js', 'test/**/*.js'],
     },
     copy: {
       assets: {
         expand: true,
         cwd: 'src/assets',
         src: '**',
-        dest: 'dist/'
+        dest: 'dist/',
       },
       release_fat: {
         expand: false,
         flatten: true,
         src: ['dist/<%= pkg.name %>.html'],
-        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>.html'
+        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>.html',
       },
       release_slim: {
         expand: false,
         flatten: true,
         src: ['dist/<%= pkg.name %>-slim.html'],
-        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-slim.html'
+        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-slim.html',
       },
       release_debug: {
         expand: false,
         flatten: true,
         src: ['dist/<%= pkg.name %>-debug.html'],
-        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-debug.html'
+        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-debug.html',
       },
       release_assets: {
         files: [{
           expand: true,
           flatten: true,
           src: ['src/release_assets/*'],
-          dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+          dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/',
         },
         {
           expand: true,
           cwd: 'src/assets',
           src: '**',
-          dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+          dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/',
         }],
       },
       dist: {
         expand: true,
         cwd: 'dist',
         src: '**/*[!_].html',
-        dest: 'docs/'
+        dest: 'docs/',
       },
     },
     clean: {
@@ -193,13 +196,13 @@ module.exports = function () {
     shell: {
       zip_release: {
         options: {
-          stdout: true
+          stdout: true,
         },
         command: [
           'cd release',
-          'zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>'
+          'zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>',
         ].join(' && '),
-      }
+      },
     },
     watch: {
       options: {
@@ -211,19 +214,19 @@ module.exports = function () {
           'src/js/*.js',
           'src/js/**/*.js',
           'src/*.js',
-          'src/index.ejs'
+          'src/index.ejs',
         ],
-        tasks: ['build:debug']
+        tasks: ['build:debug'],
       },
       dist: {
         files: [
-          'dist/**/*[!_].html'
+          'dist/**/*[!_].html',
         ],
-        tasks: ['copy:dist']
+        tasks: ['copy:dist'],
       },
       docs: {
         files: [
-          'docs/**/*'
+          'docs/**/*',
         ],
       },
     },
@@ -251,8 +254,9 @@ module.exports = function () {
     },
   });
 
+  // eslint-disable-next-line func-names
   grunt.registerMultiTask('index', 'Generate .html files', function () {
-    grunt.log.writeln(this.data.description)
+    grunt.log.writeln(this.data.description);
     createIndex(this.target, this.data);
   });
 
@@ -273,12 +277,12 @@ module.exports = function () {
     'clean',
     'build',
     'copy:release:slim', 'copy:release:fat', 'copy:release:debug', 'copy:release:assets',
-    'shell:zip_release'
+    'shell:zip_release',
   ]);
 
   // Default task.
-  grunt.registerTask('default',
-    ['clean', 'build']
+  grunt.registerTask(
+    'default',
+    ['clean', 'build'],
   );
-
 };
