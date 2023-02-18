@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   function create_iframe($links, opt/*, text*/) {
     return $links.each(function (i, link) {

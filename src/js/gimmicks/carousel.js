@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   function carousel($link, opt, href) {
 

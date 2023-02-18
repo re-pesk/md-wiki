@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   var language = window.navigator.userLanguage || window.navigator.language;
   var code = language + '_' + language.toUpperCase();

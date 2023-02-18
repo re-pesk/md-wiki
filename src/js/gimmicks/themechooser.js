@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   var themes = [
     { name: 'bootstrap', url: 'cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' },
@@ -90,7 +89,8 @@
       opt = $.extend({ name: window.localStorage.theme }, opt);
       set_theme(opt);
     }
-  };
+  };  'use strict';
+
 
   var themechooser = function ($links, opt, text) {
 

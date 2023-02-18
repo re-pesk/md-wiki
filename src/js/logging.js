@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   $.md.getLogger = function () {
 

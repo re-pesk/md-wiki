@@ -3,7 +3,6 @@
  */
 
 (function ($) {
-  'use strict';
 
   // picks out the paragraphs that start with a trigger word
   function select_paragraphs() {

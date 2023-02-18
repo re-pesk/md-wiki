@@ -3,7 +3,7 @@
  */
 
 (function ($) {
-  'use strict';
+
   var methods = {
     gist: function () {
       var $this = $(this);

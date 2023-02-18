@@ -38,7 +38,7 @@
  */
 
 (function ($) {
-  'use strict';
+
   function yuml($link, opt/*, text*/) {
     var default_options = {
       type: 'class',  /* { class, activity, usecase } */

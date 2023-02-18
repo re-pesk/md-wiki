@@ -3,7 +3,7 @@
  */
 
 (function ($) {
-  'use strict';
+
   // makes trouble, find out why
   var colorboxGimmick = {
     name: 'colorbox',
