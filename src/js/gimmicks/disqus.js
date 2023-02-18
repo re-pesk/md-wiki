@@ -2,6 +2,7 @@
  * disqus.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var alreadyDone = false;

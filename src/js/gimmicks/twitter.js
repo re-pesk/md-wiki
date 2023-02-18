@@ -2,6 +2,7 @@
  * twitter.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   // no license information given in the widget.js -> OTHER

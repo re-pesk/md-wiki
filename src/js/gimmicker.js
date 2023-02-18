@@ -2,6 +2,7 @@
  * gimmickers.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   $.gimmicks = $.fn.gimmicks = function (method) {

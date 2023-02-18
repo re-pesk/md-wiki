@@ -2,6 +2,7 @@
  * init.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   // hide the whole page so we dont see the DOM flickering

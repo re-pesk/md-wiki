@@ -2,6 +2,7 @@
  * themechooser.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var themes = [

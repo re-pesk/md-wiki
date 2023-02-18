@@ -8,13 +8,13 @@
  *
  * ## Usage
  *
- *     [gimmick:yuml]( [HttpContext]uses -.->[Response] )
+ *  [gimmick:yuml]( [HttpContext]uses -.->[Response] )
  *
- *     [gimmick:yuml (style: 'scruffy', dir: 'TB') ]( [Customer]->[Billing Address] )
+ *  [gimmick:yuml (style: 'scruffy', dir: 'TB') ]( [Customer]->[Billing Address] )
  *
- *     [gimmick:yuml (diag: 'activity', style: 'plain') ]( `Make Coffee´->`want more coffee´ )
+ *  [gimmick:yuml (diag: 'activity', style: 'plain') ]( `Make Coffee´->`want more coffee´ )
  *
- *     [gimmick:yuml (diag: 'usecase', scale: 200) ]( [Customer]-`Sign In´, [Customer]-`Buy Products´ )
+ *  [gimmick:yuml (diag: 'usecase', scale: 200) ]( [Customer]-`Sign In´, [Customer]-`Buy Products´ )
  *
  * ## Options
  *
@@ -37,6 +37,7 @@
  * [LGPL]: http://www.gnu.org/copyleft/lesser.html
  */
 
+/* eslint-disable */
 (function ($) {
 
   function yuml($link, opt/*, text*/) {

@@ -2,6 +2,7 @@
  * basic_skeleton.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   // set the page title to the browser document title, optionally picking

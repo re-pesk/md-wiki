@@ -2,6 +2,7 @@
  * googlemaps.js
  */
 
+/* eslint-disable */
 // ugly, but the google loader requires the callback fn
 // to be in the global scope
 var googlemapsLoadDone;

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import './js/init.js';
 import './js/logging.js';
 import './js/stage.js';
@@ -19,9 +20,9 @@ import './js/gimmicks/gist.js';
 // './js/gimmicks/github_gist.js';
 import './js/gimmicks/googlemaps.js';
 import './js/gimmicks/iframe.js';
+// './js/gimmicks/leaflet.js';
 import './js/gimmicks/math.js';
 import './js/gimmicks/prism.js';
-// './js/gimmicks/leaflet.js';
 import './js/gimmicks/themechooser.js';
 import './js/gimmicks/twitter.js';
 import './js/gimmicks/youtube_embed.js';

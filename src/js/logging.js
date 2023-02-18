@@ -2,6 +2,7 @@
  * logging.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   $.md.getLogger = function () {

@@ -2,6 +2,7 @@
  * modules.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var log = $.md.getLogger();

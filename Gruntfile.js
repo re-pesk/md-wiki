@@ -1,35 +1,36 @@
 const grunt = require('grunt');
 require('load-grunt-tasks')(grunt);
 const terser = require('@rollup/plugin-terser');
+const pkg = require('./.metadata');
 
-var createIndex = function (mode, indexData) {
-  const tmpl = grunt.file.read(indexData.template),
-    data = {
-      mode,
-      pkg: grunt.config('pkg'),
-      isDebug: (mode === 'debug'),
-      isFat: (mode === 'fat'),
-      fileRead: grunt.file.read,
-      ...indexData,
-    };
+const createIndex = (mode, indexData) => {
+  const tmpl = grunt.file.read(indexData.template);
+  const data = {
+    mode,
+    pkg,
+    isDebug: (mode === 'debug'),
+    isFat: (mode === 'fat'),
+    fileRead: grunt.file.read,
+    ...indexData,
+  };
 
   grunt.log.writeln(`Building single index.html in ${mode} mode`);
   grunt.file.write(data.dest, grunt.template.process(tmpl, { data }));
   grunt.log.writeln(`Generated '${data.dest}' from '${data.template}'`);
 };
 
-module.exports = function () {
+module.exports = () => {
   // Project configuration.
   const makeFileId = true;
 
   grunt.initConfig({
     // Metadata.
-    pkg: require('./.metadata.js'),
+    pkg,
     rollup: {
       debug: {
         options: {
           output: {
-            format: 'iife',
+            format: 'es',
             strict: true,
           },
         },
@@ -40,9 +41,11 @@ module.exports = function () {
       },
       fat: {
         options: {
-          plugins: [terser()],
+          plugins: [
+            terser(),
+          ],
           output: {
-            format: 'iife',
+            format: 'es',
           },
         },
         files: {
@@ -138,52 +141,52 @@ module.exports = function () {
       js: ['src/js/*[!_].js', 'src/js/**/*[!_].js'],
     },
     lib_test: {
-      src: ['lib/**/*.js', 'test/**/*.js']
+      src: ['lib/**/*.js', 'test/**/*.js'],
     },
     copy: {
       assets: {
         expand: true,
         cwd: 'src/assets',
         src: '**',
-        dest: 'dist/'
+        dest: 'dist/',
       },
       release_fat: {
         expand: false,
         flatten: true,
         src: ['dist/<%= pkg.name %>.html'],
-        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>.html'
+        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>.html',
       },
       release_slim: {
         expand: false,
         flatten: true,
         src: ['dist/<%= pkg.name %>-slim.html'],
-        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-slim.html'
+        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-slim.html',
       },
       release_debug: {
         expand: false,
         flatten: true,
         src: ['dist/<%= pkg.name %>-debug.html'],
-        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-debug.html'
+        dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/<%= pkg.name %>-debug.html',
       },
       release_assets: {
         files: [{
           expand: true,
           flatten: true,
           src: ['src/release_assets/*'],
-          dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+          dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/',
         },
         {
           expand: true,
           cwd: 'src/assets',
           src: '**',
-          dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/'
+          dest: 'release/<%= pkg.name %>-<%= grunt.config("pkg").version %>/',
         }],
       },
       dist: {
         expand: true,
         cwd: 'dist',
         src: '**/*[!_].html',
-        dest: 'docs/'
+        dest: 'docs/',
       },
     },
     clean: {
@@ -193,13 +196,13 @@ module.exports = function () {
     shell: {
       zip_release: {
         options: {
-          stdout: true
+          stdout: true,
         },
         command: [
           'cd release',
-          'zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>'
+          'zip -r <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>.zip <%= grunt.config("pkg").name %>-<%= grunt.config("pkg").version %>',
         ].join(' && '),
-      }
+      },
     },
     watch: {
       options: {
@@ -211,19 +214,19 @@ module.exports = function () {
           'src/js/*.js',
           'src/js/**/*.js',
           'src/*.js',
-          'src/index.ejs'
+          'src/index.ejs',
         ],
-        tasks: ['build:debug']
+        tasks: ['build:debug'],
       },
       dist: {
         files: [
-          'dist/**/*[!_].html'
+          'dist/**/*[!_].html',
         ],
-        tasks: ['copy:dist']
+        tasks: ['copy:dist'],
       },
       docs: {
         files: [
-          'docs/**/*'
+          'docs/**/*',
         ],
       },
     },
@@ -251,8 +254,9 @@ module.exports = function () {
     },
   });
 
+  // eslint-disable-next-line func-names
   grunt.registerMultiTask('index', 'Generate .html files', function () {
-    grunt.log.writeln(this.data.description)
+    grunt.log.writeln(this.data.description);
     createIndex(this.target, this.data);
   });
 
@@ -273,12 +277,12 @@ module.exports = function () {
     'clean',
     'build',
     'copy:release:slim', 'copy:release:fat', 'copy:release:debug', 'copy:release:assets',
-    'shell:zip_release'
+    'shell:zip_release',
   ]);
 
   // Default task.
-  grunt.registerTask('default',
-    ['clean', 'build']
+  grunt.registerTask(
+    'default',
+    ['clean', 'build'],
   );
-
 };

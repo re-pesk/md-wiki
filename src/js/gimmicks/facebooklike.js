@@ -2,6 +2,7 @@
  * facebooklike.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var language = window.navigator.userLanguage || window.navigator.language;

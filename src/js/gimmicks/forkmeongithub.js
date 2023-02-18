@@ -2,6 +2,7 @@
  * forkmeongithub.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   function forkmeongithub($links, opt/*, text*/) {

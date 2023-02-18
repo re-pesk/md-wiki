@@ -2,6 +2,7 @@
  * iframe.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   function create_iframe($links, opt/*, text*/) {

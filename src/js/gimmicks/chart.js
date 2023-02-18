@@ -2,6 +2,7 @@
  * chart.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var scripturl = '//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js';

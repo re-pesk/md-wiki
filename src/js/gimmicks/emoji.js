@@ -28,6 +28,8 @@
  * [CHEAT_SHEET]: http://www.emoji-cheat-sheet.com/
  * [TORTUE_CDN]: http://www.tortue.me/
  */
+
+/* eslint-disable */
 (function ($) {
 
   function createEmojis() {

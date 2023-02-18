@@ -2,6 +2,7 @@
  * math.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   function load_mathjax($links/*, opt, ref*/) {

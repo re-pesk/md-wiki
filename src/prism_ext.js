@@ -1,3 +1,4 @@
+/* eslint-disable */
 import '../node_modules/prismjs/components/prism-bash.js';
 import '../node_modules/prismjs/components/prism-c.js';
 import '../node_modules/prismjs/components/prism-clike.js';

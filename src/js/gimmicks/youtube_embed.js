@@ -2,6 +2,7 @@
  * youtube_embed.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   function youtubeLinkToIframe() {

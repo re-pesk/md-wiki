@@ -2,6 +2,7 @@
  * colorbox.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   // makes trouble, find out why

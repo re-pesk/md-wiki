@@ -2,6 +2,7 @@
  * leaflet.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var jsUrl = 'http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js';

@@ -2,6 +2,7 @@
  * alerts.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   // picks out the paragraphs that start with a trigger word

@@ -2,6 +2,7 @@
  * gist.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   function gist($links, opt, href) {

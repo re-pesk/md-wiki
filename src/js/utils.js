@@ -2,6 +2,7 @@
  * utils.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var publicMethods = {

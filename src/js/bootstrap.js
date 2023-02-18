@@ -2,6 +2,7 @@
  * bootstrap.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   // var navStyle = '';

@@ -2,6 +2,7 @@
  * carousel.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   function carousel($link, opt, href) {

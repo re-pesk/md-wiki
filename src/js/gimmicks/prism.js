@@ -2,6 +2,7 @@
  * prism.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var supportedLangs = [

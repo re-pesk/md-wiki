@@ -2,6 +2,7 @@
  * github_gist.js
  */
 
+/* eslint-disable */
 (function ($) {
 
   var methods = {
