@@ -34,6 +34,9 @@ module.exports = {
     'no-unused-vars': 'error',
     'no-eval': ['error', {'allowIndirect': true}],
   },
+  'parserOptions': {
+    'sourceType': 'module'
+  },
   'overrides': [{
     'files': 'src/**/*.js',
   }],

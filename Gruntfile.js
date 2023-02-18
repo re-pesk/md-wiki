@@ -1,8 +1,8 @@
 const grunt = require('grunt');
 require('load-grunt-tasks')(grunt);
+const terser = require('@rollup/plugin-terser');
 
 var createIndex = function (mode, indexData) {
-    'use strict';
     const tmpl = grunt.file.read(indexData.template),
         data = {
             mode,
@@ -19,101 +19,45 @@ var createIndex = function (mode, indexData) {
 };
 
 module.exports = function () {
-    'use strict';
     // Project configuration.
     const makeFileId = true;
 
     grunt.initConfig({
         // Metadata.
-        pkg: require('./.metadata'),
-
-        ownJsFiles: [
-            'src/js/init.js',
-            'src/js/logging.js',
-            'src/js/stage.js',
-            'src/js/main.js',
-            'src/js/utils.js',
-            'src/js/modules.js',
-            'src/js/basic_skeleton.js',
-            'src/js/bootstrap.js',
-            'src/js/gimmicker.js',
-
-            // gimmicks
-            'src/js/gimmicks/alerts.js',
-            'src/js/gimmicks/colorbox.js',
-            'src/js/gimmicks/carousel.js',
-            'src/js/gimmicks/disqus.js',
-            'src/js/gimmicks/facebooklike.js',
-            'src/js/gimmicks/forkmeongithub.js',
-            //'src/js/gimmicks/github_gist.js',
-            'src/js/gimmicks/gist.js',
-            'src/js/gimmicks/googlemaps.js',
-            'src/js/gimmicks/iframe.js',
-            'src/js/gimmicks/math.js',
-            'src/js/gimmicks/prism.js',
-            // 'src/js/gimmicks/leaflet.js',
-            'src/js/gimmicks/themechooser.js',
-            'src/js/gimmicks/twitter.js',
-            'src/js/gimmicks/youtube_embed.js',
-            'src/js/gimmicks/chart.js',
-            'src/js/gimmicks/yuml.js'
-        ],
-
-        concat: {
-            options: {
-                stripBanners: false
-            },
-            dev: {
-                src: '<%= ownJsFiles %>',
-                dest: 'src/_compiled/js/<%= pkg.name %>.js'
-            },
-            prismjs: {
-                files: {
-                    'src/_compiled/js/prism-ext.js': [
-                        'node_modules/prismjs/components/prism-bash.js',
-                        'node_modules/prismjs/components/prism-c.js',
-                        'node_modules/prismjs/components/prism-clike.js',
-                        'node_modules/prismjs/components/prism-coffeescript.js',
-                        'node_modules/prismjs/components/prism-cpp.js',
-                        'node_modules/prismjs/components/prism-csharp.js',
-                        'node_modules/prismjs/components/prism-css.js',
-                        'node_modules/prismjs/components/prism-css-extras.js',
-                        'node_modules/prismjs/components/prism-go.js',
-                        'node_modules/prismjs/components/prism-javascript.js',
-                        'node_modules/prismjs/components/prism-markdown.js',
-                        'node_modules/prismjs/components/prism-markup.js',
-                        'node_modules/prismjs/components/prism-python.js',
-                        'node_modules/prismjs/components/prism-ruby.js',
-                        'node_modules/prismjs/components/prism-sass.js',
-                        'node_modules/prismjs/components/prism-sql.js',
-                        'node_modules/prismjs/components/prism-uri.js',
-                        'node_modules/prismjs/plugins/autoloader/prism-autoloader.js',
-                        'node_modules/prismjs/plugins/keep-markup/prism-keep-markup.js',
-                        'node_modules/prismjs/plugins/previewers/prism-previewers.js',
-                    ],
+        pkg: require('./.metadata.js'),
+        rollup: {
+            debug: {
+                options: {
+                    output: {
+                        format: 'iife',
+                        strict: true,
+                    },
                 },
-            }
-        },
-        uglify: {
-            options: {
-                stripBanners: true
+                files: {
+                    'src/_compiled/js/prism-ext.js': 'src/prism_ext.js',
+                    '<%= index.debug.bundle %>': 'src/index.js',
+                },
             },
-            dist: {
-                src: '<%= concat.dev.dest %>',
-                dest: 'src/_compiled/js/<%= pkg.name %>.min.js'
-            },
-            prismjs: {
+            fat: {
+                options: {
+                    plugins: [terser()],
+                    output: {
+                        format: 'iife',
+                    },
+                },
                 files: {
                     'src/_compiled/js/prism.min.js': 'node_modules/prismjs/prism.js',
-                    'src/_compiled/js/prism-ext.min.js': 'src/_compiled/js/prism-ext.js',
-                }
-            }
+                    'src/_compiled/js/prism-ext.min.js': 'src/prism_ext.js',
+                    '<%= index.fat.bundle %>': 'src/index.js',
+                },
+            },
         },
         index: {
             debug: {
                 description: 'Generate <%= pkg.name %>-debug.html, inline all scripts unminified',
                 template: 'src/index.ejs',
                 dest: 'dist/<%= pkg.name %>-debug.html',
+                bundle: 'src/_compiled/js/<%= pkg.name %>.js',
 
                 cssFiles: [
                     { name: 'node_modules/bootstrap/dist/css/bootstrap.css' },
@@ -130,13 +74,14 @@ module.exports = function () {
                     { name: 'src/_compiled/js/prism-ext.js' },
                     { name: 'node_modules/jquery-colorbox/jquery.colorbox.js' },
                     { name: 'node_modules/marked/lib/marked.js' },
-                    { name: '<%= concat.dev.dest %>' },
+                    { name: '<%= index.debug.bundle %>' },
                 ],
             },
             fat: {
                 description: 'Generate <%= pkg.name %>.html, inline all scripts',
                 template: 'src/index.ejs',
                 dest: 'dist/<%= pkg.name %>.html',
+                bundle: 'src/_compiled/js/<%= pkg.name %>.min.js',
 
                 cssFiles: [
                     { name: 'node_modules/bootstrap/dist/css/bootstrap.min.css', inline: true },
@@ -153,7 +98,7 @@ module.exports = function () {
                     { name: 'src/_compiled/js/prism-ext.min.js', inline: true },
                     { name: 'node_modules/jquery-colorbox/jquery.colorbox-min.js', inline: true },
                     { name: 'node_modules/marked/marked.min.js', inline: true },
-                    { name: '<%= uglify.dist.dest %>', inline: true },
+                    { name: '<%= index.fat.bundle %>', inline: true },
                 ],
 
                 makeFileId,
@@ -162,6 +107,7 @@ module.exports = function () {
                 description: 'Generate <%= pkg.name %>-slim.html, most scripts on CDN',
                 template: 'src/index.ejs',
                 dest: 'dist/<%= pkg.name %>-slim.html',
+                bundle: 'src/_compiled/js/<%= pkg.name %>.min.js',
 
                 cssFiles: [
                     { name: '//cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' },
@@ -178,7 +124,7 @@ module.exports = function () {
                     { name: '//cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/components/prism-bash.min.js,npm/prismjs@1.29.0/components/prism-c.min.js,npm/prismjs@1.29.0/components/prism-clike.min.js,npm/prismjs@1.29.0/components/prism-coffeescript.min.js,npm/prismjs@1.29.0/components/prism-cpp.min.js,npm/prismjs@1.29.0/components/prism-csharp.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-css-extras.min.js,npm/prismjs@1.29.0/components/prism-go.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-markdown.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-ruby.min.js,npm/prismjs@1.29.0/components/prism-sass.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-uri.min.js,npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js,npm/prismjs@1.29.0/plugins/keep-markup/prism-keep-markup.min.js,npm/prismjs@1.29.0/plugins/previewers/prism-previewers.min.js' },
                     { name: '//cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox-min.min.js' },
                     { name: '//cdn.jsdelivr.net/npm/marked@0.3.19/marked.min.js' },
-                    { name: '<%= uglify.dist.dest %>', inline: true },
+                    { name: '<%= index.slim.bundle %>', inline: true },
                 ],
 
                 makeFileId,
@@ -264,6 +210,7 @@ module.exports = function () {
                     'Gruntfile.js',
                     'src/js/*.js',
                     'src/js/**/*.js',
+                    'src/*.js',
                     'src/index.ejs'
                 ],
                 tasks: ['build:debug']
@@ -309,12 +256,12 @@ module.exports = function () {
         createIndex(this.target, this.data);
     });
 
-    grunt.registerTask('build:slim', ['eslint', 'concat', 'uglify', 'index:slim', 'copy:assets']);
-    grunt.registerTask('build:fat', ['eslint', 'concat', 'uglify', 'index:fat', 'copy:assets']);
-
     /* Debug is basically the fat version but without any minifing */
-    grunt.registerTask('build:debug', ['eslint', 'concat', 'index:debug', 'copy:assets']);
-    grunt.registerTask('build', ['build:slim', 'build:fat', 'build:debug']);
+    grunt.registerTask('build:debug', ['eslint', 'rollup:debug', 'index:debug', 'copy:assets']);
+    grunt.registerTask('build:fat', ['eslint',  'rollup:fat', 'index:fat', 'copy:assets']);
+    grunt.registerTask('build:slim', ['eslint', 'rollup:fat', 'index:slim', 'copy:assets']);
+
+    grunt.registerTask('build', ['build:debug', 'build:fat', 'build:slim']);
     grunt.registerTask('dev', ['build:debug']);
 
     grunt.registerTask('serve', ['connect:dist', 'watch:dev']);
