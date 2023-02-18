@@ -20,18 +20,8 @@
     { name: 'united', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/united/bootstrap.min.css' },
     { name: 'yeti', url: 'cdn.jsdelivr.net/npm/bootswatch@3.4.1/yeti/bootstrap.min.css' }
   ];
+
   var useChooser = false;
-  var themeChooserGimmick = {
-    name: 'Themes',
-    version: $.md.version,
-    once: function () {
-      $.md.linkGimmick(this, 'themechooser', themechooser, 'skel_ready');
-      $.md.linkGimmick(this, 'theme', apply_theme);
-
-    }
-  };
-  $.md.registerGimmick(themeChooserGimmick);
-
   var log = $.md.getLogger();
 
   var set_theme = function (theme) {
@@ -79,9 +69,9 @@
 
   var apply_theme = function ($links, opt, text) {
     opt.name = opt.name || text;
-    $links.each(function (i, link) {
+    $links.each(function (/*i, link*/) {
       $.md.stage('postgimmick').subscribe(function (done) {
-        var $link = $(link);
+        // var $link = $(link);
 
         // only set a theme if no theme from the chooser is selected,
         // or if the chooser isn't enabled
@@ -93,6 +83,13 @@
       });
     });
     $links.remove();
+  };
+
+  var restore_theme = function (opt) {
+    if (window.localStorage.theme) {
+      opt = $.extend({ name: window.localStorage.theme }, opt);
+      set_theme(opt);
+    }
   };
 
   var themechooser = function ($links, opt, text) {
@@ -112,7 +109,7 @@
       $.each(themes, function (i, theme) {
         var $li = $('<li></li>');
         $chooser.eq(1).append($li);
-        var $a = $('<a/>')
+        /*var $a =*/ $('<a/>')
           .text(theme.name)
           .attr('href', '')
           .click(function (ev) {
@@ -140,10 +137,15 @@
     });
   };
 
-  var restore_theme = function (opt) {
-    if (window.localStorage.theme) {
-      opt = $.extend({ name: window.localStorage.theme }, opt);
-      set_theme(opt);
+  var themeChooserGimmick = {
+    name: 'Themes',
+    version: $.md.version,
+    once: function () {
+      $.md.linkGimmick(this, 'themechooser', themechooser, 'skel_ready');
+      $.md.linkGimmick(this, 'theme', apply_theme);
+
     }
   };
-}(jQuery));
+  $.md.registerGimmick(themeChooserGimmick);
+
+})(window.jQuery);

@@ -5,15 +5,6 @@
 (function ($) {
   'use strict';
 
-  var themeChooserGimmick = {
-    name: 'Themes',
-    version: $.md.version,
-    once: function () {
-      $.md.linkGimmick(this, 'carousel', carousel);
-    }
-  };
-  $.md.registerGimmick(themeChooserGimmick);
-
   function carousel($link, opt, href) {
 
     var $c = $('<div id="myCarousel" class="carousel slide"></div>');
@@ -21,7 +12,7 @@
     $c.append('<ol class="carousel-indicators" />');
 
     var imageUrls = [];
-    var i = 0;
+    // var i = 0;
     $.each(href.split(','), function (i, e) {
       imageUrls.push($.trim(e));
       $c.find('ol').append('<li data-target="#myCarousel" data-slide-to="' + i + '" class="active" /');
@@ -38,4 +29,15 @@
     $c.append('<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>');
     $link.replaceWith($c);
   }
-}(jQuery));
+
+  var themeChooserGimmick = {
+    name: 'Themes',
+    version: $.md.version,
+    once: function () {
+      $.md.linkGimmick(this, 'carousel', carousel);
+    }
+  };
+
+  $.md.registerGimmick(themeChooserGimmick);
+
+})(window.jQuery);

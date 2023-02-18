@@ -4,16 +4,8 @@
 
 (function ($) {
   'use strict';
-  var forkmeongithubGimmick = {
-    name: 'forkmeongithub',
-    version: $.md.version,
-    once: function () {
-      $.md.linkGimmick(this, 'forkmeongithub', forkmeongithub);
-    }
-  };
-  $.md.registerGimmick(forkmeongithubGimmick);
 
-  function forkmeongithub($links, opt, text) {
+  function forkmeongithub($links, opt/*, text*/) {
     return $links.each(function (i, link) {
       var $link = $(link);
       // default options
@@ -60,4 +52,14 @@
     });
   }
 
-}(jQuery));
+  var forkmeongithubGimmick = {
+    name: 'forkmeongithub',
+    version: $.md.version,
+    once: function () {
+      $.md.linkGimmick(this, 'forkmeongithub', forkmeongithub);
+    }
+  };
+
+  $.md.registerGimmick(forkmeongithubGimmick);
+
+})(window.jQuery);

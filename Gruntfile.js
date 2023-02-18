@@ -187,36 +187,9 @@ module.exports = function (grunt) {
         },
         /* make it use .jshintrc */
         jshint: {
-            options: {
-                curly: false,
-                eqeqeq: true,
-                immed: true,
-                latedef: true,
-                newcap: true,
-                noarg: true,
-                sub: true,
-                undef: true,
-                unused: false,
-                boss: true,
-                eqnull: true,
-                browser: true,
-                globals: {
-                    jQuery: true,
-                    marked: true,
-                    google: true,
-                    hljs: true,
-                    /* leaflet.js*/
-                    L: true,
-                    console: true,
-                    Chart: true,
-                    Prism: true
-                }
-            },
-            /*gruntfile: {
-                src: 'Gruntfile.js'
-            },*/
+            options: require('./.jshint'),
             js: {
-                src: ['src/js/*.js', 'src/js/**/*.js', '!js/marked.js']
+                src: ['src/js/*[!_].js', 'src/js/**/*[!_].js']
             }
         },
         lib_test: {
@@ -337,11 +310,11 @@ module.exports = function (grunt) {
         createIndex(grunt, this.target, this.data);
     });
 
-    grunt.registerTask('build:slim', [/* 'jshint', */ 'concat', 'uglify', 'index:slim', 'copy:assets']);
-    grunt.registerTask('build:fat', [/* 'jshint', */ 'concat', 'uglify', 'index:fat', 'copy:assets']);
+    grunt.registerTask('build:slim', ['jshint', 'concat', 'uglify', 'index:slim', 'copy:assets']);
+    grunt.registerTask('build:fat', ['jshint', 'concat', 'uglify', 'index:fat', 'copy:assets']);
 
     /* Debug is basically the fat version but without any minifing */
-    grunt.registerTask('build:debug', [/* 'jshint', */ 'concat', 'index:debug', 'copy:assets']);
+    grunt.registerTask('build:debug', ['jshint', 'concat', 'index:debug', 'copy:assets']);
     grunt.registerTask('build', ['build:slim', 'build:fat', 'build:debug']);
     grunt.registerTask('dev', ['build:debug']);
 

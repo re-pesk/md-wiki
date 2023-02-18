@@ -65,4 +65,5 @@
     }
   };
   $.md.registerGimmick(emojisGimmick);
-}(jQuery));
+
+})(window.jQuery);

@@ -4,6 +4,7 @@
 
 (function ($) {
   'use strict';
+
   var log = $.md.getLogger();
 
   $.Stage = function (name) {
@@ -77,4 +78,5 @@
     });
     return self;
   };
-}(jQuery));
+
+})(window.jQuery);

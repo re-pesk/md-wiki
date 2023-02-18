@@ -3,13 +3,14 @@
  */
 
 (function ($) {
-  //'use strict';
+  'use strict';
+
   var jsUrl = 'http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js';
   var cssUrl = 'http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css';
 
-  function leaflet_map($link, opt, linkText) {
+  function leaflet_map($link, opt/*, linkText*/) {
     var $maps_links = $link;
-    var counter = (new Date()).getTime();
+    // var counter = (new Date()).getTime();
     return $maps_links.each(function (i, link) {
       var $this = $(link);
       var default_options = {};
@@ -53,5 +54,7 @@
       });
     }
   };
+
   $.md.registerGimmick(leafletGimmick);
-}(jQuery));
+
+})(window.jQuery);

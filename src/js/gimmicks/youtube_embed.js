@@ -3,17 +3,7 @@
  */
 
 (function ($) {
-  //'use strict';
-  var youtubeGimmick = {
-    name: 'youtube',
-    load: function () {
-      $.md.stage('gimmick').subscribe(function (done) {
-        youtubeLinkToIframe();
-        done();
-      });
-    }
-  };
-  $.md.registerGimmick(youtubeGimmick);
+  'use strict';
 
   function youtubeLinkToIframe() {
     var $youtube_links = $('a[href*=youtube\\.com]:empty, a[href*=youtu\\.be]:empty');
@@ -38,4 +28,17 @@
       }
     });
   }
-}(jQuery));
+
+  var youtubeGimmick = {
+    name: 'youtube',
+    load: function () {
+      $.md.stage('gimmick').subscribe(function (done) {
+        youtubeLinkToIframe();
+        done();
+      });
+    }
+  };
+
+  $.md.registerGimmick(youtubeGimmick);
+
+})(window.jQuery);

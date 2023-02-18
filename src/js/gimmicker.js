@@ -3,6 +3,8 @@
  */
 
 (function ($) {
+  'use strict';
+
   $.gimmicks = $.fn.gimmicks = function (method) {
     if (method === undefined) {
       return;
@@ -17,4 +19,4 @@
 
   // TODO underscores _ in Markdown links are not allowed! bug in our MD imlemenation
 
-}(jQuery));
+})(window.jQuery);

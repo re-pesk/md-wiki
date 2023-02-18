@@ -36,9 +36,10 @@
  * [yUML]: http://www.yuml.me/
  * [LGPL]: http://www.gnu.org/copyleft/lesser.html
  */
+
 (function ($) {
   'use strict';
-  function yuml($link, opt, text) {
+  function yuml($link, opt/*, text*/) {
     var default_options = {
       type: 'class',  /* { class, activity, usecase } */
       style: 'plain', /* { plain, scruffy } */
@@ -78,6 +79,7 @@
       });
     }
   };
+
   $.md.registerGimmick(yumlGimmick);
 
-}(jQuery));
+})(window.jQuery);

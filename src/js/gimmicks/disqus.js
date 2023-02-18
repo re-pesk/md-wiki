@@ -3,17 +3,10 @@
  */
 
 (function ($) {
-  var disqusGimmick = {
-    name: 'disqus',
-    version: $.md.version,
-    once: function () {
-      $.md.linkGimmick(this, 'disqus', disqus);
-    }
-  };
-  $.md.registerGimmick(disqusGimmick);
+  'use strict';
 
   var alreadyDone = false;
-  var disqus = function ($links, opt, text) {
+  var disqus = function ($links, opt/*, text*/) {
     var default_options = {
       identifier: ''
     };
@@ -66,4 +59,14 @@
       }
     });
   };
-}(jQuery));
+
+  var disqusGimmick = {
+    name: 'disqus',
+    version: $.md.version,
+    once: function () {
+      $.md.linkGimmick(this, 'disqus', disqus);
+    }
+  };
+  $.md.registerGimmick(disqusGimmick);
+
+})(window.jQuery);
