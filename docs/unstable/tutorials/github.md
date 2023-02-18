@@ -1,11 +1,8 @@
-Hosting on GitHub
-=================
+# Hosting on GitHub
 
 Attention: This tutorial is incomplete. Please help completing it for beginner users by [contributing][contribute].
 
-About
-------
-
+## About
 
 This tutorial describes how to setup a public website using MDwiki  which is hosted through [GitHub][GitHub]. GitHub is a perfect choice for hosting, and the MDwiki project website located at <http://www.mdwiki.info> is also hosted on GitHub.
 
@@ -21,8 +18,7 @@ The advantages on using GitHub for your website or wiki:
 
 [GitHub]: http://www.github.com
 
-Steps
-------
+## Steps
 
 ### Step 1: Get a GitHub account
 
@@ -35,10 +31,13 @@ We have set up a [minimal example MDwiki installation](https://github.com/Dynalo
 Now you should be able to see an index page at http://username.github.io/mymdwiki/mdwiki.html#!index.md, where username is your Github account name.  It may take up to ten minutes for this to be available.
 
 ### Step 3: Edit your forked version of MDwiki seed
+
 Clone your fork and make some changes.  For instance, you may wish to
 
+```bash
     git mv mdwiki.html index.html
-    
+```
+
 as this will allow you to omit mdwiki.html from the URLs for your pages.
 
 ### Step 4: Push changes back
@@ -48,6 +47,5 @@ as this will allow you to omit mdwiki.html from the URLs for your pages.
 ### Additional notes
 
 Note: This tutorial is incomplete. Please help completing it for beginner users by [contributing][contribute].
-
 
 [contribute]: /contribute.md

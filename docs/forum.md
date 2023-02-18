@@ -1,5 +1,4 @@
-Forum
-=====
+# Forum
 
 This forum is realized via [Disqus](https://disqus.com) and the [Disqus Gimmick](gimmicks.md). MDwiki developers are notified upon new messages.
 
