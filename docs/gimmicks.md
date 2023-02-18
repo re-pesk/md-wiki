@@ -1,34 +1,33 @@
-Gimmicks
-=========
-
+# Gimmicks
+<!-- markdownlint-disable MD025 MD042 -->
 Gimmicks are little helper that bring plenty of dynamic features into your page. For example, you can use them to inline youtube videos, image slideshows or facebook like buttons.
 
 To use Gimmicks, all you have to do is include some specially crafted link into your markdown file. For example, if you want to embed a Youtube video (instead of linking to it), you just have to insert a link to the video:
 
-
-    [](https://www.youtube.com/watch?v=JpnVQ9nKfWs)
+```md
+[](https://www.youtube.com/watch?v=JpnVQ9nKfWs)
+```
 
 Gimmicks are realized via Javascript and work out of the box. Some gimmicks can be called with parameters on them, to customize their behaviour:
 
-
-    [gimmick:ForkMeOnGitHub ({ color: 'red',  position: 'left' })](https://www.github.com/Dynalon/mdwiki)
-
+```md
+[gimmick:ForkMeOnGitHub ({ color: 'red',  position: 'left' })](https://www.github.com/Dynalon/mdwiki)
+```
 
 The arguments are passed as a Javascript object. But for convienience reasons, you can omit the curly brackets `{ }`. The gimmick name after `gimmick:` is also case-insensitive:
 
-    [gimmick:forkmeongithub(color: 'red', position: 'left')](https://www.github.com/Dynalon/mdwiki)
+```md
+[gimmick:forkmeongithub(color: 'red', position: 'left')](https://www.github.com/Dynalon/mdwiki)
+```
 
 Gimmicks are designed to always chose sane default values when no parameters are given, therefore *most* gimmicks do not require any parameters to work.
 
 Note: Gimmicks will usually load code or stylesheets from the internet, therefore they won't work in offline mode
 
 
-Available Gimmicks
-===================
-* * *
+# Available Gimmicks
 
-Alerts
-------
+## Alerts
 
 Alerts are automatically placed whenever you start a paragraph with a special *trigger* word, that *has* to be followed by a colon `:` or exclamation mark `!`.
 
@@ -48,30 +47,31 @@ Note! This is a note.
 
 Hint: This is a hint.
 
-* * *
+***
 
-GitHub Gists
-------------
+## GitHub Gists
 
 Gists on github can be embedded by passing their numeric id:
 
-    [gimmick:gist](5641564)
+```md
+[gimmick:gist](5641564)
+```
 
 Preview:
 
 [gimmick:gist](5641564)
 
-* * *
+***
 
-
-Facebook Likebutton
--------------------
+## Facebook Likebutton
 
 Take any link of a profile page on facebook and put it into a regular markdown link, prefixed by `gimmick:FacebookLike`.
 
 Example:
 
-    [gimmick:FacebookLike](https://www.facebook.com)
+```md
+[gimmick:FacebookLike](https://www.facebook.com)
+```
 
 Preview:
 
@@ -90,31 +90,37 @@ Arguments:
 
 More Examples:
 
-    1. [gimmick:FacebookLike ( layout: 'standard', showfaces: false) ](https://www.facebook.com)
-    2. [gimmick:FacebookLike ( layout: 'boxcount', showfaces: false) ](https://www.facebook.com)
-    3. [gimmick:FacebookLike ( layout: 'buttoncount') ](https://www.facebook.com)
+```md
+1. [gimmick:FacebookLike ( layout: 'standard', showfaces: false ](https://www.facebook.com)
+2. [gimmick:FacebookLike ( layout: 'boxcount', showfaces: false)](https://www.facebook.com)
+3. [gimmick:FacebookLike ( layout: 'buttoncount')](https://www.facebook.com)
+```
 
-1. [gimmick:FacebookLike ( layout: 'standard', showfaces: false) ](https://www.facebook.com)
+1. [gimmick:FacebookLike ( layout: 'standard', showfaces: false)](https://www.facebook.com)
 
-2. [gimmick:FacebookLike ( layout: 'boxcount', showfaces: false) ](https://www.facebook.com)
+2. [gimmick:FacebookLike ( layout: 'boxcount', showfaces: false)](https://www.facebook.com)
 
-3. [gimmick:FacebookLike ( layout: 'buttoncount') ](https://www.facebook.com)
+3. [gimmick:FacebookLike ( layout: 'buttoncount')](https://www.facebook.com)
 
 For more info and previews, check the [Facebook developer page](https://developers.facebook.com/docs/reference/plugins/like/).
 
-* * *
-Fork me on GitHub - Ribbon
---------------------------
+***
 
-The popular github ribbon that is also present on this page. See the [github page]() for a preview of the colors.
+## Fork me on GitHub - Ribbon
+
+The popular github ribbon that is also present on this page. See the [github page](https://github.blog/2008-12-19-github-ribbons/) for a preview of the colors.
 
 Example:
 
-    [gimmick:ForkMeOnGitHub](https://www.github.com/Dynalon/mdwiki)
+```md
+[gimmick:ForkMeOnGitHub](https://www.github.com/Dynalon/mdwiki)
+```
 
 or with options:
 
-    [gimmick:ForkMeOnGitHub (position: 'left', color: 'darkblue') ](https://www.github.com/Dynalon/mdwiki)
+```md
+[gimmick:ForkMeOnGitHub (position: 'left', color: 'darkblue') ](https://www.github.com/Dynalon/mdwiki)
+```
 
 Arguments:
 
@@ -127,20 +133,21 @@ Arguments:
 
 Note: To display the ribbon on every page, put the gimmick link into the `navigation.md` file.
 
-* * *
+***
 
-Google Maps
------------
+## Google Maps
 
 Allows to embed a basic map from [Google Maps](https://maps.google.com), centering at any given address specified via the link target.
 
 Example Code:
 
-    [gimmick:googlemaps](Madison Square Garden, NY)
+```md
+[gimmick:googlemaps](Madison Square Garden, NY)
 
-    [gimmick:googlemaps(maptype: 'terrain', zoom: 9, marker: 'false')](Eiffel Tower, Paris)
+[gimmick:googlemaps(maptype: 'terrain', zoom: 9, marker: 'false')](Eiffel Tower, Paris)
 
-    [gimmick:googlemaps(maptype: 'satellite', zoom: 17)](Colloseum, Rome, Italy)
+[gimmick:googlemaps(maptype: 'satellite', zoom: 17)](Colloseum, Rome, Italy)
+```
 
 Arguments:
 
@@ -158,10 +165,10 @@ Preview:
 [gimmick:googlemaps(maptype: 'terrain', zoom: 9, marker: 'false')](Eiffel Tower, Paris)
 
 [gimmick:googlemaps({maptype: 'satellite', zoom: 17})](Colloseum, Rome, Italy)
-* * *
 
-UML Diagrams via yUML.me
------
+***
+
+## UML Diagrams via yUML.me
 
 Embeds diagrams from the excellent [yUML.me](https://yuml.me) service (see their website for documentation).
 
@@ -169,21 +176,33 @@ Examples:
 
 [gimmick:yuml]( [HttpContext]uses -.->[Response] )
 
-    [gimmick:yuml]( [HttpContext]uses -.->[Response] )
-- - -
+```md
+[gimmick:yuml]( [HttpContext]uses -.->[Response] )
+```
+
+***
+
 [gimmick:yuml (type: 'class')]([User|+Forename;+Surname;+HashedPassword;-Salt])
 
-    [gimmick:yuml]([User|+Forename+;Surname;+HashedPassword;-Salt|+Login();+Logout()])
-- - -
+```md
+[gimmick:yuml]([User|+Forename+;Surname;+HashedPassword;-Salt|+Login();+Logout()])
+```
+
+***
+
 [gimmick:yuml (type: 'activity', style: 'plain') ]( `Make Coffee´->`want more coffee´ )
 
-    [gimmick:yuml (type: 'activity', style: 'plain') ]( `Make Coffee´->`want more coffee´ )
+```md
+[gimmick:yuml (type: 'activity', style: 'plain') ]( `Make Coffee´->`want more coffee´ )
+```
 
-- - -
+***
+
 [gimmick:yuml (type: 'usecase', scale: 150) ]( [Customer]-`Sign In´, [Customer]-`Buy Products´ )
 
-    [gimmick:yuml (diag: 'usecase', scale: 150) ]( [Customer]-`Sign In´, [Customer]-`Buy Products´ )
-
+```md
+[gimmick:yuml (diag: 'usecase', scale: 150) ]( [Customer]-`Sign In´, [Customer]-`Buy Products´ )
+```
 
 Arguments
 
@@ -200,13 +219,13 @@ Arguments
   * is one of [ 'plain', 'scruffy' ]
   * defines the applied theme, *plain* for clean and *scruffy* for comic-style look
 
+## Math
 
-Math
------
+[gimmick: math]() Math formulas are realized through the [MathJax](https://www.mathjax.org) library. To enable math formulas on a page, the `math` gimmick must be loaded by adding this link anywhere in the file:
+
+```md
 [gimmick: math]()
-Math formulas are realized through the [MathJax](https://www.mathjax.org) library. To enable math formulas on a page, the `math` gimmick must be loaded by adding this link anywhere in the file:
-
-    [gimmick: math]()
+```
 
 To enable math for all sites, put the above link into the `navigation.md` file. Putting this link onto the site will load MathJax dynamically from a CDN provider.
 
@@ -216,7 +235,9 @@ Note: The MathJax script is very large and loads some more dependencies like fon
 
 You can add math formulas by putting them between to `$$` signs and use LateX syntax:
 
+```md
     $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
+```
 
 $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
 
@@ -224,7 +245,9 @@ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
 
 Inline equations can be inserted by surrounding them with the delimiters `\\(` and `\\)`:
 
-    Diameter \\( d \\) of a circle given area \\( A \\) can by obtained via \\(d=\sqrt{\frac{4A}{\pi}}\\)
+```md
+Diameter \\( d \\) of a circle given area \\( A \\) can by obtained via \\(d=\sqrt{\frac{4A}{\pi}}\\)
+```
 
 Will show as: Diameter \\( d \\) of a circle given area \\( A \\) can by obtained via \\(d=\sqrt{\frac{4A}{\pi}}\\)
 
@@ -237,45 +260,50 @@ $$ \int u \frac{dv}{dx}\,dx=uv-\int
 \left (  1 +\frac{1}{n} \right )^n
 $$
 
-Twitter
--------
+## Twitter
 
 Creates a simple twitter follow button from a given twitter screen name.
 
 Example:
 
-    [gimmick:TwitterFollow](@timodoerr)
+```md
+[gimmick:TwitterFollow](@timodoerr)
+```
 
 Preview:
 
 [gimmick:TwitterFollow](@timodoerr)
 
-Youtube
--------
+## Youtube
 
 Whenever you insert a regular link with an empty caption that points to a video on `youtube.com` or `youtu.be`, the link is automatically turned into an embedded iframe, which will display a preview thumbnail of the video on your website.
 
 Example:
 
-    This will show the video preview on your website:
-    [](https://www.youtube.com/watch?v=JpnVQ9nKfWs)
+```md
+This will show the video preview on your website:
+[](https://www.youtube.com/watch?v=JpnVQ9nKfWs)
+```
 
 [](https://www.youtube.com/watch?v=JpnVQ9nKfWs)
 
 To omit the preview and just get a regular link, add a caption:
 
-    [Click to see an awesome video](https://www.youtube.com/watch?v=JpnVQ9nKfWs)
+```md
+[Click to see an awesome video](https://www.youtube.com/watch?v=JpnVQ9nKfWs)
+```
 
 [Click to see an awesome video](https://www.youtube.com/watch?v=JpnVQ9nKfWs)
 
-* * *
+***
 
-Disqus
-------
+## Disqus
 
 Adds comment / forum style functionality to your website. You first need to [signup with disqus](https://disqus.com) and use your disqus shortname as the link target.
 
-    [gimmick:Disqus](your_disqus_shortname)
+```md
+[gimmick:Disqus](your_disqus_shortname)
+```
 
 Preview:
 
@@ -283,33 +311,38 @@ Preview:
 
 Disqus is always embedded at the bottom of a page, so scroll down this site to see a preview.
 
-Chart
------
+## Chart
 
 Adds a chart to the screen using data from your Markdown table.
 
-#### Options
+### Options
 
-- labelColumn: This is a string that indicates which column will be used to label the data points. This String must be a direct match to your table header fro the column.
-- dataColumns: This is an array of strings that indicated the column to be plotted. This String must be a direct match to your table header fro the column.
-- canvasId: This is an ID for the generated chart. Defaults to a random number between 1-1000.
-- chartOptions: This is an object that is passed to chartjs to configure its options. Refer to chartjs for documentation on available options.
-- chartType:   This string is the type of chart render. Bar, Line, or Radar. Defaults to Line.
+* labelColumn: This is a string that indicates which column will be used to label the data points. This String must be a direct match to your table header fro the column.
+
+* dataColumns: This is an array of strings that indicated the column to be plotted. This String must be a direct match to your table header fro the column.
+
+* canvasId: This is an ID for the generated chart. Defaults to a random number between 1-1000.
+
+* chartOptions: This is an object that is passed to chartjs to configure its options. Refer to chartjs for documentation on available options.
+
+* chartType:   This string is the type of chart render. Bar, Line, or Radar. Defaults to Line.
 
 Note: Currently only support a single table on a page. You CAN have multiple charts from the same table.
 
-    | #  | Sprint          | Points | Sum | Avg  | Note |
-    | -  | --------        |------- | --- | ---- | ---- |
-    | 1  | Sprint 1        | 6      | 6   | 6.0  | |
-    | 2  | Sprint 2        | 6      | 12  | 6.0  | |
-    | 3  | Sprint 3        | 15     | 27  | 9.0  | |
-    | 4  | Sprint 4        | 9      | 36  | 9.0  | |
-    | 5  | Sprint 5        | 6      | 42  | 8.4  | |
-    | 6  | Sprint 6        | 9      | 51  | 8.5  | |
-    
-    [gimmick:chart ({dataColumns: ['Avg'], labelColumn: "Sprint", chartType: 'Line', width: '660px', height: '300px'})]()
-    
-    [gimmick:chart ({dataColumns: ['Avg'], labelColumn: "Sprint", chartType: 'Bar', width: '660px', height: '300px'})]()
+```md
+| #  | Sprint          | Points | Sum | Avg  | Note |
+| -  | --------        |------- | --- | ---- | ---- |
+| 1  | Sprint 1        | 6      | 6   | 6.0  | |
+| 2  | Sprint 2        | 6      | 12  | 6.0  | |
+| 3  | Sprint 3        | 15     | 27  | 9.0  | |
+| 4  | Sprint 4        | 9      | 36  | 9.0  | |
+| 5  | Sprint 5        | 6      | 42  | 8.4  | |
+| 6  | Sprint 6        | 9      | 51  | 8.5  | |
+
+[gimmick:chart ({dataColumns: ['Avg'], labelColumn: "Sprint", chartType: 'Line', width: '660px', height: '300px'})]()
+
+[gimmick:chart ({dataColumns: ['Avg'], labelColumn: "Sprint", chartType: 'Bar', width: '660px', height: '300px'})]()
+```
 
 Example:
 
@@ -322,6 +355,7 @@ Example:
 | 5  | Sprint 5        | 6      | 42  | 8.4  | |
 | 6  | Sprint 6        | 9      | 51  | 8.5  | |
 
+<!-- markdownlint-disable MD042 -->
 [gimmick:chart ({dataColumns: ['Avg'], labelColumn: "Sprint", chartType: 'Line', width: '660px', height: '300px'})]()
 
 [gimmick:chart ({dataColumns: ['Avg'], labelColumn: "Sprint", chartType: 'Bar', width: '660px', height: '300px'})]()
