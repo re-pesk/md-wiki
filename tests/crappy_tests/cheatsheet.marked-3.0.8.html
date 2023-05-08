@@ -1,0 +1,863 @@
+<!DOCTYPE html><html class=""><!--
+   This is MDwiki v0.6.6 in debug mode
+   (C) 2013 by Timo Dörr and contributors. This software is licensed
+   under the terms of the GPLv3 with additional terms applied.
+   See https://github.com/Dynalon/mdwiki/blob/0.6.x/LICENSE.txt for more detail.
+   See https://github.com/Dynalon/mdwiki.git for a copy of the source code.
+--><head>
+    <title>MDwiki</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="fragment" content="!">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <meta charset="UTF-8">
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="node_modules/prismjs/themes/prism.css" type="text/css">
+<link rel="stylesheet" href="node_modules/prismjs/plugins/previewers/prism-previewers.css" type="text/css">
+<link rel="stylesheet" href="src/lib/jquery-colorbox/css/colorbox.css" type="text/css">
+<link rel="stylesheet" href="src/css/mdwiki.css" type="text/css">
+<script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="node_modules/prismjs/prism.js"></script>
+<script type="text/javascript" src="src/_compiled/js/prism-ext.js"></script>
+<script type="text/javascript" src="node_modules/jquery-colorbox/jquery.colorbox.js"></script>
+<script type="text/javascript" src="node_modules/marked/lib/marked.js"></script>
+<script type="text/javascript" src="src/_compiled/js/mdwiki.js"></script>
+<script type="text/javascript">$.md.logThreshold = $.md.loglevel.DEBUG;</script>
+  </head>
+  <body>
+    <noscript>
+        This website requires Javascript to be enabled. Please turn on Javascript
+        and reload the page.
+    </noscript>
+
+    <div id="md-all"><div id="md-menu">
+
+<div id="md-main-navbar" class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="#"></a></div><div class="collapse navbar-collapse navbar-ex1-collapse"><ul class="nav navbar-nav"><ul class="nav navbar-nav navbar-right"></ul><li><a href="#!index.md">Index</a></li><li class="active"><a href="#!cheatsheet.md">Cheatsheet</a></li></ul></div></div></div><div class="container" id="md-body-container"><div class="row" id="md-body-row"><div id="md-body" style="margin-top: 60px;"><div class="container" id="md-title-container"><div class="row" id="md-title-row"><div id="md-title" class="col-md-12"><div class="page-header"><h1 id="cheatsheet---markdown-syntax-with-gfm">Cheatsheet - Markdown Syntax with GFM</h1></div></div></div></div><div class="container" id="md-menu-container"><div class="row" id="md-menu-row"></div></div><div class="container" id="md-content-container"><div class="row" id="md-content-row"><div id="md-content" class="col-md-12"><hr>
+<p><div class="md-text">title: Cheatsheet - Markdown Syntax with GFM MMM<br>description: Extended markdown syntax<br>tags:</div></p>
+<ul>
+<li>markadown</li>
+<li>extended</li>
+<li>gfm<br>Tags:</li>
+</ul>
+<hr>
+
+<p><div class="md-text">This cheatsheet uses markdown syntax based on:</div></p>
+<ul>
+<li><a href="http://daringfireball.net/projects/markdown/syntax">Markdown Specification</a></li>
+<li><a href="https://help.github.com/articles/github-flavored-markdown">Github Flavored Markdown</a></li>
+<li><a href="./#extensions">Markdown-it Parser Extensions</a></li>
+</ul>
+<h2 id="table-of-contents" class="md-inpage-anchor">Table of Contents<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Table_of_Contents">?</a></span></h2>
+<ul>
+<li>Markdown<ul>
+<li><a href="./#headers">Headers</a></li>
+<li><a href="./#paragraphs-and-line-breaks">Paragraphs and Line Breaks</a></li>
+<li><a href="./#styling-text">Styling Text</a><ul>
+<li><a href="./#escaping">Escaping</a></li>
+</ul>
+</li>
+<li><a href="./#lists">Lists</a><ul>
+<li><a href="./#unordered">Unordered</a></li>
+<li><a href="./#ordered-mixed">Ordered, Mixed</a></li>
+</ul>
+</li>
+<li><a href="./#tables">Tables</a><ul>
+<li><a href="./#column-alignment">Column Alignment</a></li>
+</ul>
+</li>
+<li><a href="./#links">Links</a><ul>
+<li><a href="./#link-within-document">Link within document</a></li>
+</ul>
+</li>
+<li><a href="./#block-quotes">Block Quotes</a></li>
+<li><a href="./#horizontal-ruler">Horizontal Ruler</a></li>
+<li><a href="./#images">Images</a></li>
+<li><a href="./#code">Code</a><ul>
+<li><a href="./#indented-block">Indented Block</a></li>
+<li><a href="./#highlighting">Highlighting</a></li>
+</ul>
+</li>
+<li><a href="./#inline-html">Inline HTML</a></li>
+<li><a href="./#inline-comments">Inline Comments</a></li>
+</ul>
+</li>
+<li><a href="./#extensions">Extensions</a><ul>
+<li><a href="./#styles">Styles</a></li>
+<li><a href="./#abbreviation">Abbreviation</a></li>
+<li><a href="./#admonitions">Admonitions</a></li>
+<li><a href="./#attributes">Attributes</a></li>
+<li><a href="./#definition-lists">Definition Lists</a></li>
+<li><a href="./#emoji">Emoji</a></li>
+<li><a href="./#footnotes">Footnotes</a></li>
+<li><a href="./#math-with-katex">Math with KaTeX</a></li>
+<li><a href="./#mark">Mark</a></li>
+<li><a href="./#multimarkdown-table-syntax">MultiMarkdown table syntax</a></li>
+<li><a href="./#subscript">Subscript</a></li>
+<li><a href="./#superscript">Superscript</a></li>
+<li><a href="./#tasklists">Tasklists</a></li>
+</ul>
+</li>
+<li><a href="./#preprocessor">Preprocessor</a><ul>
+<li><a href="./#include-other-files">Include other files</a></li>
+<li><a href="./#table-of-contents-1">Table of Contents</a></li>
+<li><a href="./#reference-list">Reference list</a></li>
+</ul>
+</li>
+</ul>
+<!-- toc (level=4) -->
+
+<h2 id="headers" class="md-inpage-anchor">Headers<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Headers">?</a></span></h2>
+<pre><code># h1
+
+## h2
+
+### h3
+
+#### h4
+
+##### h5
+
+###### h6
+
+h1 Alternate
+============
+
+h2 Alternate
+------------
+</code></pre>
+<h1 id="h1" class="md-inpage-anchor">h1<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#h1">?</a></span></h1>
+<h2 id="h2" class="md-inpage-anchor">h2<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#h2">?</a></span></h2>
+<h3 id="h3" class="md-inpage-anchor">h3<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#h3">?</a></span></h3>
+<h4 id="h4" class="md-inpage-anchor">h4<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#h4">?</a></span></h4>
+<h5 id="h5" class="md-inpage-anchor">h5<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#h5">?</a></span></h5>
+<h6 id="h6" class="md-inpage-anchor">h6<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#h6">?</a></span></h6>
+<h1 id="h1-alternate" class="md-inpage-anchor">h1 Alternate<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#h1_Alternate">?</a></span></h1>
+<h2 id="h2-alternate" class="md-inpage-anchor">h2 Alternate<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#h2_Alternate">?</a></span></h2>
+<h2 id="paragraphs-and-line-breaks" class="md-inpage-anchor">Paragraphs and Line Breaks<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Paragraphs_and_Line_Breaks">?</a></span></h2>
+<pre><code>A paragraph is a paragraph is a paragraph is a paragraph is a paragraph. Is a paragraph is a paragraph is a paragraph is a paragraph is a paragraph. Is a paragraph is a paragraph is a paragraph.
+This is a not a new line.
+This as not as well..
+
+This is a new paragraph.
+
+Forcing a new line with `&lt;br&gt;` &lt;br&gt; causes a new line.
+
+Or ending a line with two spaces  
+causes a line break as well
+</code></pre>
+<p><div class="md-text">A paragraph is a paragraph is a paragraph is a paragraph is a paragraph. Is a paragraph is a paragraph is a paragraph is a paragraph is a paragraph. Is a paragraph is a paragraph is a paragraph.<br>This is a not a new line.<br>This as not as well..</div></p>
+<p><div class="md-text">This is a new paragraph.</div></p>
+<p><div class="md-text">Forcing a new line with <code>&lt;br&gt;</code> <br> causes a new line.</div></p>
+<p><div class="md-text">Or ending a line with two spaces<br>causes a line-break as well</div></p>
+<h2 id="styling-text" class="md-inpage-anchor">Styling Text<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Styling_Text">?</a></span></h2>
+<pre><code>**Bold** Text      === __Bold__ Text
+*Emphasised* Text  === _Emphasised_ Text
+`monospaced` Text
+~~strikethrough~~ Text
+Wi*thin*Words   - but not -   Wi_thin_Words
+</code></pre>
+<p><div class="md-text"><strong>Bold</strong> Text      === <strong>Bold</strong> Text</div></p>
+<p><div class="md-text"><em>Emphasised</em> Text  === <em>Emphasised</em> Text</div></p>
+<p><div class="md-text"><code>Monospaced</code> Text</div></p>
+<p><div class="md-text"><del>Strikethrough</del> Text</div></p>
+<p><div class="md-text">Wi<em>thin</em>Words   - but not -   Wi_thin_Words</div></p>
+<h3 id="escaping" class="md-inpage-anchor">Escaping<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Escaping">?</a></span></h3>
+<pre><code>\\   backslash
+\`   backtick
+\*   asterisk
+\_   underscore
+\{\}  curly braces
+\[\]  square brackets
+\(\)  parentheses
+\#   hash mark
+\+   plus sign
+\-   minus sign (hyphen)
+\.   dot
+\!   exclamation mark
+</code></pre>
+<p><div class="md-text">\   backslash<br><br>`   backtick<br><br>*   asterisk<br><br>_   underscore<br><br>{}  curly braces<br><br>[]  square brackets<br><br>()  parentheses<br><br>#   hash mark<br><br>+   plus sign<br><br>-   minus sign (hyphen)<br><br>.   dot<br><br>!   exclamation mark</div></p>
+<h2 id="lists" class="md-inpage-anchor">Lists<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Lists">?</a></span></h2>
+<h3 id="unordered" class="md-inpage-anchor">Unordered<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Unordered">?</a></span></h3>
+<pre><code>* Cyan
+* Magenta
+* Yellow
+
+- Red
+- Green
+- Blue
+
++ Black
++ Gray
++ White
+
+* Cyan
+  * No Red
+  * Green
+    * Is a color
+      * like the grass
+  * Blue
+    * Another color
+    * like the sky
+* Magenta
+* Yellow
+</code></pre>
+<ul>
+<li>Cyan</li>
+<li>Magenta</li>
+<li>Yellow</li>
+</ul>
+<ul>
+<li>Red</li>
+<li>Green</li>
+<li>Blue</li>
+</ul>
+<ul>
+<li>Black</li>
+<li>Gray</li>
+<li>White</li>
+</ul>
+<ul>
+<li>Cyan<ul>
+<li>No Red</li>
+<li>Green<ul>
+<li>Is a color<ul>
+<li>like the grass</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Blue<ul>
+<li>Another color</li>
+<li>like the sky</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Magenta</li>
+<li>Yellow</li>
+</ul>
+<h3 id="ordered-mixed" class="md-inpage-anchor">Ordered, Mixed<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Ordered,_Mixed">?</a></span></h3>
+<pre><code>1. Red
+2. Green
+3. Blue
+
+2. Black
+3. Grey
+1. White
+
+&lt;!--- --&gt;
+
+40. Cyan
+   1. RGB (0, 255, 255)
+   1. A color between green and blue
+      * Green
+      * Blue
+2. Magenta
+10. Yellow
+</code></pre>
+<p class="alert alert-info"><div class="md-text"><span style="color: #f55;"><strong>Note</strong>: Wrong numbers get corrected into right order!</span></div></p>
+<ol>
+<li><p><div class="md-text">Red</div></p>
+</li>
+<li><p><div class="md-text">Green</div></p>
+</li>
+<li><p class="alert alert-info"><div class="md-text">Blue <span style="color: #f55;"><strong>Note:</strong> Counting continues with line-breaks</span></div></p>
+</li>
+<li><p><div class="md-text">Black</div></p>
+</li>
+<li><p><div class="md-text">Grey</div></p>
+</li>
+<li><p><div class="md-text">White</div></p>
+</li>
+</ol>
+<!--- -->
+
+<ol start="40">
+<li>Cyan <span style="color: #f55;"><strong>Note:</strong> Counting is restarted with 40 after &lt;!--- --&gt;</span></li>
+<li>RGB (0, 255, 255)</li>
+<li>A color between green and blue<ul>
+<li>Green</li>
+<li>Blue</li>
+</ul>
+</li>
+<li>Magenta</li>
+<li>Yellow</li>
+</ol>
+<h2 id="tables" class="md-inpage-anchor">Tables<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Tables">?</a></span></h2>
+<pre><code>| Column 1 | Column 2 | Column 3 |
+| ---      | ---      | ---      |
+| Row 1    | 1        | 2        |
+| Row 2    | 3        | 4        |
+</code></pre>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Row 1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Row 2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<h3 id="column-alignment" class="md-inpage-anchor">Column Alignment<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Column_Alignment">?</a></span></h3>
+<pre><code>| Left Aligned | Center Aligned | Right Aligned |
+| ---          | :---:          | ---:          |
+| Row 1        | 1              | 2             |
+| Row 2        | 3              | 4             |
+</code></pre>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Left Aligned</th>
+<th align="center">Center Aligned</th>
+<th align="right">Right Aligned</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Row 1</td>
+<td align="center">1</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Row 2</td>
+<td align="center">3</td>
+<td align="right">4</td>
+</tr>
+</tbody></table>
+<h2 id="links" class="md-inpage-anchor">Links<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Links">?</a></span></h2>
+<pre><code>http://example.com
+
+&lt;http://example.com&gt;
+
+[Linktext](http://example.com)
+
+[Reference][Referenced Link]
+
+[Referenced Link][]
+
+[Referenced Link]: http://example.com
+</code></pre>
+<p><div class="md-text"><a href="http://example.com">http://example.com</a></div></p>
+<p><div class="md-text"><a href="http://example.com">http://example.com</a></div></p>
+<p><div class="md-text"><a href="http://example.com">Linktext</a></div></p>
+<p><div class="md-text"><a href="http://example.com">Reference</a></div></p>
+<p><div class="md-text"><a href="http://example.com">Referenced Link</a></div></p>
+<h3 id="link-within-document" class="md-inpage-anchor">Link within document<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Link_within_document">?</a></span></h3>
+<pre><code>&lt;a name="cross-reference"&gt;
+
+[Cross-Reference](#cross-reference)
+</code></pre>
+<a name="cross-reference">
+
+</a><p><div class="md-text"><a name="cross-reference"></a><a href="./#cross-reference">Cross-Reference</a></div></p>
+<h2 id="block-quotes" class="md-inpage-anchor">Block Quotes<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Block_Quotes">?</a></span></h2>
+<pre><code>&gt; Block Quoted Text
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+
+&gt; Or line
+&gt; by line
+
+You need "text" to break block quotes
+
+&gt; Or with a
+&gt; &gt; nested quote
+
+&gt; line
+</code></pre>
+<blockquote>
+<p><div class="md-text">Block Quoted Text<br>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</div></p>
+</blockquote>
+<blockquote>
+<p><div class="md-text">Or line<br>by line</div></p>
+</blockquote>
+<p><div class="md-text">You need "text" to break block quotes</div></p>
+<blockquote>
+<p><div class="md-text">Or with a</div></p>
+<blockquote>
+<p><div class="md-text">nested quote</div></p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p><div class="md-text">line</div></p>
+</blockquote>
+<h2 id="horizontal-ruler" class="md-inpage-anchor">Horizontal Ruler<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Horizontal_Ruler">?</a></span></h2>
+<p><div class="md-text">Three or more Hyphens, Asterisks, Underscores</div></p>
+<pre><code>---
+
+***
+___
+</code></pre>
+<hr>
+<hr>
+<hr>
+<h2 id="images" class="md-inpage-anchor">Images<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Images">?</a></span></h2>
+<style>
+img[alt=img100x] {width: 100px; border: 5px solid red; border-radius: 25%}
+</style>
+
+<pre><code>![Alt Text](img/Hyperlink-Wikipedia.svg.png)
+![Alt Text](img/Hyperlink-Wikipedia.svg.png "Optional Title")
+![Alt Text](http://placehold.it/150x100)
+![broken image](http://localhost/my-broken-image)
+</code></pre>
+<p class="md-image-group row"><div class="col-sm-3"><a class="md-image-selfref cboxElement" href="./img/Hyperlink-Wikipedia.svg.png" title=""><img src="./img/Hyperlink-Wikipedia.svg.png" alt="Alt Text" class="img-responsive img-thumbnail"></a></div><div class="col-sm-3"><a class="md-image-selfref cboxElement" href="./img/Hyperlink-Wikipedia.svg.png" title="Optional Title"><img src="./img/Hyperlink-Wikipedia.svg.png" alt="Alt Text" title="Optional Title" class="img-responsive img-thumbnail"></a></div><div class="col-sm-3"><a class="md-image-selfref cboxElement" href="http://placehold.it/150x100" title=""><img src="http://placehold.it/150x100" alt="Alt Text" class="img-responsive img-thumbnail"></a></div><div class="col-sm-3"><a class="md-image-selfref cboxElement" href="http://localhost/my-broken-image" title=""><img src="http://localhost/my-broken-image" alt="broken image" class="img-responsive img-thumbnail"></a></div></p>
+<p><div class="md-text">Using plain html can be used to size images:</div></p>
+<pre class="language-html" tabindex="0"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>img/Hyperlink-Wikipedia.svg.png<span class="token punctuation">"</span></span> <span class="token attr-name">title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Optional Title<span class="token punctuation">"</span></span> <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Alt Text<span class="token punctuation">"</span></span> <span class="token attr-name">style</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width: 50px;<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<a class="md-image-selfref" href="./img/Hyperlink-Wikipedia.svg.png" title="Optional Title"><img src="./img/Hyperlink-Wikipedia.svg.png" title="Optional Title" alt="Alt Text" style="width: 50px;"></a>
+
+<p><div class="md-text">Styling images can also be done by hijacking on the <code>alt</code> attribute.</div></p>
+<pre class="language-html" tabindex="0"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">&gt;</span></span>
+img[alt=img100x] {width: 100px; border: 5px solid red; border-radius: 25%}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">&gt;</span></span>
+![img100x](img/Hyperlink-Wikipedia.svg.png)
+</code></pre>
+<style>
+img[alt=img100x] {width: 100px; border: 5px solid red; border-radius: 25%}
+</style>
+<p class="md-image-group row"><div class="col-sm-12"><a class="md-image-selfref cboxElement" href="./img/Hyperlink-Wikipedia.svg.png" title=""><img src="./img/Hyperlink-Wikipedia.svg.png" alt="img100x" class="img-responsive img-thumbnail"></a></div></p>
+<h2 id="code" class="md-inpage-anchor">Code<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Code">?</a></span></h2>
+<pre><code>`a line of code`
+
+``literal backtick (`)``
+</code></pre>
+<p><div class="md-text"><code>a line of code</code></div></p>
+<p><div class="md-text"><code>literal backtick (`)</code></div></p>
+<h3 id="indented-block" class="md-inpage-anchor">Indented Block<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Indented_Block">?</a></span></h3>
+<pre><code>    a line of code
+    literal backtick (`)
+</code></pre>
+<p><div class="md-text">outputs:</div></p>
+<pre><code>a line of code
+literal backtick (`)
+</code></pre>
+<h3 id="highlighting" class="md-inpage-anchor">Highlighting<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Highlighting">?</a></span></h3>
+<pre><code>```javascript
+(function(){
+  "use strict";
+  var t = "a string";
+  console.log(t);
+}())
+```
+</code></pre>
+<p><div class="md-text">outputs:</div></p>
+<pre class="language-javascript" tabindex="0"><code class="language-javascript"><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token string">"use strict"</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> t <span class="token operator">=</span> <span class="token string">"a string"</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<h2 id="inline-html" class="md-inpage-anchor">Inline HTML<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Inline_HTML">?</a></span></h2>
+<pre class="language-html" tabindex="0"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dl</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dt</span><span class="token punctuation">&gt;</span></span>A Definition List<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dt</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dd</span><span class="token punctuation">&gt;</span></span>Mixing Markdown might **not** work *everywhere*. <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span><span class="token punctuation">&gt;</span></span>
+      Use HTML <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>em</span><span class="token punctuation">&gt;</span></span>tags<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>em</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>strong</span><span class="token punctuation">&gt;</span></span>instead<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>strong</span><span class="token punctuation">&gt;</span></span>.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dd</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dl</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<dl>
+  <dt>A Definition List</dt>
+  <dd>Mixing Markdown might **not** work *everywhere*. <br>
+      Use HTML <em>tags</em> <strong>instead</strong>.</dd>
+</dl>
+
+<h2 id="inline-comments" class="md-inpage-anchor">Inline Comments<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Inline_Comments">?</a></span></h2>
+<pre><code>&lt;!---
+This is a comment (!NOTE the 3 &lt;!--- dashes)
+--&gt;
+</code></pre>
+<!---
+This is a comment (NOTE the 3 <!--- dashes)
+-->
+
+<h1 id="extensions" class="md-inpage-anchor">Extensions<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Extensions">?</a></span></h1>
+<h2 id="styles" class="md-inpage-anchor">Styles<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Styles">?</a></span></h2>
+<h3 id="kbd" class="md-inpage-anchor">&lt;kbd&gt;<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#<kbd>">?</a></span></h3>
+<pre><code>Press &lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;R&lt;/kbd&gt; or &lt;kbd&gt;F5&lt;/kbd&gt;
+</code></pre>
+<p><div class="md-text">Press <kbd>Ctrl</kbd> + <kbd>R</kbd> or <kbd>F5</kbd></div></p>
+<h2 id="abbreviation" class="md-inpage-anchor">Abbreviation<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Abbreviation">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://www.npmjs.com/package/markdown-it-abbr">markdown-it-abbr</a>.</div></p>
+<pre><code>*[HTML]: Hyper Text Markup Language
+*[W3C]:  World Wide Web Consortium
+The HTML specification
+is maintained by the W3C.
+</code></pre>
+<p><div class="md-text">*[HTML]: Hyper Text Markup Language<br>*[W3C]:  World Wide Web Consortium<br>The HTML specification<br>is maintained by the W3C.</div></p>
+<h2 id="admonitions" class="md-inpage-anchor">Admonitions<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Admonitions">?</a></span></h2>
+<p><div class="md-text">See <a href="https://npmjs.org/package/markdown-it-admon">markdown-it-admon</a> for supported admonitions.</div></p>
+<pre><code>!!! note 
+    A note with some text
+</code></pre>
+<p><div class="md-text">!!! note<br>    A note with some text</div></p>
+<pre><code>!!! warning Warning with custom Title
+    *Here be dragons!*
+</code></pre>
+<p><div class="md-text">!!! warning Warning with custom title<br>    <em>Here be dragons!</em></div></p>
+<pre><code>!!! info nested admonitions
+    An info box
+
+    !!! snippet
+
+        ```js
+        console.log('Hello World')
+        ```
+
+    !!! tip ""
+        This box has not title.
+
+
+Two empty lines auto-close
+</code></pre>
+<p><div class="md-text">!!! info nested admonitions<br>    An info box</div></p>
+<pre><code>!!! snippet
+
+    ```js
+    console.log('Hello World')
+    ```
+
+!!! tip ""
+    This box has not title.
+</code></pre>
+<p><div class="md-text">The following admonition types are supported:</div></p>
+<ul>
+<li><code>note</code>,</li>
+<li><code>summary</code>, <code>abstract</code>, <code>tldr</code>,</li>
+<li><code>info</code>, <code>todo</code>,</li>
+<li><code>tip</code>, <code>hint</code>,</li>
+<li><code>success</code>, <code>check</code>, <code>done</code>,</li>
+<li><code>question</code>, <code>help</code>, <code>faq</code>,</li>
+<li><code>warning</code>, <code>attention</code>, <code>caution</code>,</li>
+<li><code>failure</code>, <code>fail</code>, <code>missing</code>,</li>
+<li><code>danger</code>, <code>error</code>, <code>bug</code>,</li>
+<li><code>example</code>, <code>snippet</code>,</li>
+<li><code>quote</code>, <code>cite</code></li>
+</ul>
+<p><div class="md-text">however, you’re free to use whatever you want</div></p>
+<h2 id="attributes" class="md-inpage-anchor">Attributes<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Attributes">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://npmjs.org/package/markdown-it-attrs">markdown-it-attrs</a>.</div></p>
+<pre><code>&lt;style&gt;
+.style-me { color: magenta; border: 1px solid cyan; padding: 0 0.25em; }
+.red { color: red; }
+.border { border: 2px solid grey; }
+&lt;/style&gt;
+#### header {.style-me}
+
+paragraph {data-toggle=modal .style-me} 
+
+paragraph *style me*{.red} more text
+
+```python {.border}
+nums = [x for x in range(10)]
+```
+</code></pre>
+<style>
+.style-me { color: magenta; border: 1px solid cyan; padding: 0 0.25em; }
+.red { color: red; }
+.border { border: 2px solid grey; }
+</style>
+<h4 id="header-style-me" class="md-inpage-anchor">header {.style-me}<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#header_{.style-me}">?</a></span></h4>
+<p><div class="md-text">paragraph {data-toggle=modal .style-me}</div></p>
+<p><div class="md-text">paragraph <em>style me</em>{.red} more text</div></p>
+<pre class="language-python" tabindex="0"><code class="language-python">nums <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</code></pre>
+<h2 id="definition-lists" class="md-inpage-anchor">Definition Lists<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Definition_Lists">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://npmjs.org/package/markdown-it-deflist">markdown-it-deflist</a>.</div></p>
+<pre><code>Term 1
+
+:   Definition 1
+
+Term 2 with *inline markup*
+
+:   Definition 2
+
+        { some code, part of Definition 2 }
+
+    Third paragraph of definition 2.
+</code></pre>
+<p><div class="md-text">Term 1</div></p>
+<p><div class="md-text">:   Definition 1</div></p>
+<p><div class="md-text">Term 2 with <em>inline markup</em></div></p>
+<p><div class="md-text">:   Definition 2</div></p>
+<pre><code>    { some code, part of Definition 2 }
+
+Third paragraph of definition 2.
+</code></pre>
+<hr>
+<pre><code>Term 1
+  ~ Definition 1
+
+Term 2
+  ~ Definition 2a
+  ~ Definition 2b
+</code></pre>
+<p><div class="md-text">Term 1<br>  ~ Definition 1</div></p>
+<p><div class="md-text">Term 2<br>  ~ Definition 2a<br>  ~ Definition 2b</div></p>
+<h2 id="emoji" class="md-inpage-anchor">Emoji<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Emoji">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://npmjs.org/package/markdown-it-emoji">markdown-it-emoji</a>.<br>See <a href="http://www.webpagefx.com/tools/emoji-cheat-sheet/">http://www.webpagefx.com/tools/emoji-cheat-sheet/</a> for supported emojis.</div></p>
+<p><div class="md-text">:smile: <code>:smile:</code><br>:blush: <code>:blush:</code><br>:sunny: <code>:sunny:</code><br>:heavy_multiplication_x: <code>:heavy_multiplication_x:</code><br>:heavy_check_mark: <code>:heavy_check_mark:</code>  </div></p>
+<h2 id="footnotes" class="md-inpage-anchor">Footnotes<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Footnotes">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://npmjs.org/package/markdown-it-footnote">markdown-it-footnote</a>.</div></p>
+<pre><code>Footnote 1 link[^first].
+
+Footnote 2 link[^second].
+
+Inline footnote^[Text of inline footnote] definition.
+
+Duplicated footnote reference[^second].
+
+[^first]: Footnote **can have markup**
+
+    and multiple paragraphs.
+
+[^second]: Footnote text.
+</code></pre>
+<p><div class="md-text">Footnote 1 link[^first].</div></p>
+<p><div class="md-text">Footnote 2 link[^second].</div></p>
+<p><div class="md-text">Inline footnote^[Text of inline footnote] definition.</div></p>
+<p><div class="md-text">Duplicated footnote reference[^second].</div></p>
+<p><div class="md-text">[^first]: Footnote <strong>can have markup</strong></div></p>
+<pre><code>and multiple paragraphs.
+</code></pre>
+<p><div class="md-text">[^second]: Footnote text.</div></p>
+<h2 id="mark" class="md-inpage-anchor">Mark<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Mark">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://npmjs.org/package/markdown-it-mark">markdown-it-mark</a>.</div></p>
+<pre><code>A ==marked== text.
+</code></pre>
+<p><div class="md-text">A ==marked== text.</div></p>
+<h2 id="math-with-katex" class="md-inpage-anchor">Math with KaTeX<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Math_with_KaTeX">?</a></span></h2>
+<p><div class="md-text">See <a href="https://katex.org/docs/supported.html">KaTeX</a> for supported functions</div></p>
+<pre><code>The Pythagorean Theorem, $a^2 + b^2 = c^2$, is useful for computing distances.
+
+Formula is one that you learned in Calculus class.
+
+$$\int_0^1 x^n dx = \frac{1}{n+1}$$
+
+When $a \ne 0$, there are two solutions to $(ax^2 + bx + c = 0)$ and they are
+
+$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}$$
+</code></pre>
+<p><div class="md-text">The Pythagorean Theorem, $a^2 + b^2 = c^2$, is useful for computing distances.</div></p>
+<p><div class="md-text">Formula is one that you learned in Calculus class.</div></p>
+<p><div class="md-text">$$\int_0^1 x^n dx = \frac{1}{n+1}$$</div></p>
+<p><div class="md-text">When $a \ne 0$, there are two solutions to $(ax^2 + bx + c = 0)$ and they are</div></p>
+<p><div class="md-text">$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}$$</div></p>
+<h2 id="multimarkdown-table-syntax" class="md-inpage-anchor">MultiMarkdown table syntax<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#MultiMarkdown_table_syntax">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://github.com/RedBug312/markdown-it-multimd-table">markdown-it-multimd-table</a>.</div></p>
+<p><div class="md-text"><strong>Grouping</strong></div></p>
+<pre><code>|             |          Grouping           ||
+First Header  | Second Header | Third Header |
+ ------------ | :-----------: | -----------: |
+Content       |          *Long Cell*        ||
+Content       |   **Cell**    |         Cell |
+
+New section   |     More      |         Data |
+And more      | With an escaped '\\|'       ||
+[Prototype table]
+</code></pre>
+<p><div class="md-text">|             |          Grouping           ||<br>First Header  | Second Header | Third Header |<br> ------------ | :-----------: | -----------: |<br>Content       |          <em>Long Cell</em>        ||<br>Content       |   <strong>Cell</strong>    |         Cell |</div></p>
+<p><div class="md-text">New section   |     More      |         Data |<br>And more      | With an escaped '\|'       ||<br>[Prototype table]</div></p>
+<hr>
+<p><div class="md-text"><strong>Multiline</strong></div></p>
+<pre><code>|   Markdown   | Rendered HTML |
+|--------------|---------------|
+|    *Italic*  | *Italic*      | \
+|              |               |
+|    - Item 1  | - Item 1      | \
+|    - Item 2  | - Item 2      |
+|    ```python | ```python       \
+|    .1 + .2   | .1 + .2         \
+|    ```       | ```           |
+</code></pre>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Markdown</th>
+<th>Rendered HTML</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>Italic</em></td>
+<td><em>Italic</em></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>- Item 1</td>
+<td>- Item 1</td>
+</tr>
+<tr>
+<td>- Item 2</td>
+<td>- Item 2</td>
+</tr>
+<tr>
+<td>```python</td>
+<td>```python       \</td>
+</tr>
+<tr>
+<td>.1 + .2</td>
+<td>.1 + .2         \</td>
+</tr>
+<tr>
+<td>```</td>
+<td>```</td>
+</tr>
+</tbody></table>
+<hr>
+<p><div class="md-text"><strong>Rowspan</strong></div></p>
+<pre><code>Stage              | Direct Products | ATP Yields
+-----------------: | --------------: | ---------:
+Glycolysis         | 2 ATP           ||
+^^                 | 2 NADH          | 3--5 ATP |
+Pyruvaye oxidation | 2 NADH          | 5 ATP |
+Citric acid cycle  | 2 ATP           ||
+^^                 | 6 NADH          | 15 ATP |
+^^                 | 2 FADH2         | 3 ATP |
+**30--32** ATP     |||
+[Net ATP yields per hexose]
+</code></pre>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th align="right">Stage</th>
+<th align="right">Direct Products</th>
+<th align="right">ATP Yields</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">Glycolysis</td>
+<td align="right">2 ATP</td>
+<td align="right"></td>
+</tr>
+<tr>
+<td align="right">^^</td>
+<td align="right">2 NADH</td>
+<td align="right">3--5 ATP</td>
+</tr>
+<tr>
+<td align="right">Pyruvaye oxidation</td>
+<td align="right">2 NADH</td>
+<td align="right">5 ATP</td>
+</tr>
+<tr>
+<td align="right">Citric acid cycle</td>
+<td align="right">2 ATP</td>
+<td align="right"></td>
+</tr>
+<tr>
+<td align="right">^^</td>
+<td align="right">6 NADH</td>
+<td align="right">15 ATP</td>
+</tr>
+<tr>
+<td align="right">^^</td>
+<td align="right">2 FADH2</td>
+<td align="right">3 ATP</td>
+</tr>
+<tr>
+<td align="right"><strong>30--32</strong> ATP</td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td align="right">[Net ATP yields per hexose]</td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody></table>
+<hr>
+<p><div class="md-text"><strong>Headerless</strong></div></p>
+<pre><code>|--|--|--|--|--|--|--|--|
+|♜ |  |♝ |♛ |♚ |♝ |♞ |♜ |
+|  |♟ |♟ |♟ |  |♟ |♟ |♟ |
+|♟ |  |♞ |  |  |  |  |  |
+|  |♗ |  |  |♟ |  |  |  |
+|  |  |  |  |♙ |  |  |  |
+|  |  |  |  |  |♘ |  |  |
+|♙ |♙ |♙ |♙ |  |♙ |♙ |♙ |
+|♖ |♘ |♗ |♕ |♔ |  |  |♖ |
+</code></pre>
+<p><div class="md-text">|--|--|--|--|--|--|--|--|<br>|♜ |  |♝ |♛ |♚ |♝ |♞ |♜ |<br>|  |♟ |♟ |♟ |  |♟ |♟ |♟ |<br>|♟ |  |♞ |  |  |  |  |  |<br>|  |♗ |  |  |♟ |  |  |  |<br>|  |  |  |  |♙ |  |  |  |<br>|  |  |  |  |  |♘ |  |  |<br>|♙ |♙ |♙ |♙ |  |♙ |♙ |♙ |<br>|♖ |♘ |♗ |♕ |♔ |  |  |♖ |</div></p>
+<h2 id="subscript" class="md-inpage-anchor">Subscript<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Subscript">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://npmjs.org/package/markdown-it-sub">markdown-it-sub</a>.</div></p>
+<pre><code>H~2~0
+</code></pre>
+<p><div class="md-text">H<del>2</del>0</div></p>
+<h2 id="superscript" class="md-inpage-anchor">Superscript<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Superscript">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://npmjs.org/package/markdown-it-sup">markdown-it-sup</a>.</div></p>
+<pre><code>29^th^
+</code></pre>
+<p><div class="md-text">29^th^</div></p>
+<h2 id="tasklists" class="md-inpage-anchor">Tasklists<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Tasklists">?</a></span></h2>
+<p><div class="md-text">Provided by <a href="https://npmjs.org/package/markdown-it-task-lists">markdown-it-task-lists</a>.</div></p>
+<pre><code>- [ ] Open
+- [x] Done
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> Open</li>
+<li><input checked="" disabled="" type="checkbox"> Done</li>
+</ul>
+<h1 id="preprocessor" class="md-inpage-anchor">Preprocessor<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Preprocessor">?</a></span></h1>
+<p><div class="md-text">Check <a href="https://github.com/commenthol/markedpp">markedpp</a> for further options.</div></p>
+<h2 id="include-other-files" class="md-inpage-anchor">Include other files<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Include_other_files">?</a></span></h2>
+<p><div class="md-text">See <a href="https://github.com/commenthol/markedpp#include">https://github.com/commenthol/markedpp#include</a></div></p>
+<p><div class="md-text"><strong>Syntax:</strong></div></p>
+<pre><code>!include(path_to/include.md)
+</code></pre>
+<!-- include (path_to/include.md) -->
+
+<hr>
+<p><div class="md-text">This is an included file.</div></p>
+<p><div class="md-text">!include (path_to/include.md)</div></p>
+<hr>
+<!-- /include -->
+
+<p><a name="table-of-contents-1"></a></p>
+<h2 id="table-of-contents-1" class="md-inpage-anchor">Table of Contents<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Table_of_Contents">?</a></span></h2>
+<p><div class="md-text">See <a href="https://github.com/commenthol/markedpp#toc">https://github.com/commenthol/markedpp#toc</a> for more options</div></p>
+<p><div class="md-text"><strong>Syntax:</strong></div></p>
+<pre><code>!toc
+
+!toc(minlevel=3 maxlevel=4 omit="h3;Unordered")
+</code></pre>
+<!-- !toc (minlevel=3 maxlevel=4 omit="h3;Unordered") -->
+
+<ul>
+<li><a href="./#escaping">Escaping</a></li>
+<li><a href="./#ordered-mixed">Ordered, Mixed</a></li>
+<li><a href="./#column-alignment">Column Alignment</a></li>
+<li><a href="./#link-within-document">Link within document</a></li>
+<li><a href="./#indented-block">Indented Block</a></li>
+<li><a href="./#highlighting">Highlighting</a></li>
+</ul>
+<!-- toc! -->
+
+<h2 id="reference-list" class="md-inpage-anchor">Reference list<span class="anchor-highlight" style="display: none;"><a href="#!./cheatsheet.md#Reference_list">?</a></span></h2>
+<p><div class="md-text">See <a href="https://github.com/commenthol/markedpp#ref">https://github.com/commenthol/markedpp#ref</a></div></p>
+<p><div class="md-text"><strong>Syntax:</strong></div></p>
+<pre><code>!ref
+</code></pre>
+<!-- !ref -->
+
+<ul>
+<li><a href="https://help.github.com/articles/github-flavored-markdown">Github Flavored Markdown</a></li>
+<li><a href="http://daringfireball.net/projects/markdown/syntax">Markdown Specification</a></li>
+<li><a href="https://github.com/commenthol/markedpp">markedpp</a></li>
+<li><a href="http://example.com">Referenced Link</a></li>
+</ul>
+<!-- ref! -->
+
+</div></div></div></div></div></div><hr style="position: relative; margin-top: 1em;"><div class="scontainer" style="position: relative; margin-top: 1em;"><div class="pull-right md-copyright-footer"> <span id="md-footer-additional">All content and images © by John Doe</span>Website generated with <a href="http://www.mdwiki.info">MDwiki</a> © Timo Dörr and contributors. </div></div></div>
+  <script src="//localhost:35729/livereload.js?snipver=1" async="" defer=""></script>
+
+<div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxTitle" style="float: left;"></div><div id="cboxCurrent" style="float: left;"></div><button type="button" id="cboxPrevious"></button><button type="button" id="cboxNext"></button><button type="button" id="cboxSlideshow"></button><div id="cboxLoadingOverlay" style="float: left;"></div><div id="cboxLoadingGraphic" style="float: left;"></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none; max-width: none;"></div></div><span id="start-tests" style="display: none;"></span></body></html>

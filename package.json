@@ -25,7 +25,7 @@
     "bootstrap": "^3.4.1",
     "jquery": "^3.6.3",
     "jquery-colorbox": "^1.6.4",
-    "marked": "3.0.0",
+    "marked": "3.0.8",
     "prismjs": "^1.29.0"
   }
 }

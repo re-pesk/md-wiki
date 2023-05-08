@@ -1,0 +1,72 @@
+<!DOCTYPE html><html class=""><!--
+   This is MDwiki v0.6.6 in debug mode
+   (C) 2013 by Timo Dörr and contributors. This software is licensed
+   under the terms of the GPLv3 with additional terms applied.
+   See https://github.com/Dynalon/mdwiki/blob/0.6.x/LICENSE.txt for more detail.
+   See https://github.com/Dynalon/mdwiki.git for a copy of the source code.
+--><head>
+    <title>MDwiki</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="fragment" content="!">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <meta charset="UTF-8">
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="node_modules/prismjs/themes/prism.css" type="text/css">
+<link rel="stylesheet" href="node_modules/prismjs/plugins/previewers/prism-previewers.css" type="text/css">
+<link rel="stylesheet" href="src/lib/jquery-colorbox/css/colorbox.css" type="text/css">
+<link rel="stylesheet" href="src/css/mdwiki.css" type="text/css">
+<script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="node_modules/prismjs/prism.js"></script>
+<script type="text/javascript" src="src/_compiled/js/prism-ext.js"></script>
+<script type="text/javascript" src="node_modules/jquery-colorbox/jquery.colorbox.js"></script>
+<script type="text/javascript" src="node_modules/marked/lib/marked.js"></script>
+<script type="text/javascript" src="src/_compiled/js/mdwiki.js"></script>
+<script type="text/javascript">$.md.logThreshold = $.md.loglevel.DEBUG;</script>
+  </head>
+  <body>
+    <noscript>
+        This website requires Javascript to be enabled. Please turn on Javascript
+        and reload the page.
+    </noscript>
+
+    <div id="md-all"><div id="md-menu">
+
+<div id="md-main-navbar" class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="#"></a></div><div class="collapse navbar-collapse navbar-ex1-collapse"><ul class="nav navbar-nav"><ul class="nav navbar-nav navbar-right"></ul><li class="active"><a href="#!index.md">Index</a></li><li><a href="#!cheatsheet.md">Cheatsheet</a></li></ul></div></div></div><div class="container" id="md-body-container"><div class="row" id="md-body-row"><div id="md-body" style="margin-top: 70px;"><div class="container" id="md-title-container"><div class="row" id="md-title-row"><div id="md-title" class="col-md-12"><div class="page-header"><h1 id="mdwiki">MDwiki</h1></div></div></div></div><div class="container" id="md-menu-container"><div class="row" id="md-menu-row"></div></div><div class="container" id="md-content-container"><div class="row" id="md-content-row"><div id="md-content" class="col-md-12">
+<p><div class="md-text">100% static single file CMS/Wiki done purely with client-side Javascript and HTML5.</div></p>
+<h2 id="see-httpwwwmdwikiinfo-for-more-info-and-documentation" class="md-inpage-anchor">See <a href="http://www.mdwiki.info">http://www.mdwiki.info</a> for more info and documentation.<span class="anchor-highlight" style="display: none;"><a href="#!./index.md#See_http://www.mdwiki.info_for_more_info_and_documentation.">?</a></span></h2>
+<h2 id="-this-fork-of-original-project-is-currently-only-for-experiments-and-not-for-production-use-" class="md-inpage-anchor">!! This fork of original project is currently only for experiments and not for production use !!<span class="anchor-highlight" style="display: none;"><a href="#!./index.md#!!_This_fork_of_original_project_is_currently_only_for_experiments_and_not_for_production_use_!!">?</a></span></h2>
+<h2 id="download" class="md-inpage-anchor">Download<span class="anchor-highlight" style="display: none;"><a href="#!./index.md#Download">?</a></span></h2>
+<p><div class="md-text">See <a href="https://github.com/Dynalon/mdwiki/releases">https://github.com/Dynalon/mdwiki/releases</a> for original project and readily precompiled releases.</div></p>
+<h2 id="how-to-build-from-source" class="md-inpage-anchor">How to build from source<span class="anchor-highlight" style="display: none;"><a href="#!./index.md#How_to_build_from_source">?</a></span></h2>
+<p><div class="md-text">(applies to this branch, others may differ)</div></p>
+<ol>
+<li><p><div class="md-text">Install node.js &gt;= 16.0.0 and npm (if not included)</div></p>
+</li>
+<li><p><div class="md-text">Clone the mdwiki repo</div></p>
+</li>
+<li><p><div class="md-text">Install deps and build MDwiki:</div></p>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span>
+<span class="token function">npm</span> update
+./node_modules/.bin/grunt
+</code></pre>
+<p><div class="md-text"> To get unminified source code compiled to <code>dist/mdwiki-debug.html</code>, as well as auto file watching and livereload support. Symlink the development mdwiki file into your webroot for testing.</div></p>
+</li>
+<li><p><div class="md-text">Find the <code>mdwiki.html</code> in the <code>dist/</code> folder</div></p>
+</li>
+<li><p><div class="md-text">Development server</div></p>
+<p><div class="md-text"> For loqading of development server, use</div></p>
+<pre class="language-bash" tabindex="0"><code class="language-bash">./node_modules/.bin/grunt serve
+</code></pre>
+</li>
+<li><p><div class="md-text">Release</div></p>
+<p><div class="md-text"> For creating release files, use</div></p>
+<pre class="language-bash" tabindex="0"><code class="language-bash">./node_modules/.bin/grunt release
+</code></pre>
+<p><div class="md-text"> Files will be created in <code>release</code> folder</div></p>
+</li>
+</ol>
+</div></div></div></div></div></div><hr style="position: relative; margin-top: 1em;"><div class="scontainer" style="position: relative; margin-top: 1em;"><div class="pull-right md-copyright-footer"> <span id="md-footer-additional">All content and images © by John Doe</span>Website generated with <a href="http://www.mdwiki.info">MDwiki</a> © Timo Dörr and contributors. </div></div></div>
+  <script src="//localhost:35729/livereload.js?snipver=1" async="" defer=""></script>
+
+<div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxTitle" style="float: left;"></div><div id="cboxCurrent" style="float: left;"></div><button type="button" id="cboxPrevious"></button><button type="button" id="cboxNext"></button><button type="button" id="cboxSlideshow"></button><div id="cboxLoadingOverlay" style="float: left;"></div><div id="cboxLoadingGraphic" style="float: left;"></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none; max-width: none;"></div></div><span id="start-tests" style="display: none;"></span></body></html>
