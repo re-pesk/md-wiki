@@ -79,7 +79,7 @@
     marked.setOptions(options);
 
     // get sample markdown
-    var uglyHtml = marked(markdown);
+    var uglyHtml = marked.parse(markdown);
     return uglyHtml;
   }
 
@@ -329,7 +329,7 @@
         return;
       }
 
-      var navHtml = marked(navMD);
+      var navHtml = marked.parse(navMD);
       // TODO why are <script> tags from navHtml APPENDED to the jqcol?
       var $h = $('<div>' + navHtml + '</div>');
 

@@ -19,10 +19,10 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "bootstrap": "^3.4.1",
-    "jquery": "^3.6.3",
-    "jquery-colorbox": "^1.6.4",
-    "marked": "^0.3.19",
-    "prismjs": "^1.29.0"
+    "bootstrap": "3.4.1",
+    "jquery": "3.7.1",
+    "jquery-colorbox": "1.6.4",
+    "marked": "8.0.1",
+    "prismjs": "1.29.0"
   }
 }
