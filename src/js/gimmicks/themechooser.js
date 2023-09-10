@@ -57,6 +57,15 @@
         .attr('href', $.md.prepareLink(theme.url))
         .appendTo('head');
     }
+    $(
+      '<style type="text/css">' +
+        // override prism.css for dark themes
+        'code[class*=language-],pre[class*=language-]{color:inherit;background:0 0;text-shadow:none;}' +
+        '.token.entity,.token.operator,.token.url{background:inherit;}' +
+        // override bootstrap.css for dark themes and with pink from prismjs
+        'code{color:#DD4A68;background-color:inherit;}pre{color:inherit;background-color:inherit;}' +
+        '</style>'
+    ).appendTo('head');
 
     if (theme.inverse === true) {
       $('#md-main-navbar').removeClass('navbar-default');
@@ -132,7 +141,7 @@
       $chooser.eq(1).append($li);
 
       $chooser.eq(1).append('<li class="divider" />');
-      $chooser.eq(1).append('<li><a href="http://www.bootswatch.com">Powered by Bootswatch</a></li>');
+      $chooser.eq(1).append('<li><a href="http://www.bootswatch.com/3/">Powered by Bootswatch</a></li>');
       $this.replaceWith($chooser);
     });
   };
